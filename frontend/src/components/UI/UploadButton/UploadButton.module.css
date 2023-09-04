@@ -1,0 +1,17 @@
+.myBtn {
+    color: var(--dark) !important;
+    background: var(--highlight-color);
+    text-decoration: none;
+    outline: none;
+}
+
+.outLineMyBtn {
+    color: var(--highlight-color);
+    border: 1px solid var(--highlight-color);
+    text-decoration: none;
+    outline: none;
+}
+
+.outLineMyBtn:hover {
+    color: var(--highlight-color);
+}

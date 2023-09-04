@@ -1,0 +1,63 @@
+.cardForm {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    background: inherit;
+    border-color: var(--border-color) !important;
+}   
+
+.cardForm input {
+    border: 1.5px solid var(--border-color);
+    color: inherit !important;
+    background: inherit;
+}
+
+.cardForm textarea {
+    height: 9rem;
+    border: 1.5px solid var(--border-color);
+    color: inherit !important;
+    background: inherit;
+}
+
+.cardForm textarea:focus {
+    height: 9rem;
+    border: 1.5px solid var(--border-highlight-color);
+    background: inherit;
+}
+
+.cardForm textarea:hover {
+    height: 9rem;
+    border: 1.5px solid var(--border-highlight-color);
+    background: inherit;
+}
+
+.cardForm input:hover {
+    border-color: var(--border-highlight-color);
+    background: inherit;
+}
+
+.cardForm input:focus {
+    border-color: var(--border-highlight-color);
+    background: inherit;
+}
+
+.cardForm select {
+    border: 1.5px solid var(--border-color);
+    background: inherit;
+}  
+
+.cardForm select:focus {
+    border-color: var(--border-color);
+
+}
+
+.cardForm select:hover {
+    border-color: var(--border-highlight-color);
+
+}
+.cardForm option {
+    border-color: var(--border-color);
+    background: inherit;
+}
+
+ 

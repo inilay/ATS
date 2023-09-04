@@ -1,0 +1,18 @@
+.warningP {
+    color: rgb(180, 118, 118);
+}
+
+.myInput {
+    background: var(--opposite);
+    color: var(--dark-font-color);
+    border-color: var(--dark-green);
+    outline: var(--green);
+}
+
+
+.myInput:focus {
+    background: var(--opposite);
+    color: var(--dark-font-color);
+    border-color: var(--green);
+    outline:var(--green);
+}

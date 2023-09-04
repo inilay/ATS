@@ -1,0 +1,19 @@
+.footer_img {
+    width: 50px;
+    height: 50px;
+    padding-bottom: 1em;
+    color: var(--green) !important;
+    background: var(--dark);
+}
+
+.my_footer_link {
+    color: inherit !important;
+}
+
+.my_footer_link:hover {
+    color:  var(--highlight-color) !important; 
+}
+
+.footer_text {
+    padding: .5rem 1rem;
+}

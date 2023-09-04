@@ -1,0 +1,347 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --dark: #151616;
+    --ligth: rgb(255, 255, 255);
+    --border-color: rgb(151, 151, 151);
+
+    --border-highlight-color: rgb(142, 130, 255);
+    --highlight-color: rgb(142, 130, 255);
+    --fill-color: white;
+
+    --bright-color: rgb(255, 196, 0);
+
+    --opposite: #151616;
+    --dark-ligth: white;
+
+}
+
+body {
+    font-family: 'Ubuntu', sans-serif;
+    background: var(--dark);
+    color: var(--ligth);   
+
+}
+
+body.light {
+    background: var(--ligth);
+    color: var(--dark);  
+    --border-color: #151616;
+    /* --border-highlight-color: rgb(58, 192, 91);
+    --highlight-color: rgb(58, 192, 91); */
+    --fill-color: #151616;
+    --opposite: white;
+    --dark-ligth: #151616;
+}
+
+h2 {
+    color: var(--bright-color);
+}
+
+h4 {
+    color: var(--bright-color);
+}
+
+section {
+    min-height: 100vh;
+    
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.search-input {
+    background-color: inherit;
+    color: inherit;
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    border: none;
+
+}
+
+.search-input:focus {
+    border-color: var(--border-highlight-color);
+    color: var(--bright-color); 
+    outline: none;
+}
+
+.main-link {
+    color: var(--bright-color);
+    font-size: 1.75rem;
+    text-decoration: none;
+}
+
+.main-link:hover {
+    color: var(--highlight-color);
+}
+
+.tournament-img {
+    width: 50rem;
+    height: 100%;
+}
+
+.card-header-text {
+    color: var(--bright-color);
+}   
+
+.select-input {
+    color: var(--ligth-dark);
+}
+
+.home-div {
+    min-height: 100vh;
+    text-align: center;
+}
+
+.invisible-div {
+    background: inherit;
+    height: 1px;
+}
+
+.card {
+    background-color: inherit;
+}
+
+/* not sorted */
+
+.table {
+    color: inherit;
+    width: 75rem;
+}
+
+.tournaments_card_body {
+
+    border-top: 1px solid var(--border-color);
+}
+
+.form_button_div {
+    margin-left: 15%;
+    width: 15rem;
+}
+
+.tournament_card {
+    background: inherit;    
+    border: none;
+    border: 1px solid var(--opposite);
+   
+}
+
+
+.tournament_card:hover {
+    color: var(--dark-ligth);
+    border: 1px solid rgb(142, 130, 255);
+}
+
+
+.my_log_input {
+    background: var(--dark);
+    color: var(--dark-font-color) !important;
+    border-color: var(--green);
+    outline:var(--green);   
+}
+
+
+.log_div {
+    width: 25%;
+}
+
+.my_log_input:focus {
+    background: var(--ligth-dark);
+    color: var(--dark-font-color) !important;
+    border-color: var(--green);
+    outline:var(--green);
+}
+
+
+.profile-icon {
+
+    width: 100px;
+    height: 100px;
+}
+
+.my_input {
+    background: inherit;
+    color: inherit;
+    border-color: var(--border-color) !important;
+    outline:var(--border-color) !important;
+}
+
+.tools {
+    text-align: right;
+}
+    
+
+.my_input:focus {
+    background: inherit;
+    color: inherit;
+    border-color: var(--border-color) !important;
+    outline:var(--border-color) !important;
+}
+
+.my_accordion_body {
+    background: inherit !important;
+}
+
+.my_accordion_body button {
+    color: inherit !important;
+    background: inherit !important;
+    box-shadow: none !important;
+    border-color:var(--green) !important;
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: none;
+    border-color:var(--green) !important;
+}
+
+.accordion-item {
+    background: inherit;
+    border: 1px solid var(--ligth);
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.tournament_img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 26rem;
+    height: 26rem;
+    text-align: center;
+}
+
+[data-tooltip] {
+    position: relative; 
+   }
+
+[data-tooltip]::after {
+    content: attr(data-tooltip); 
+    position: absolute; 
+    left: 0; top: 0; 
+    color: inherit;
+    font-size: 0.75em;
+    pointer-events: none; 
+    opacity: 0; 
+    transition: 1s;  
+} 
+
+[data-tooltip]:hover::after {
+    opacity: 1; 
+    top: 3em; 
+}
+
+.myModalHeader {
+    background: inherit;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.myModalBody{
+    background: inherit;
+}
+
+.full {
+    background: red;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+
+  
+.fullscreen-enabled {
+    background: var(--opposite);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+  }
+
+.my_svg{
+    fill: var(--fill-color)
+}
+
+
+
+.my_ckeckbox {
+    box-shadow: none !important;
+    border-color: var(--border-color) !important;
+    accent-color: var(--opposite) !important;
+    filter: brightness(100%);
+}
+
+
+.my_ckeckbox:checked {
+    background-color: inherit;
+    border-color: var(--border-color);
+}
+
+
+input::-webkit-input-placeholder { /* WebKit browsers */
+    color:var(--bright-color);
+    opacity: 1
+ }
+
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: var(--bright-color);
+    opacity: 1
+ }
+
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:var(--bright-color);
+    opacity: 1
+}
+
+input:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:var(--bright-color);
+    opacity: 1
+}
+
+input:checked {
+    border: 9px solid var(--highlight-color) !important;
+    outline: none !important;
+  
+}
+
+input:checked:focus {
+  
+    box-shadow: none;
+   
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; 
+}
+
+input[type='number'],
+input[type="number"]:hover,
+input[type="number"]:focus {
+    appearance: none;
+    -moz-appearance: textfield;
+}

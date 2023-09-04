@@ -1,0 +1,142 @@
+.myMatch {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    justify-content: space-between;
+}
+
+.side {
+    display: flex;
+    height: 100%;
+    width: 70%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 0 1rem;
+       
+}
+
+.side:first-of-type {
+    border: 1px solid var(--border-color);
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+    border-top-width: 2px;
+}
+
+.side:last-of-type {
+    border: 1px solid var(--border-color);
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-bottom-width: 2px;
+}
+
+.topText {
+    width: 60%;
+    margin: auto;
+    font-size: 14px;
+    margin-bottom: 0.2rem;
+    min-height: 1.25rem;
+}
+
+.buttonDiv {
+    width: 70%;
+    text-align: center;
+}
+
+.bnDiv {
+    height: 20rem !important;
+}
+
+.iconButton {
+    background: rgb(230, 230, 231); 
+    border: none;
+}
+
+.myModalHeader{
+    color: var(--dark-ligth);
+    background: var(--opposite);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.myModalBody{
+    color: var(--dark-ligth);
+    background: var(--opposite);
+}
+
+.divVS {
+    background: inherit;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.matchSpan {
+    color: var(--green);
+}
+
+.score{
+    display: flex;
+    padding: 0 1rem;
+    align-items: center;
+    width: 20%;
+    justify-content: center;
+    
+}
+
+.hoverSide {
+    display: flex;
+    height: 100%;
+    width: 70%;
+    color: var(--dark-font-color);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 0 1rem;
+   
+}
+
+.hoverSide:first-of-type {
+    
+    border: 1px solid var(--border-highlight-color);
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+    border-top-width: 2px;
+}
+
+.hoverSide:last-of-type {
+    
+    border: 1px solid var(--border-highlight-color);
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-bottom-width: 2px;
+}
+
+.parName {
+    width: 100%;
+}
+
+.matchTitle {
+    margin-left: auto;
+}
+
+.dateInput {
+    background: inherit;
+    color: inherit;
+    outline: none;
+    border: none;
+}
+
+.myInput {
+    width: 50%;
+    text-align: center;
+    background: inherit;
+    color: inherit;
+    border-color: var(--border-color) !important;
+    outline:var(--border-color) !important;
+}
+
+.myInput:focus {
+    border: 1px solid;
+    background: inherit;
+    color: inherit;
+    border-color: var(--border-color) !important;
+    outline:var(--border-color) !important;
+    }
+

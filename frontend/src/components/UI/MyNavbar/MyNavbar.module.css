@@ -1,0 +1,54 @@
+.nav_link {
+    color: var(--dark-ligth) !important; 
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+    padding-top: 0.75rem;
+}
+
+.nav_link:hover {
+    color: var(--highlight-color) !important; 
+}
+
+.my_navbar {
+    background: inherit;
+    height: auto !important;
+    padding-right: 0.5 rem;
+   
+}
+
+.my_drop {
+    left: 60%;
+    right: auto;
+    border-color: inherit !important;
+    border-width: 1px;
+    transform: translateX(-60%);
+    background: inherit;
+    color: var(--dark-ligth);
+
+}
+
+.my_drop a {
+    color: var(--dark-ligth);
+}
+
+.my_toggle {
+    border: none;
+    background:  inherit !important;
+    color: var(--opposite) !important;
+}
+
+.navbar_img {
+    width: 45px;
+    height: 45px;
+}
+
+@media (max-width: 1000px){
+    .my_drop {
+        left: 50%;
+        right: auto;
+        transform: translateX(-0%);
+        background: inherit;
+        text-decoration-color: var(--green)  !important;
+    }
+}
+

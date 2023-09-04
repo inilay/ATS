@@ -1,0 +1,33 @@
+.svg_logo{
+    fill: var(--dark-ligth)
+}
+
+.svg_logo:hover{
+    fill: var(--highlight-color)
+}
+
+.my_svg{
+    fill: var(--fill-color)
+}
+
+.match_svg {
+    display: block;
+    fill: var(--dark-ligth);
+    background: var(--opposite);
+    border: none;
+} 
+
+.match_svg:hover {
+    fill: var(--highlight-color);  
+}
+
+.tools_svg {
+    display: block;
+    fill: red;
+    background: var(--opposite);
+    border: none;
+} 
+
+.tools_svg:hover {
+    fill: var(--dark-ligth-green);  
+}

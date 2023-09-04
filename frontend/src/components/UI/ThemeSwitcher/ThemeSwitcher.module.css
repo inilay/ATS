@@ -1,0 +1,38 @@
+@media (max-width: 1000px){
+    .btn_circle {
+        width: 38px;
+        height: 38px;
+        border-radius: 19px;
+        text-align: center;
+        padding-left: 0;
+        padding-right: 0;
+        font-size: 16px;
+        color: var(--fill-color);
+        border-color: var(--fill-color);
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-right: 1em;
+    }
+  }
+
+
+.btn_circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 19px;
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 16px;
+    color: var(--fill-color);
+    border-color: var(--fill-color);
+    margin-left: 2em;
+    margin-right: 0.5em;
+} 
+
+.btn_circle:hover {
+   
+    color: var(--highlight-color);
+    border-color: var(--highlight-color);
+ 
+}

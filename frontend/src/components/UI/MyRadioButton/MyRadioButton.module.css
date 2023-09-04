@@ -1,0 +1,15 @@
+.myRadioButton {
+    width: 8rem;
+    box-shadow: none !important;
+    text-shadow: none !important; 
+    box-shadow: none !important;
+    text-decoration: none !important;
+}
+
+.myRadioButton:focus {
+
+}
+
+.myRadioButton:hover {
+
+}
