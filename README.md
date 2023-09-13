@@ -9,16 +9,9 @@ System for creating and maintaining tournaments.
 - Web-server: Nginx
 
 ## Deploy
+Change .env.example -> .env or create your own.
 Open your favorite Terminal and run these commands.
 ```sh 
-Change .env.example -> .env or create your own 
+docker-compose build && docker-compose up -d
 ```
-```sh 
- docker-compose build
-```
-```sh
-- docker-compose up -d
-```
-```sh
-- go to localhost:80
-```
+Verify the deployment by navigating to localhost:80 in your preferred browser.
