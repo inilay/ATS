@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:14
+    command: postgres -p 49089
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ps_volume:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    ports:
+      - 49088:49088
+    env_file:
+      - .env
+    volumes:
+      - staticfiles:/backend/staticfiles
+    depends_on:
+      db:
+        condition: service_started
+
+  nginx:
+    build: ./frontend
+    restart: always
+    volumes:
+      - staticfiles:/staticfiles
+    ports:
+      - 80:80
+    depends_on:
+      backend:
+        condition: service_started
+
+volumes:
+    ps_volume:
+    staticfiles:

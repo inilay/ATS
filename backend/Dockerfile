@@ -1,14 +1,24 @@
-FROM python:3
+FROM python:3.11.5
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONNUNBUFFERED 1
 
-WORKDIR /usr/src/automatic_tournament_system
+WORKDIR /backend
 
-COPY ./requirements.txt /usr/src/automatic_tournament_system/requirements.txt
+COPY ./requirements.txt /backend/requirements.txt
 
-RUN  pip install --no-cache-dir -r requirements.txt
+RUN  python -m pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-COPY . /usr/src/automatic_tournament_system
+COPY . /backend/
 
-#CMD ["python", "manage.py", "runserver", "0.0.0.0:9088" ]
+EXPOSE 49088
+
+COPY ./entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["bash", "entrypoint.sh"]
+
+# ENTRYPOINT [ "python", "manage.py", "runserver", "0.0.0.0:49088" ]
+
+# CMD [ "python", "manage.py", "runserver", "0.0.0.0:49088" ]

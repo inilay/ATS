@@ -99,23 +99,29 @@ WSGI_APPLICATION = 'automatic_tournament_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'automatic_tournament_system_db',
-#         'USER': 'admin',
-#         'PASSWORD': 'qe44iaEB6LZtpXb',
-#         'HOST': 'db',
-#         'PORT': 49089,
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'automatic_tournament_system_db',
+        # 'USER': 'admin',
+        # 'PASSWORD': 'qe44iaEB6LZtpXb',
+        # 'HOST': 'db',
+        # 'PORT': 49089,
+        'NAME': f'{os.environ.get("PG_NAME")}',
+        'HOST': f'{os.environ.get("PG_HOST")}',
+        'PORT': f'{os.environ.get("PG_PORT")}',
+        'USER': f'{os.environ.get("PG_USER")}',
+        'PASSWORD': f'{os.environ.get("PG_PASSWORD")}'
+
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

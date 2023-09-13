@@ -6,6 +6,7 @@ export const AuthContext = createContext(null)
 
 export const ThemeContext = createContext(null);
 
+const baseURL = "http://127.0.0.1:49088/api/v1";
 
 export const AuthProvider = ({ children }) => {
     const [authTokens, setAuthTokens] = useState(() =>
@@ -23,7 +24,7 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
   
     const loginUser = async (email, password) => {
-      const response = await fetch("http://127.0.0.1:8000/api/v1/token/", {
+      const response = await fetch(`${baseURL}/token/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -47,7 +48,7 @@ export const AuthProvider = ({ children }) => {
     };
     
     const registerUser = async (username, email, password, password2) => {
-      const response = await fetch("http://127.0.0.1:8000/api/v1/register/", {
+      const response = await fetch(`${baseURL}/register/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
