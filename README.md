@@ -13,7 +13,7 @@ System for creating and maintaining tournaments.
  
  ### Bracket types:
 Single elimination:
-![Single elimination](https://drive.google.com/file/d/1ZmF77ojoGcNbbEnLYJ0UklYIdCdBSs5e/view?usp=sharing)
+![Single elimination](https://github.com/inilay/ATS/assets/110691997/ad853913-56fc-400a-b117-bb140d10b9fd)
 Double elimination:
 Swiss:
 Round robin:
