@@ -13,7 +13,7 @@ System for creating and maintaining tournaments.
  
  ### Bracket types:
 Single elimination:
-![Single elimination]([https://github.com/jon/coolproject/raw/master/image/image.png](https://drive.google.com/file/d/1ZmF77ojoGcNbbEnLYJ0UklYIdCdBSs5e/view?usp=sharing))
+![Single elimination](https://drive.google.com/file/d/1ZmF77ojoGcNbbEnLYJ0UklYIdCdBSs5e/view?usp=sharing)
 Double elimination:
 Swiss:
 Round robin:
