@@ -11,6 +11,8 @@ import EditTournament from "../pages/EditTournament";
 import PasswordReset from "../pages/PasswordReset";
 import PasswordResetConfirm from "../pages/PasswordResetConfirm";
 
+import PaginationPage from "../pages/PaginationPage";
+
 
 export const privateRoutes = [
     {path: '/create_tournament', element: <CreateTournament/>, exact: true},
@@ -21,11 +23,13 @@ export const privateRoutes = [
     {path: '/bracket/:id', element: <Bracket/>, exact: true},
     {path: '/create_bracket', element: <CreateBracket/>, exact: true},
     {path: '/profile/:slug', element: <Profile/>, exact: true},
+    {path: '/tournaments_pagination', element: <PaginationPage/>, exact: true},
 ]
 
 export const publicRoutes = [
     {path: '/', element: <Home/>, exact: true},
     {path: '/tournaments', element: <Tournaments/>, exact: true},
+    {path: '/tournaments_pagination', element: <PaginationPage/>, exact: true},
     {path: '/tournament/:slug', element: <Tournament/>, exact: true},
     {path: '/bracket/:id', element: <Bracket/>, exact: true},
     {path: '/create_bracket', element: <CreateBracket/>, exact: true},

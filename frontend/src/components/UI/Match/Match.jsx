@@ -10,7 +10,7 @@ import classes from "./Match.module.css";
 import MyModal from "../ MyModal/MyModal";
 import Modal from "react-bootstrap/Modal";
 import MyButton from "../MyButton/MyButton";
-import useAxios from "../../../utils/useAxios";
+import useAxios from "../../../API/useAxios";
 import { AuthContext } from "../../../context";
 import MyRadioButton from "../MyRadioButton/MyRadioButton";
 import moment from "moment";

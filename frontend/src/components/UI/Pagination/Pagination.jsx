@@ -1,6 +1,8 @@
 
 import React from 'react';
 import {getPagesArray} from "../../../utils/pages";
+import classes from "./Pagination.module.css";
+
 
 const Pagination = ({totalPages, page, changePage}) => {
     let pagesArray = getPagesArray(totalPages);
@@ -10,7 +12,7 @@ const Pagination = ({totalPages, page, changePage}) => {
                 <span
                     onClick={() => changePage(p)}
                     key={p}
-                    className={page === p ? 'page page__current' : 'page'}
+                    className={page === p ? `${classes.page} ${classes.page__current}`: `${classes.page}`}
                 >
                         {p}
                     </span>

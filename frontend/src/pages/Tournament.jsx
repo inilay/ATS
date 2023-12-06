@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useFetching } from "../hooks/useFetching";
 import Loader from "../components/UI/Loader/Loader";
 import PostService from "../API/PostService";
-import useAxios from "../utils/useAxios";
+import useAxios from "../API/useAxios";
 import { AuthContext } from "../context";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../components/UI/MyButton/MyButton";

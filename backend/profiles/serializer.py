@@ -43,7 +43,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         user.set_password(validated_data['password'])
         user.save()
-        send_email_for_verify(user)
+        # send_email_for_verify(user)
         return user
 
 

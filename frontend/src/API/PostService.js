@@ -1,16 +1,17 @@
-import axios from 'axios'
-
+import useAxios from "./useAxios";
+import axios from "axios";
 const baseURL = "http://127.0.0.1:49088/api/v1";
+
 
 
 export default class PostService {
 
-    static async getAllTournaments(limit=9, page=1) {
+    static async getAllTournaments(limit=12, page=1) {
       
         const response = await axios.get(`${baseURL}/tournaments/`, 
         {params: {
             limit: limit,
-            offset: page*limit
+            offset: (page-1)*limit
         }})
         return  response
 

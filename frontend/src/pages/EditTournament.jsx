@@ -7,7 +7,7 @@ import Card from "react-bootstrap/Card";
 import PostService from "../API/PostService";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context";
-import useAxios from "../utils/useAxios";
+import useAxios from "../API/useAxios";
 import UploadButton from "../components/UI/UploadButton/UploadButton";
 import MyFormGroupInput from "../components/UI/MyFormGroupInput/MyFormGroupInput";
 import { useForm } from "react-hook-form";
