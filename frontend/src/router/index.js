@@ -24,6 +24,7 @@ export const privateRoutes = [
     {path: '/create_bracket', element: <CreateBracket/>, exact: true},
     {path: '/profile/:slug', element: <Profile/>, exact: true},
     {path: '/tournaments_pagination', element: <PaginationPage/>, exact: true},
+    {path: '/register', element: <Register/>, exact: true}, 
 ]
 
 export const publicRoutes = [

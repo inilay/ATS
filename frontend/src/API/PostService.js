@@ -6,12 +6,14 @@ const baseURL = "http://127.0.0.1:49088/api/v1";
 
 export default class PostService {
 
-    static async getAllTournaments(limit=12, page=1) {
+    static async getAllTournaments(limit=12, page=1, title="", game="") {
       
         const response = await axios.get(`${baseURL}/tournaments/`, 
         {params: {
             limit: limit,
-            offset: (page-1)*limit
+            offset: (page)*limit,
+            title: title,
+            game: game
         }})
         return  response
 

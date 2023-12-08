@@ -1,9 +1,13 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import MyButton from "../components/UI/MyButton/MyButton";
 import MyFormGroupInput from "../components/UI/MyFormGroupInput/MyFormGroupInput";
-import { useForm } from "react-hook-form";
+import MyModal from "../components/UI/MyModal/MyModal";
+import Modal from "react-bootstrap/Modal";
+
 
 const Register = () => {
   const [state, setState] = useState({
@@ -13,10 +17,18 @@ const Register = () => {
     password2: "",
   });
   const { registerUser } = useContext(AuthContext);
-
+  const [modalShow, setModalShow] = useState(false);
+  // const [modalEditShow, setmodalEditShow] = useState(false);
   const handleRegisterSubmit = async () => {
     registerUser(state.username, state.email, state.password, state.password2);
+    setModalShow(true);
+    
   };
+
+  const closeModal = () => {
+    setModalShow(false);
+    navigate("/");
+  }
 
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
@@ -30,8 +42,20 @@ const Register = () => {
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 
+  const navigate = useNavigate();
+
   return (
     <section>
+      <MyModal show={modalShow} onHide={() => closeModal()}>
+        <Modal.Header closeButton className="center-block">
+          <h2>Confirm registration</h2>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="center-block">
+            <p>We have sent you an email to confirm your registration.</p>
+          </div>
+        </Modal.Body>
+      </MyModal>
       <div className="log_div position-absolute top-50 start-50 translate-middle">
         <Form onSubmit={handleSubmit(handleRegisterSubmit)}>
           <MyFormGroupInput

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import classes from "./MyRoundRobinMatch.module.css";
-import MyModal from "../ MyModal/MyModal";
+import MyModal from "../MyModal/MyModal";
 import Modal from "react-bootstrap/Modal";
 import MyButton from "../MyButton/MyButton";
 import useAxios from "../../../API/useAxios";

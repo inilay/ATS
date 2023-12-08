@@ -1,5 +1,5 @@
 import React,   { useState, useCallback, useRef } from "react";
-import MyModal from "../ MyModal/MyModal";
+import MyModal from "../MyModal/MyModal";
 import MyButton from "../MyButton/MyButton";
 import Modal from 'react-bootstrap/Modal';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"; 

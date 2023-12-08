@@ -35,8 +35,8 @@ class TournamentsAPIList(APIView):
         default_limit = 12
         
     class FilterSerializer(serializers.Serializer):
-        id = serializers.CharField(required=False)
         title = serializers.CharField(required=False)
+        game = serializers.CharField(required=False)
 
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
@@ -44,10 +44,13 @@ class TournamentsAPIList(APIView):
             fields = "__all__"
     
     def get(self, request):
+        print(request.GET)
         # Make sure the filters are valid, if passed
         filters_serializer = self.FilterSerializer(data=request.query_params)
+        print(request.query_params)
         filters_serializer.is_valid(raise_exception=True)
-
+        print(filters_serializer.data)
+        # filters = {'title': 'o', 'game': 'lol'}
         tournaments = tournaments_list(filters=filters_serializer.validated_data)
 
         # tournaments = Tournament.objects.all().order_by('id')

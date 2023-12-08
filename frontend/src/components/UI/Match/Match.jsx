@@ -7,7 +7,7 @@ import {
   SingleLineSeed,
 } from "../Seed/seed";
 import classes from "./Match.module.css";
-import MyModal from "../ MyModal/MyModal";
+import MyModal from "../MyModal/MyModal";
 import Modal from "react-bootstrap/Modal";
 import MyButton from "../MyButton/MyButton";
 import useAxios from "../../../API/useAxios";

@@ -1,0 +1,21 @@
+.myDL {
+    color: var(--highlight-color);
+    border: 1px solid var(--highlight-color);
+    text-decoration: none;
+    outline: none;
+}
+
+.myInput {
+    background: var(--opposite);
+    color: var(--dark-font-color);
+    border-color: var(--dark-green);
+    outline: var(--green);
+}
+
+
+.myInput:focus {
+    background: var(--opposite);
+    color: var(--dark-font-color);
+    border-color: var(--green);
+    outline:var(--green);
+}
