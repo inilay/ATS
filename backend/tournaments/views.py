@@ -33,6 +33,7 @@ from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 class TournamentsAPIList(APIView):
     class Pagination(LimitOffsetPagination):
         default_limit = 12
+        default_offset = 0
         
     class FilterSerializer(serializers.Serializer):
         title = serializers.CharField(required=False)
@@ -44,17 +45,17 @@ class TournamentsAPIList(APIView):
             fields = "__all__"
     
     def get(self, request):
-        print(request.GET)
+
         # Make sure the filters are valid, if passed
         filters_serializer = self.FilterSerializer(data=request.query_params)
-        print(request.query_params)
         filters_serializer.is_valid(raise_exception=True)
         print(filters_serializer.data)
-        # filters = {'title': 'o', 'game': 'lol'}
+        # if filters_serializer.data:
+        #     print(Tournament.objects.filter(title__icontains=filters_serializer.data['title']))
+            
         tournaments = tournaments_list(filters=filters_serializer.validated_data)
 
-        # tournaments = Tournament.objects.all().order_by('id')
-
+        # print(tournaments)
         return get_paginated_response(
             pagination_class=self.Pagination,
             serializer_class=self.OutputSerializer,

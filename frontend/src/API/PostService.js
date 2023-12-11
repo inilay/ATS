@@ -11,7 +11,7 @@ export default class PostService {
         const response = await axios.get(`${baseURL}/tournaments/`, 
         {params: {
             limit: limit,
-            offset: (page)*limit,
+            offset: (page-1)*limit,
             title: title,
             game: game
         }})

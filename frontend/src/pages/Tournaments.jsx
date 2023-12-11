@@ -7,33 +7,26 @@ import Loader from "../components/UI/Loader/Loader";
 import TournamentList from "../components/TournamentList";
 import TournamentFilter from "../components/TournamentFilter";
 import { useObserver } from "../hooks/useObserver";
-import { useTournaments } from "../hooks/useTournaments";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "../styles/App.css";
 
 function Tournaments() {
   const [tournaments, setTournaments] = useState([]);
-  const [filter, setFilter] = useState({ game: "", title: "" });
+  const [filter, setFilter] = useState({ game: null, title: null });
   const [totalPages, setTotalPages] = useState(0);
   const [limit, setLimit] = useState(12);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const lastElement = useRef();
 
   const [searchParams, setSearchParams] = useSearchParams();
-
-  // const sortedAndSearchedTournaments = useTournaments(
-  //   tournaments,
-  //   filter.sort,
-  //   filter.title
-  // );
-
-  const [fetchPosts, isPostLoadind, postError] = useFetching(async () => {
+  
+  const [fetchPosts, isPostLoadind, postError] = useFetching(async (limit, page, title="", game="") => {
     // searchParams.get('game')
-    const response = await PostService.getAllTournaments(limit, page, filter.title, filter.game);
-    setTournaments([ ...response.data.results]);
-    console.log(response.data.results)
+    const response = await PostService.getAllTournaments(limit, page, title, game);
+    setTournaments([...tournaments, ...response.data.results]);
     setTotalPages(getPageCount(response.data.count, limit));
+    // console.log(tournaments)
 
   });
 
@@ -41,27 +34,39 @@ function Tournaments() {
     setPage(page + 1);
   });
 
-  // useEffect(() => {
-  //   setFilter({"title": searchParams.get('title'), "game": searchParams.get('game')})
-  // }, []);
-
   useEffect(() => {
-
     const timeOutId = setTimeout(() => {
-      if (filter.title !== "") {
+      if (filter.title !== null || filter.game !== null) {
         setSearchParams({"title": filter.title, "game": filter.game});
-        
-        fetchPosts();
+        fetchPosts(limit, page, filter.title, filter.game);
       }
-    }, 700);
+    }, 600);
 
-    return () => clearTimeout(timeOutId);
-  }, [filter]);
+    return () => {
+      setTournaments([]);
+      clearTimeout(timeOutId);
+      console.log('z e,hfk')
+      console.log(tournaments)
+      
+    };
+
+  }, [filter.title, filter.game]);
 
   useEffect(() => {
-    fetchPosts();
-  }, [page]);
+    console.log('page')
+    if (searchParams !== 0) {
+      fetchPosts(limit, page, 
+        searchParams.get('title')==='null' ? "" : searchParams.get('title'),
+        searchParams.get('game')==='null' ? "" : searchParams.get('game'))
+    }
+    else {
+      fetchPosts(limit, page)
+    }
+    
+  }, [page, limit]);
 
+
+  // console.log(tournaments)
   return (
     <section className="container tournaments_section pb-5">
       {postError && <h1>Error ${postError}</h1>}

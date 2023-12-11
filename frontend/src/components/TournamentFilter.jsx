@@ -27,7 +27,7 @@ const TournamentFilter = ({ filter, setFilter }) => {
           <Col>
             <input
               value={filter.title}
-              onChange={(e) => setFilter({ ...filter, title: e.target.value })}
+              onChange={(e) => setFilter({game: filter.game, title: e.target.value })}
               placeholder="Search for tournaments"
               className="search-input my-2 shadow-none"
             />
@@ -40,7 +40,7 @@ const TournamentFilter = ({ filter, setFilter }) => {
             </Dropdown.Toggle>
             <Dropdown.Menu className="">
               <li>
-                <MyDataList text={text} setText={setText}/>
+                <MyDataList filter={filter} setFilter={setFilter}/>
               </li>
             </Dropdown.Menu>
           </Dropdown>

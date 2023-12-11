@@ -14,23 +14,23 @@ const data = [
     { value: '8', label: 'YouTube' },
   ];
   
-  const MyDataList = ({text, setText}) => {
+  const MyDataList = ({filter, setFilter}) => {
     
     
     
     const onChange = (event) => {
-      setText(event.target.value);
+      setFilter({game: event.target.value, title: filter.title} );
       console.log(event.target.value)
     }
     
     const disabled = useMemo(() => {
-      return !data.some( d => d.label === text );
-    }, [text]);
+      return !data.some( d => d.label === filter.game );
+    }, [filter.game]);
     
     return (
       <div className="d-flex">
         <div>
-          <input className="search-input shadow-none" type="search" list="list" autoComplete="on"  value={text} onChange={onChange} />
+          <input className="search-input shadow-none" type="search" list="list" autoComplete="on"  value={filter.game} onChange={onChange} />
           <datalist className={classes.myDL} id="list">
             { data.map( d => <option key={d.value} value={d.label} /> )}
           </datalist>
