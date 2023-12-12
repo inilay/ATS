@@ -22,12 +22,15 @@ function Tournaments() {
   const [searchParams, setSearchParams] = useSearchParams();
   
   const [fetchPosts, isPostLoadind, postError] = useFetching(async (limit, page, title="", game="") => {
-    // searchParams.get('game')
     const response = await PostService.getAllTournaments(limit, page, title, game);
-    setTournaments([...tournaments, ...response.data.results]);
+    if (page === 1) {
+      setTournaments([...response.data.results]);
+    }
+    else {
+      setTournaments([...tournaments, ...response.data.results]);
+     
+    }
     setTotalPages(getPageCount(response.data.count, limit));
-    // console.log(tournaments)
-
   });
 
   useObserver(lastElement, page < totalPages, isPostLoadind, () => {
@@ -43,11 +46,7 @@ function Tournaments() {
     }, 600);
 
     return () => {
-      setTournaments([]);
       clearTimeout(timeOutId);
-      console.log('z e,hfk')
-      console.log(tournaments)
-      
     };
 
   }, [filter.title, filter.game]);

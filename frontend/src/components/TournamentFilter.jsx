@@ -5,20 +5,21 @@ import Col from "react-bootstrap/Col";
 import Dropdown from 'react-bootstrap/Dropdown';
 import MyDataList from "./UI/MyDataList/MyDataList";
 import MyButton from "./UI/MyButton/MyButton";
+import PostService from "../API/PostService";
+
 
 const TournamentFilter = ({ filter, setFilter }) => {
-  const [text, setText] = useState('Game');
+  const [gamesFilter, setGamesFilter] = useState([]);
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    console.log(e.target.value)
-    // setSearchInput(e.target.value);
-  };
-
-  // const [query, setQuery] = useState("");
-  // const [displayMessage, setDisplayMessage] = useState("");
-
-
+  useEffect(() => {
+    const response = PostService.getAllGames().then(function (response) {
+      if (response.status == 200) {
+        setGamesFilter(response.data);
+        console.log(response.data)
+      }
+    });
+    
+  }, []);
 
   return (
     <div className="row ">
@@ -40,7 +41,7 @@ const TournamentFilter = ({ filter, setFilter }) => {
             </Dropdown.Toggle>
             <Dropdown.Menu className="">
               <li>
-                <MyDataList filter={filter} setFilter={setFilter}/>
+                <MyDataList filter={filter} setFilter={setFilter} gamesFilter={gamesFilter}/>
               </li>
             </Dropdown.Menu>
           </Dropdown>

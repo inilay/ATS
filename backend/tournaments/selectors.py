@@ -11,5 +11,9 @@ def get_brackets_for_tournamnet(tournament:Tournament, **kwargs) -> QuerySet[Bra
 def tournaments_list(*, filters=None) -> QuerySet[Tournament]:
     filter = filters or {}
     query_set = Tournament.objects.all()
-
     return TournamentFilter(filter, query_set).qs
+
+def game_list(*, filters=None) -> list:
+    game_list = Tournament.objects.distinct().values_list('game', flat=True)
+    print(game_list)
+    return game_list

@@ -14,9 +14,9 @@ const data = [
     { value: '8', label: 'YouTube' },
   ];
   
-  const MyDataList = ({filter, setFilter}) => {
+  const MyDataList = ({filter, setFilter, gamesFilter}) => {
     
-    
+    console.log(gamesFilter)
     
     const onChange = (event) => {
       setFilter({game: event.target.value, title: filter.title} );
@@ -32,7 +32,7 @@ const data = [
         <div>
           <input className="search-input shadow-none" type="search" list="list" autoComplete="on"  value={filter.game} onChange={onChange} />
           <datalist className={classes.myDL} id="list">
-            { data.map( d => <option key={d.value} value={d.label} /> )}
+            {gamesFilter.map(game => <option key={game} value={game} />)}
           </datalist>
         </div>
         {/* <div>

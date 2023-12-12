@@ -3,7 +3,6 @@ import axios from "axios";
 const baseURL = "http://127.0.0.1:49088/api/v1";
 
 
-
 export default class PostService {
 
     static async getAllTournaments(limit=12, page=1, title="", game="") {
@@ -19,13 +18,20 @@ export default class PostService {
 
     }
 
+    static async getAllGames() {
+      
+        const response = await axios.get(`${baseURL}/games/`)
+        return  response
+
+    }
+
+
     static async getTournamentBySlug(slug) {
 
         const response = await axios.get(`${baseURL}/tournament/${slug}/`)
         return  response
 
     }
-
 
     static async createTournament(responseBody) {
 

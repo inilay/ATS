@@ -9,7 +9,7 @@ from rest_framework import status
 from .models import Tournament, Bracket
 from .utils import inline_serializer, get_object
 from .serializer import TournamentSerializer, BracketSerializer, AllBracketSerealizer
-from .selectors import tournaments_list, get_brackets_for_tournamnet
+from .selectors import tournaments_list, get_brackets_for_tournamnet, game_list
 from .services import create_tournament, create_bracket, update_bracket, update_tournament
 from .permissions import IsTournamenOwnerOrReadOnly, IsBracketOwnerOrReadOnly, AuthMixin
 from .pagination import get_paginated_response, LimitOffsetPagination
@@ -49,13 +49,8 @@ class TournamentsAPIList(APIView):
         # Make sure the filters are valid, if passed
         filters_serializer = self.FilterSerializer(data=request.query_params)
         filters_serializer.is_valid(raise_exception=True)
-        print(filters_serializer.data)
-        # if filters_serializer.data:
-        #     print(Tournament.objects.filter(title__icontains=filters_serializer.data['title']))
-            
         tournaments = tournaments_list(filters=filters_serializer.validated_data)
 
-        # print(tournaments)
         return get_paginated_response(
             pagination_class=self.Pagination,
             serializer_class=self.OutputSerializer,
@@ -73,6 +68,12 @@ class TournamentsAPIList(APIView):
 #     queryset = Tournament.objects.all()
 #     serializer_class = OutputSerializer
 #     lookup_field = 'slug'
+
+class GamesApiView(APIView):
+    
+    def get(self, requet):
+        games = game_list()
+        return Response(games)
 
 class TournamentAPIView(APIView): 
     
