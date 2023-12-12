@@ -8,6 +8,8 @@ import SEIcon from "../assets/svg/SEIcon";
 import RRIcon from "../assets/svg/RRIcon";
 import DEIcon from "../assets/svg/DEIcon";
 import SWIcon from "../assets/svg/SWIcon";
+import { Link } from 'react-router-dom';
+
 
 const Home = () => {
   return (
@@ -18,12 +20,12 @@ const Home = () => {
           <div className="col-lg-8 col-md-12">
             <div className="row">
               <div className="col position-absolute top-50 start-0 translate-middle-y">
-                <a href="/create_tournament" className="m-5 main-link">
+                <Link to="/create_tournament" className="m-5 main-link">
                   <big>Create Tournament</big>
-                </a>
-                <a href="/create_bracket" className="main-link">
+                </Link>
+                <Link to="/create_bracket" className="main-link">
                   <big>Try Bracket Generator</big>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
