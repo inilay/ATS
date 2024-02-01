@@ -88,8 +88,8 @@ const Tournament = () => {
                     <div className="tournament_img">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="24rem"
-                        height="24rem"
+                        width="512px"
+                        height="512px"
                         version="1"
                         className="my_svg"
                         viewBox="30 20 300 300"
