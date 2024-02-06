@@ -10,7 +10,7 @@ services:
     volumes:
       - ps_volume:/var/lib/postgresql/data
 
-  backend:
+  backend:  
     build: ./backend
     ports:
       - 49088:49088
