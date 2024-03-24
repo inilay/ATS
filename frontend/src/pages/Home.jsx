@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../context";
 import MyButton from "../components/UI/MyButton/MyButton";
 import "../styles/App.css";
 import MLStageIcon from "../assets/svg/MLStageIcon";
@@ -12,6 +13,8 @@ import { Link } from 'react-router-dom';
 
 
 const Home = () => {
+  const { user, logoutUser } = useContext(AuthContext);
+
   return (
     <section className="">
       <div className="container-fluid home-div">
@@ -20,11 +23,11 @@ const Home = () => {
           <div className="col-lg-8 col-md-12">
             <div className="row">
               <div className="col position-absolute top-50 start-0 translate-middle-y">
-                <Link to="/create_tournament" className="m-5 main-link">
-                  <big>Create Tournament</big>
+                <Link to="/create_tournament" className="main-link">
+                  <p>Create Tournament</p>
                 </Link>
                 <Link to="/create_bracket" className="main-link">
-                  <big>Try Bracket Generator</big>
+                  <p>Try Bracket Generator</p>
                 </Link>
               </div>
             </div>
@@ -108,7 +111,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="container text-center my-5">
+      {user && <div className="container text-center my-5">
         <h2>Providing the right tools for the gaming community</h2>
         <p>
           We aim to keep things simple, but there's plenty more to explore in
@@ -119,7 +122,7 @@ const Home = () => {
             <h5>Sign up</h5>
           </a>
         </MyButton>
-      </div>
+      </div>}
     </section>
   );
 };

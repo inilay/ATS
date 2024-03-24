@@ -5,6 +5,7 @@ import { Container, Nav, Navbar, Dropdown } from "react-bootstrap";
 import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher";
 import SettingIcon from "../../../assets/svg/SettingIcon";
 import HomeIcon from "../../../assets/svg/HomeIcon";
+import MobileMenuIcon from "../../../assets/svg/MobileMenuIcon";
 import { Link } from 'react-router-dom';
 
 
@@ -16,8 +17,8 @@ const MyNavbar = () => {
         <Navbar.Brand as={Link} to="/">
           <HomeIcon />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll">
-          <span className="navbar-toggler-bar navbar-kebab">~</span>
+        <Navbar.Toggle className={`${classes.navbar_toggler}`} aria-controls="navbarScroll">
+          <MobileMenuIcon />
         </Navbar.Toggle>
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto  my-lg-0" navbarScroll>
@@ -28,7 +29,6 @@ const MyNavbar = () => {
               <h5>Create Tournament</h5>
             </Link>
           </Nav>
-
           <ThemeSwitcher></ThemeSwitcher>
           {user ? (
             <>
@@ -41,11 +41,11 @@ const MyNavbar = () => {
                     <SettingIcon />
                   </Dropdown.Toggle>
                   <Dropdown.Menu className={classes.my_drop}>
-                      <Dropdown.Item 
-                        className={classes.nav_item}
-                        as={Link}
-                        to={`/profile/${user.username}`}
-                      >
+                    <Dropdown.Item
+                      className={classes.nav_item}
+                      as={Link}
+                      to={`/profile/${user.username}`}
+                    >
                       Profile
                     </Dropdown.Item>
                     <Dropdown.Item
@@ -62,12 +62,15 @@ const MyNavbar = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className={classes.nav_link}>
-                <h6>Log in</h6>
-              </Link>
-              <Link to="/register" className={classes.nav_link}>
-                <h6>Sign up</h6>
-              </Link>
+              <Nav className="my-lg-0" navbarScroll>
+                <Link to="/login" className={classes.nav_link}>
+                  <h5>Log in</h5>
+                </Link>
+                <Link to="/register" className={classes.nav_link}>
+                  <h5>Sign up</h5>
+                </Link>
+              </Nav>
+
             </>
           )}
         </Navbar.Collapse>

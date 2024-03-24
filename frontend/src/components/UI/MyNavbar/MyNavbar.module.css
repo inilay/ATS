@@ -35,6 +35,15 @@
     border: none;
     background:  inherit !important;
     color: var(--opposite) !important;
+
+    @media (max-width: 992px){
+        margin-top: 0.25em;
+    }
+}
+
+.navbar_toggler {
+    box-shadow: none !important;
+    border: none !important;
 }
 
 .navbar_img {
@@ -42,13 +51,14 @@
     height: 45px;
 }
 
-@media (max-width: 1000px){
+@media (max-width: 992px){
     .my_drop {
         left: 50%;
         right: auto;
         transform: translateX(-0%);
         background: inherit;
         text-decoration-color: var(--green)  !important;
+
     }
 }
 
