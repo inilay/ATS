@@ -131,7 +131,15 @@ a:hover {
 
 .form_button_div {
     margin-left: 15%;
-    width: 15rem;
+
+    @media (max-width: 992px){
+        margin-left: 10%;
+    }
+
+    @media (max-width: 576px){
+        margin-left: 5%;
+
+    }
 }
 
 .tournament_card {
@@ -157,7 +165,7 @@ a:hover {
 
 
 .log_div {
-    width: 25%;
+
 }
 
 .my_log_input:focus {

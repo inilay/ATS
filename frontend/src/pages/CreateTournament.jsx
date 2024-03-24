@@ -16,7 +16,7 @@ const CreateTournament = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [responseBody, setResponseBody] = useState({
-   
+
     type: "SE",
     points_loss: "0",
     points_draw: "0",
@@ -95,7 +95,7 @@ const CreateTournament = () => {
         navigate(`/tournament/${responseBody.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')}`)
       }
     });
-    
+
   };
 
   return (
@@ -447,7 +447,7 @@ const CreateTournament = () => {
         </div>
         <div className="form_button_div pb-4">
           <MyButton additionalCl={"btn-md"} type="submit">
-            Create
+            Create Tournament
           </MyButton>
         </div>
       </Form>
