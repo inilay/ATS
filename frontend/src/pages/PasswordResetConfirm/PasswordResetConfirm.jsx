@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Form from "react-bootstrap/Form";
-import PostService from "../API/PostService";
+import PostService from "../../API/PostService";
 import { useForm } from "react-hook-form";
-import MyButton from "../components/UI/MyButton/MyButton";
+import MyButton from "../../components/UI/MyButton/MyButton";
 
 const PasswordResetConfirm = () => {
   const params = useParams();

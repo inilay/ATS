@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
-import "../styles/App.css";
-import PostService from "../API/PostService";
+
+import PostService from "../../API/PostService";
 import { useForm } from "react-hook-form";
-import MyFormGroupInput from "../components/UI/MyFormGroupInput/MyFormGroupInput";
-import MyButton from "../components/UI/MyButton/MyButton";
-import MyCard from "../components/UI/MyCard/MyCard";
+import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
+import MyButton from "../../components/UI/MyButton/MyButton";
+import MyCard from "../../components/UI/MyCard/MyCard";
 
 const CreateBracket = () => {
   const navigate = useNavigate();

@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../context";
+import { AuthContext } from "../../context";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
-import MyFormGroupInput from "../components/UI/MyFormGroupInput/MyFormGroupInput";
+import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
 import { useForm } from "react-hook-form";
-import MyButton from "../components/UI/MyButton/MyButton";
+import MyButton from "../../components/UI/MyButton/MyButton";
 
 const Login = () => {
   const { loginUser } = useContext(AuthContext);

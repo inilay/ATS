@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
-import PostService from "../API/PostService";
+import PostService from "../../API/PostService";
 import { useForm } from "react-hook-form";
-import MyFormGroupInput from "../components/UI/MyFormGroupInput/MyFormGroupInput";
-import MyButton from "../components/UI/MyButton/MyButton";
+import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
+import MyButton from "../../components/UI/MyButton/MyButton";
 
 const PasswordReset = () => {
   const handleResetSubmit = () => {

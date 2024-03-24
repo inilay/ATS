@@ -1,18 +1,18 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { useFetching } from "../hooks/useFetching";
-import Loader from "../components/UI/Loader/Loader";
-import PostService from "../API/PostService";
-import useAxios from "../API/useAxios";
-import { AuthContext } from "../context";
+import { useFetching } from "../../hooks/useFetching";
+import Loader from "../../components/UI/Loader/Loader";
+import PostService from "../../API/PostService";
+import useAxios from "../../API/useAxios";
+import { AuthContext } from "../../context";
 import { useNavigate } from "react-router-dom";
-import MyButton from "../components/UI/MyButton/MyButton";
+import MyButton from "../../components/UI/MyButton/MyButton";
 import Accordion from "react-bootstrap/Accordion";
 import moment from "moment";
-import RoundRobin from "../components/RoundRobin";
-import Swiss from "../components/Swiss";
-import SingleEl from "../components/SingleEl";
-import DoubleEl from "../components/DoubleEl";
+import RoundRobin from "../../components/RoundRobin";
+import Swiss from "../../components/Swiss";
+import SingleEl from "../../components/SingleEl";
+import DoubleEl from "../../components/DoubleEl";
 
 const Tournament = () => {
   const params = useParams();
@@ -58,7 +58,7 @@ const Tournament = () => {
       }
     }
     setBracket(
-      
+
       response.data[response.data.length - 1].bracket
     );
     setTypes(response.data[response.data.length - 1].type);
@@ -70,7 +70,7 @@ const Tournament = () => {
     fetchBrackets(params.slug);
   }, []);
 
-  useEffect(() => {}, [bracket]);
+  useEffect(() => { }, [bracket]);
 
   return (
     <section>
@@ -311,22 +311,22 @@ const Tournament = () => {
                 </div>
               </div>
               {/* {user !== null && tournament.owner == user.username ? ( */}
-                <>
-                  <MyButton
-                    additionalCl={"btn-md btn my-3 me-3"}
-                    type="submit"
-                    onClick={onEdit}
-                  >
-                    Edit Tournament
-                  </MyButton>
-                  <MyButton
-                    additionalCl={"btn-md btn my-3 me-3"}
-                    type="submit"
-                    onClick={onDelete}
-                  >
-                    Delete
-                  </MyButton>
-                </>
+              <>
+                <MyButton
+                  additionalCl={"btn-md btn my-3 me-3"}
+                  type="submit"
+                  onClick={onEdit}
+                >
+                  Edit Tournament
+                </MyButton>
+                <MyButton
+                  additionalCl={"btn-md btn my-3 me-3"}
+                  type="submit"
+                  onClick={onDelete}
+                >
+                  Delete
+                </MyButton>
+              </>
               {/* // ) : (
               //   <></>
               // )} */}

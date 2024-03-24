@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import PostService from "../API/PostService";
+import PostService from "../../API/PostService";
 import { useParams } from "react-router-dom";
-import { useFetching } from "../hooks/useFetching";
-import { useTournaments } from "../hooks/useTournaments";
-import TournamentList from "../components/TournamentList";
+import { useFetching } from "../../hooks/useFetching";
+import { useTournaments } from "../../hooks/useTournaments";
+import TournamentList from "../../components/TournamentList";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
-import "../styles/App.css";
-import useAxios from "../API/useAxios";
-import UploadButton from "../components/UI/UploadButton/UploadButton";
-import MyFormGroupInput from "../components/UI/MyFormGroupInput/MyFormGroupInput";
+import "../../styles/App.css";
+import useAxios from "../../API/useAxios";
+import UploadButton from "../../components/UI/UploadButton/UploadButton";
+import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
 import { useForm } from "react-hook-form";
-import MyButton from "../components/UI/MyButton/MyButton";
+import MyButton from "../../components/UI/MyButton/MyButton";
 import moment from "moment";
-import MyCard from "../components/UI/MyCard/MyCard";
+import MyCard from "../../components/UI/MyCard/MyCard";
 
 const Profile = () => {
   const api = useAxios();

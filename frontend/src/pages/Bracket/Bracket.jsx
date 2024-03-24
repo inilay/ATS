@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useFetching } from "../hooks/useFetching";
-import Loader from "../components/UI/Loader/Loader";
-import PostService from "../API/PostService";
-import RoundRobin from "../components/RoundRobin";
-import SingleEl from "../components/SingleEl";
-import DoubleEl from "../components/DoubleEl";
-import Swiss from "../components/Swiss";
+import { useFetching } from "../../hooks/useFetching";
+import Loader from "../../components/UI/Loader/Loader";
+import PostService from "../../API/PostService";
+import RoundRobin from "../../components/RoundRobin";
+import SingleEl from "../../components/SingleEl";
+import DoubleEl from "../../components/DoubleEl";
+import Swiss from "../../components/Swiss";
 
 const Bracket = () => {
   const params = useParams();

@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../context";
-import MyButton from "../components/UI/MyButton/MyButton";
-import "../styles/App.css";
-import MLStageIcon from "../assets/svg/MLStageIcon";
-import ExpImageIcon from "../assets/svg/ExpImageIcon";
-import TimeManagmentIcon from "../assets/svg/TimeManagmentIcon";
-import SEIcon from "../assets/svg/SEIcon";
-import RRIcon from "../assets/svg/RRIcon";
-import DEIcon from "../assets/svg/DEIcon";
-import SWIcon from "../assets/svg/SWIcon";
+import { AuthContext } from "../../context";
+import MyButton from "../../components/UI/MyButton/MyButton";
+import "../../styles/App.css";
+import MLStageIcon from "../../assets/svg/MLStageIcon";
+import ExpImageIcon from "../../assets/svg/ExpImageIcon";
+import TimeManagmentIcon from "../../assets/svg/TimeManagmentIcon";
+import SEIcon from "../../assets/svg/SEIcon";
+import RRIcon from "../../assets/svg/RRIcon";
+import DEIcon from "../../assets/svg/DEIcon";
+import SWIcon from "../../assets/svg/SWIcon";
 import { Link } from 'react-router-dom';
 
 

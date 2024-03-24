@@ -1,18 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useFetching } from "../hooks/useFetching";
-import "../styles/App.css";
+import { useFetching } from "../../hooks/useFetching";
+import "../../styles/App.css";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
-import PostService from "../API/PostService";
+import PostService from "../../API/PostService";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context";
-import useAxios from "../API/useAxios";
-import UploadButton from "../components/UI/UploadButton/UploadButton";
-import MyFormGroupInput from "../components/UI/MyFormGroupInput/MyFormGroupInput";
+import { AuthContext } from "../../context";
+import useAxios from "../../API/useAxios";
+import UploadButton from "../../components/UI/UploadButton/UploadButton";
+import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
 import { useForm } from "react-hook-form";
-import MyButton from "../components/UI/MyButton/MyButton";
-import MyCard from "../components/UI/MyCard/MyCard";
+import MyButton from "../../components/UI/MyButton/MyButton";
+import MyCard from "../../components/UI/MyCard/MyCard";
 
 const EditTournament = () => {
   const api = useAxios();
@@ -69,7 +69,7 @@ const EditTournament = () => {
         navigate(`/tournament/${response.data.slug}`)
       }
     });
-    
+
   };
 
   const {

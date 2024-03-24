@@ -1,15 +1,15 @@
 import React, { useState, useContext } from "react";
-import "../styles/App.css";
+import "../../styles/App.css";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context";
-import useAxios from "../API/useAxios";
-import UploadButton from "../components/UI/UploadButton/UploadButton";
+import { AuthContext } from "../../context";
+import useAxios from "../../API/useAxios";
+import UploadButton from "../../components/UI/UploadButton/UploadButton";
 import { useForm } from "react-hook-form";
-import MyFormGroupInput from "../components/UI/MyFormGroupInput/MyFormGroupInput";
-import MyButton from "../components/UI/MyButton/MyButton";
-import MyCard from "../components/UI/MyCard/MyCard";
+import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
+import MyButton from "../../components/UI/MyButton/MyButton";
+import MyCard from "../../components/UI/MyCard/MyCard";
 
 const CreateTournament = () => {
   const api = useAxios();
