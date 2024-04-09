@@ -111,7 +111,7 @@ const Home = () => {
         </div>
       </div>
 
-      {user && <div className="container text-center my-5">
+      {!user && <div className="container text-center my-5">
         <h2>Providing the right tools for the gaming community</h2>
         <p>
           We aim to keep things simple, but there's plenty more to explore in

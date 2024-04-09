@@ -1,0 +1,12 @@
+.create_tournament_form {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 70%;
+    @media (max-width: 992px){
+        width: 80%;
+    }
+
+    @media (max-width: 576px){
+        width: 90%;
+    }
+}

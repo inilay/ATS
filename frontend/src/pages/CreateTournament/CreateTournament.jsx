@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
 import MyButton from "../../components/UI/MyButton/MyButton";
 import MyCard from "../../components/UI/MyCard/MyCard";
+import classes from "./CreateTournament.module.css";
+
 
 const CreateTournament = () => {
   const api = useAxios();
@@ -99,321 +101,193 @@ const CreateTournament = () => {
   };
 
   return (
-    <section className="section_without_div pt-4">
-      <Form onSubmit={handleSubmit(onSubmitHandler)}>
-        <MyCard>
-          <Card.Header className="card-header-text">Basic Info</Card.Header>
-          <Card.Body>
-            <MyFormGroupInput
-              label="Title"
-              name="title"
-              type="text"
-              errors={errors}
-              register={register}
-              validationSchema={{
-                required: "⚠ This input is required.",
-              }}
-              onChange={inputChangeHandler}
-            ></MyFormGroupInput>
-            <MyFormGroupInput
-              label="Description"
-              name="content"
-              as="textarea"
-              errors={errors}
-              register={register}
-              validationSchema={{
-                required: "⚠ This input is required.",
-              }}
-              onChange={inputChangeHandler}
-            ></MyFormGroupInput>
-            <MyFormGroupInput
-              label="Prize fund"
-              name="prize"
-              errors={errors}
-              register={register}
-              validationSchema={{
-                required: "⚠ This input is required.",
-                pattern: {
-                  value: /^[+-]?\d+(\.\d+)?$/,
-                  message: "⚠ Invalid data.",
-                },
-              }}
-              onChange={inputChangeHandler}
-            ></MyFormGroupInput>
-            <MyFormGroupInput
-              label="Game"
-              name="game"
-              errors={errors}
-              register={register}
-              validationSchema={{
-                required: "⚠ This input is required.",
-              }}
-              onChange={inputChangeHandler}
-            ></MyFormGroupInput>
-            <MyFormGroupInput
-              label="Start of the tournament"
-              name="start_time"
-              type="datetime-local"
-              errors={errors}
-              register={register}
-              validationSchema={{
-                required: "⚠ This input is required.",
-              }}
-              onChange={inputChangeHandler}
-            ></MyFormGroupInput>
-            <Form.Group className="mb-3">
-              <Form.Label>Poster</Form.Label>
-              <UploadButton setInputFileValue={setInputFile} />
-            </Form.Group>
-            <p>Tournament type</p>
-            <div className="mb-3">
-              <Form.Check
-                inline
-                label="One stage"
-                name="tournament_type"
-                type="radio"
-                value="0"
-                checked={tournamentType === "0" ? true : false}
-                onChange={(event) => {
-                  inputRadioChangeHandler(event);
-                }}
-              ></Form.Check>
-              <Form.Check
-                inline
-                label="Group two stage"
-                name="tournament_type"
-                type="radio"
-                value="1"
-                checked={tournamentType === "1" ? true : false}
-                onChange={(event) => {
-                  inputRadioChangeHandler(event);
-                }}
-              ></Form.Check>
-            </div>
-          </Card.Body>
-        </MyCard>
-
-        <div className="my-4">
+    <section>
+      <div className={`${classes.create_tournament_form}`}>
+        <Form onSubmit={handleSubmit(onSubmitHandler)}>
           <MyCard>
-            <Card.Header className="card-header-text">Bracket Info</Card.Header>
+            <Card.Header className="card-header-text">Basic Info</Card.Header>
             <Card.Body>
-              {tournamentType === "1" ? (
-                <>
-                  <div>
-                    <p>Group stage</p>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Bracket type</Form.Label>
-                      <Form.Select
-                        className="shadow-none select-input"
-                        name="group_type"
-                        onChange={(e) => inputSelectChangeHandler(e)}
-                      >
-                        <option value="RR">Round Robin</option>
-                        <option value="SE">Single Elimination</option>
-                        <option value="DE">Double Elimination</option>
-                        <option value="SW">Swiss</option>
-                      </Form.Select>
-                    </Form.Group>
-                    <div className="row">
-                      <div className="col">
-                        <MyFormGroupInput
-                          label="Compete in each group"
-                          name="compete_in_group"
-                          errors={errors}
-                          defaultValue={4}
-                          register={register}
-                          validationSchema={{
-                            required: "⚠ This input is required.",
-                          }}
-                          onChange={inputChangeHandler}
-                        ></MyFormGroupInput>
-                      </div>
-                      <div className="col">
-                        <MyFormGroupInput
-                          label="Advance from each group — power of 2 for single & double"
-                          name="advance_from_group"
-                          errors={errors}
-                          defaultValue={2}
-                          register={register}
-                          validationSchema={{
-                            required: "⚠ This input is required.",
-                          }}
-                          onChange={inputChangeHandler}
-                        ></MyFormGroupInput>
-                      </div>
-                    </div>
-                  </div>
-                  <p>Final stage</p>
-                </>
-              ) : (
-                <></>
-              )}
-              {/* One stage */}
-              <Form.Group className="mb-3">
-                <Form.Label>Bracket type</Form.Label>
-                <Form.Select
-                  className="shadow-none select-input"
-                  name="type"
-                  onChange={(e) => inputSelectChangeHandler(e)}
-                >
-                  <option value="SE">Single Elimination</option>
-                  <option value="DE">Double Elimination</option>
-                  <option value="RR">Round Robin</option>
-                  <option value="SW">Swiss</option>
-                </Form.Select>
-              </Form.Group>
-
-              {responseBody.type === "SE" ? (
-                <Form.Check type="checkbox">
-                  <Form.Check.Input
-                    name="secod_final"
-                    onChange={(e) => inputCheckBoxChangeHandler(e)}
-                    className="my_ckeckbox"
-                    type="checkbox"
-                  />
-                  <Form.Check.Label
-                    style={{ color: "inherit" }}
-                  >{`Include a match for 3rd place between semifinal losers`}</Form.Check.Label>
-                </Form.Check>
-              ) : (
-                <></>
-              )}
-              {responseBody.type === "RR" || responseBody.type === "SW" ? (
-                <>
-                  <div className="row">
-                    <div className="col">
-                      <MyFormGroupInput
-                        label="Points for victory"
-                        name="points_victory"
-                        errors={errors}
-                        defaultValue={1}
-                        register={register}
-                        validationSchema={{
-                          required: "⚠ This input is required.",
-                        }}
-                        onChange={inputChangeHandler}
-                      ></MyFormGroupInput>
-                    </div>
-                    <div className="col">
-                      <MyFormGroupInput
-                        label="Points for draw"
-                        name="points_draw"
-                        errors={errors}
-                        defaultValue={0}
-                        register={register}
-                        validationSchema={{
-                          required: "⚠ This input is required.",
-                        }}
-                        onChange={inputChangeHandler}
-                      ></MyFormGroupInput>
-                    </div>
-                    <div className="col">
-                      <MyFormGroupInput
-                        label="Points per loss"
-                        name="points_loss"
-                        defaultValue={0}
-                        errors={errors}
-                        register={register}
-                        validationSchema={{
-                          required: "⚠ This input is required.",
-                        }}
-                        onChange={inputChangeHandler}
-                      ></MyFormGroupInput>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <></>
-              )}
-
               <MyFormGroupInput
-                label="Participants"
-                name="participants"
+                label="Title"
+                name="title"
+                type="text"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
+              <MyFormGroupInput
+                label="Description"
+                name="content"
                 as="textarea"
                 errors={errors}
                 register={register}
                 validationSchema={{
                   required: "⚠ This input is required.",
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
+              <MyFormGroupInput
+                label="Prize fund"
+                name="prize"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
                   pattern: {
-                    value: /^.+\s+./i,
-                    message: "⚠ Minimum two participants.",
+                    value: /^[+-]?\d+(\.\d+)?$/,
+                    message: "⚠ Invalid data.",
                   },
                 }}
                 onChange={inputChangeHandler}
               ></MyFormGroupInput>
+              <MyFormGroupInput
+                label="Game"
+                name="game"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
+              <MyFormGroupInput
+                label="Start of the tournament"
+                name="start_time"
+                type="datetime-local"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
+              <Form.Group className="mb-3">
+                <Form.Label>Poster</Form.Label>
+                <UploadButton setInputFileValue={setInputFile} />
+              </Form.Group>
+              <p>Tournament type</p>
+              <div className="mb-3">
+                <Form.Check
+                  inline
+                  label="One stage"
+                  name="tournament_type"
+                  type="radio"
+                  value="0"
+                  checked={tournamentType === "0" ? true : false}
+                  onChange={(event) => {
+                    inputRadioChangeHandler(event);
+                  }}
+                ></Form.Check>
+                <Form.Check
+                  inline
+                  label="Group two stage"
+                  name="tournament_type"
+                  type="radio"
+                  value="1"
+                  checked={tournamentType === "1" ? true : false}
+                  onChange={(event) => {
+                    inputRadioChangeHandler(event);
+                  }}
+                ></Form.Check>
+              </div>
+            </Card.Body>
+          </MyCard>
 
-              <Form.Check type="checkbox">
-                <Form.Check.Input
-                  name="time_managment"
-                  onChange={(e) => inputCheckBoxTimeManagmentChangeHandler(e)}
-                  className="my_ckeckbox"
-                  type="checkbox"
-                />
-                <Form.Check.Label
-                  style={{ color: "inherit" }}
-                >{`Add time managment`}</Form.Check.Label>
-              </Form.Check>
+          <div className="my-4">
+            <MyCard>
+              <Card.Header className="card-header-text">Bracket Info</Card.Header>
+              <Card.Body>
+                {tournamentType === "1" ? (
+                  <>
+                    <div>
+                      <p>Group stage</p>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Bracket type</Form.Label>
+                        <Form.Select
+                          className="shadow-none select-input"
+                          name="group_type"
+                          onChange={(e) => inputSelectChangeHandler(e)}
+                        >
+                          <option value="RR">Round Robin</option>
+                          <option value="SE">Single Elimination</option>
+                          <option value="DE">Double Elimination</option>
+                          <option value="SW">Swiss</option>
+                        </Form.Select>
+                      </Form.Group>
+                      <div className="row">
+                        <div className="col">
+                          <MyFormGroupInput
+                            label="Compete in each group"
+                            name="compete_in_group"
+                            errors={errors}
+                            defaultValue={4}
+                            register={register}
+                            validationSchema={{
+                              required: "⚠ This input is required.",
+                            }}
+                            onChange={inputChangeHandler}
+                          ></MyFormGroupInput>
+                        </div>
+                        <div className="col">
+                          <MyFormGroupInput
+                            label="Advance from each group — power of 2 for single & double"
+                            name="advance_from_group"
+                            errors={errors}
+                            defaultValue={2}
+                            register={register}
+                            validationSchema={{
+                              required: "⚠ This input is required.",
+                            }}
+                            onChange={inputChangeHandler}
+                          ></MyFormGroupInput>
+                        </div>
+                      </div>
+                    </div>
+                    <p>Final stage</p>
+                  </>
+                ) : (
+                  <></>
+                )}
+                {/* One stage */}
+                <Form.Group className="mb-3">
+                  <Form.Label>Bracket type</Form.Label>
+                  <Form.Select
+                    className="shadow-none select-input"
+                    name="type"
+                    onChange={(e) => inputSelectChangeHandler(e)}
+                  >
+                    <option value="SE">Single Elimination</option>
+                    <option value="DE">Double Elimination</option>
+                    <option value="RR">Round Robin</option>
+                    <option value="SW">Swiss</option>
+                  </Form.Select>
+                </Form.Group>
 
-              {timeManagment === true ? (
-                <>
-                  <div className="col">
-                    <MyFormGroupInput
-                      label="Mathes at the same time"
-                      name="mathes_same_time"
-                      errors={errors}
-                      defaultValue={16}
-                      register={register}
-                      validationSchema={{
-                        required: "⚠ This input is required.",
-                      }}
-                      onChange={inputChangeHandler}
-                    ></MyFormGroupInput>
-                  </div>
-                  <div className="col">
-                    <MyFormGroupInput
-                      label="Average game time in minutes"
-                      name="avg_game_time"
-                      errors={errors}
-                      defaultValue={30}
-                      register={register}
-                      validationSchema={{
-                        required: "⚠ This input is required.",
-                      }}
-                      onChange={inputChangeHandler}
-                    ></MyFormGroupInput>
-                  </div>
-                  <div className="col">
-                    <MyFormGroupInput
-                      label="Maximum number of games per match (best of ...)"
-                      name="max_games_number"
-                      errors={errors}
-                      defaultValue={3}
-                      register={register}
-                      validationSchema={{
-                        required: "⚠ This input is required.",
-                      }}
-                      onChange={inputChangeHandler}
-                    ></MyFormGroupInput>
-                  </div>
-                  <div className="col">
-                    <MyFormGroupInput
-                      label="Break between matches in minutes"
-                      name="break_between"
-                      errors={errors}
-                      defaultValue={10}
-                      register={register}
-                      validationSchema={{
-                        required: "⚠ This input is required.",
-                      }}
-                      onChange={inputChangeHandler}
-                    ></MyFormGroupInput>
-                  </div>
-                  {tournamentType === "1" ? (
-                    <>
+                {responseBody.type === "SE" ? (
+                  <Form.Check type="checkbox">
+                    <Form.Check.Input
+                      name="secod_final"
+                      onChange={(e) => inputCheckBoxChangeHandler(e)}
+                      className="my_ckeckbox"
+                      type="checkbox"
+                    />
+                    <Form.Check.Label
+                      style={{ color: "inherit" }}
+                    >{`Include a match for 3rd place between semifinal losers`}</Form.Check.Label>
+                  </Form.Check>
+                ) : (
+                  <></>
+                )}
+                {responseBody.type === "RR" || responseBody.type === "SW" ? (
+                  <>
+                    <div className="row">
                       <div className="col">
                         <MyFormGroupInput
-                          label="Groups per day"
-                          name="groups_per_day"
+                          label="Points for victory"
+                          name="points_victory"
                           errors={errors}
                           defaultValue={1}
                           register={register}
@@ -423,34 +297,164 @@ const CreateTournament = () => {
                           onChange={inputChangeHandler}
                         ></MyFormGroupInput>
                       </div>
-                      <Form.Check type="checkbox">
-                        <Form.Check.Input
-                          name="final_stage_time"
-                          onChange={(e) => inputCheckBoxChangeHandler(e)}
-                          className="my_ckeckbox"
-                          type="checkbox"
-                        />
-                        <Form.Check.Label
-                          style={{ color: "inherit" }}
-                        >{`Final on a separate day`}</Form.Check.Label>
-                      </Form.Check>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </>
-              ) : (
-                <></>
-              )}
-            </Card.Body>
-          </MyCard>
-        </div>
-        <div className="form_button_div pb-4">
-          <MyButton additionalCl={"btn-md"} type="submit">
-            Create Tournament
-          </MyButton>
-        </div>
-      </Form>
+                      <div className="col">
+                        <MyFormGroupInput
+                          label="Points for draw"
+                          name="points_draw"
+                          errors={errors}
+                          defaultValue={0}
+                          register={register}
+                          validationSchema={{
+                            required: "⚠ This input is required.",
+                          }}
+                          onChange={inputChangeHandler}
+                        ></MyFormGroupInput>
+                      </div>
+                      <div className="col">
+                        <MyFormGroupInput
+                          label="Points per loss"
+                          name="points_loss"
+                          defaultValue={0}
+                          errors={errors}
+                          register={register}
+                          validationSchema={{
+                            required: "⚠ This input is required.",
+                          }}
+                          onChange={inputChangeHandler}
+                        ></MyFormGroupInput>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+
+                <MyFormGroupInput
+                  label="Participants"
+                  name="participants"
+                  as="textarea"
+                  errors={errors}
+                  register={register}
+                  validationSchema={{
+                    required: "⚠ This input is required.",
+                    pattern: {
+                      value: /^.+\s+./i,
+                      message: "⚠ Minimum two participants.",
+                    },
+                  }}
+                  onChange={inputChangeHandler}
+                ></MyFormGroupInput>
+
+                <Form.Check type="checkbox">
+                  <Form.Check.Input
+                    name="time_managment"
+                    onChange={(e) => inputCheckBoxTimeManagmentChangeHandler(e)}
+                    className="my_ckeckbox"
+                    type="checkbox"
+                  />
+                  <Form.Check.Label
+                    style={{ color: "inherit" }}
+                  >{`Add time managment`}</Form.Check.Label>
+                </Form.Check>
+
+                {timeManagment === true ? (
+                  <>
+                    <div className="col">
+                      <MyFormGroupInput
+                        label="Mathes at the same time"
+                        name="mathes_same_time"
+                        errors={errors}
+                        defaultValue={16}
+                        register={register}
+                        validationSchema={{
+                          required: "⚠ This input is required.",
+                        }}
+                        onChange={inputChangeHandler}
+                      ></MyFormGroupInput>
+                    </div>
+                    <div className="col">
+                      <MyFormGroupInput
+                        label="Average game time in minutes"
+                        name="avg_game_time"
+                        errors={errors}
+                        defaultValue={30}
+                        register={register}
+                        validationSchema={{
+                          required: "⚠ This input is required.",
+                        }}
+                        onChange={inputChangeHandler}
+                      ></MyFormGroupInput>
+                    </div>
+                    <div className="col">
+                      <MyFormGroupInput
+                        label="Maximum number of games per match (best of ...)"
+                        name="max_games_number"
+                        errors={errors}
+                        defaultValue={3}
+                        register={register}
+                        validationSchema={{
+                          required: "⚠ This input is required.",
+                        }}
+                        onChange={inputChangeHandler}
+                      ></MyFormGroupInput>
+                    </div>
+                    <div className="col">
+                      <MyFormGroupInput
+                        label="Break between matches in minutes"
+                        name="break_between"
+                        errors={errors}
+                        defaultValue={10}
+                        register={register}
+                        validationSchema={{
+                          required: "⚠ This input is required.",
+                        }}
+                        onChange={inputChangeHandler}
+                      ></MyFormGroupInput>
+                    </div>
+                    {tournamentType === "1" ? (
+                      <>
+                        <div className="col">
+                          <MyFormGroupInput
+                            label="Groups per day"
+                            name="groups_per_day"
+                            errors={errors}
+                            defaultValue={1}
+                            register={register}
+                            validationSchema={{
+                              required: "⚠ This input is required.",
+                            }}
+                            onChange={inputChangeHandler}
+                          ></MyFormGroupInput>
+                        </div>
+                        <Form.Check type="checkbox">
+                          <Form.Check.Input
+                            name="final_stage_time"
+                            onChange={(e) => inputCheckBoxChangeHandler(e)}
+                            className="my_ckeckbox"
+                            type="checkbox"
+                          />
+                          <Form.Check.Label
+                            style={{ color: "inherit" }}
+                          >{`Final on a separate day`}</Form.Check.Label>
+                        </Form.Check>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </>
+                ) : (
+                  <></>
+                )}
+              </Card.Body>
+            </MyCard>
+          </div>
+          <div className="pb-4">
+            <MyButton additionalCl={"btn-md"} type="submit">
+              Create Tournament
+            </MyButton>
+          </div>
+        </Form>
+      </div>
     </section>
   );
 };
