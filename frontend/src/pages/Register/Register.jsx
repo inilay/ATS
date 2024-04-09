@@ -9,6 +9,8 @@ import MyModal from "../../components/UI/MyModal/MyModal";
 import Modal from "react-bootstrap/Modal";
 import MyCard from "../../components/UI/MyCard/MyCard";
 import Card from "react-bootstrap/Card";
+import classes from "./Register.module.css";
+
 
 const Register = () => {
   const [state, setState] = useState({
@@ -57,72 +59,70 @@ const Register = () => {
           </div>
         </Modal.Body>
       </MyModal>
-      <div className="log_div">
-        <Form onSubmit={handleSubmit(handleRegisterSubmit)}>
-          <div className="my-4">
-            <MyCard>
-              <Card.Header className="card-header-text">Sign up </Card.Header>
-              <Card.Body>
-                <MyFormGroupInput
-                  label="Username"
-                  name="username"
-                  errors={errors}
-                  register={register}
-                  validationSchema={{
-                    required: "⚠ This input is required.",
-                  }}
-                  onChange={inputChangeHandler}
-                ></MyFormGroupInput>
-                <MyFormGroupInput
-                  label="Email"
-                  name="email"
-                  errors={errors}
-                  register={register}
-                  validationSchema={{
-                    required: "⚠ This input is required.",
-                    pattern: {
-                      value:
-                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                      message: "⚠ Invalid email.",
-                    },
-                  }}
-                  onChange={inputChangeHandler}
-                ></MyFormGroupInput>
-                <MyFormGroupInput
-                  label="Password"
-                  type="password"
-                  name="password"
-                  errors={errors}
-                  register={register}
-                  validationSchema={{
-                    required: "⚠ This input is required.",
-                  }}
-                  onChange={inputChangeHandler}
-                ></MyFormGroupInput>
-                <MyFormGroupInput
-                  label="Repeat password"
-                  type="password"
-                  name="password2"
-                  errors={errors}
-                  register={register}
-                  validationSchema={{
-                    required: "⚠ This input is required.",
-                    validate: (value) => {
-                      const { password } = getValues();
-                      return password === value || "⚠ Passwords should match!";
-                    },
-                  }}
-                  onChange={inputChangeHandler}
-                ></MyFormGroupInput>
-              </Card.Body>
-            </MyCard>
-          </div>
-          <div className="form_button_div pb-4">
-            <MyButton additionalCl={"btn-md"} type="submit">
-              Sign up
-            </MyButton>
-          </div>
-        </Form>
+      <div className={`${classes.reregistration_form}`}>
+      <Form onSubmit={handleSubmit(handleRegisterSubmit)}>
+          <MyCard>
+            <Card.Header className="card-header-text">Sign up </Card.Header>
+            <Card.Body>
+              <MyFormGroupInput
+                label="Username"
+                name="username"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
+              <MyFormGroupInput
+                label="Email"
+                name="email"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
+                  pattern: {
+                    value:
+                      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                    message: "⚠ Invalid email.",
+                  },
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
+              <MyFormGroupInput
+                label="Password"
+                type="password"
+                name="password"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
+              <MyFormGroupInput
+                label="Repeat password"
+                type="password"
+                name="password2"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
+                  validate: (value) => {
+                    const { password } = getValues();
+                    return password === value || "⚠ Passwords should match!";
+                  },
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
+            </Card.Body>
+          </MyCard>
+        <div className='mt-3'>
+          <MyButton additionalCl={"btn-md"} type="submit">
+            Sign up
+          </MyButton>
+        </div>
+      </Form>
       </div>
     </section>
   );

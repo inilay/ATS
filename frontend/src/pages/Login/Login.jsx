@@ -5,6 +5,10 @@ import { useState } from "react";
 import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
 import { useForm } from "react-hook-form";
 import MyButton from "../../components/UI/MyButton/MyButton";
+import MyCard from "../../components/UI/MyCard/MyCard";
+import Card from "react-bootstrap/Card";
+import classes from "./Login.module.css";
+
 
 const Login = () => {
   const { loginUser } = useContext(AuthContext);
@@ -28,8 +32,11 @@ const Login = () => {
   return (
     <section>
       <div>
-        <div className="log_div position-absolute top-50 start-50 translate-middle">
+        <div className={`${classes.login_form}`}>
           <Form onSubmit={handleSubmit(handleLoginSubmit)}>
+          <MyCard>
+            <Card.Header className="card-header-text">Log in</Card.Header>
+            <Card.Body>
             <MyFormGroupInput
               label="Email"
               name="email"
@@ -59,9 +66,13 @@ const Login = () => {
             <p>
               <a href="/password_reset">Forgot password ?</a>
             </p>
+            </Card.Body>
+          </MyCard>
+          <div className='mt-3'>
             <MyButton additionalCl={"btn-md"} type="submit">
               Log in
             </MyButton>
+          </div>
           </Form>
         </div>
       </div>

@@ -3,10 +3,10 @@ import Card from 'react-bootstrap/Card';
 import classes from "./MyCard.module.css";
 
 
-const MyCard = ({children, ...props}) => {
+const MyCard = ({additionalCl, children, ...props}) => {
 
   return (
-      <Card className={`${classes.cardForm}`} {...props}>
+      <Card className={`${classes.cardForm} ${additionalCl}`} {...props}>
             {children}
       </Card>
   );
