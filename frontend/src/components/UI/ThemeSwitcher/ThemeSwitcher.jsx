@@ -3,9 +3,7 @@ import classes from './ThemeSwitcher.module.css';
 import ThemeSwitcherIcon from "../../../assets/svg/ThemeSwitcherIcon";
 
 
-const ThemeSwitcher = () => {
-  let clickedClass = "clicked";
-  const body = document.body;
+const ThemeSwitcher = ({additionalCl, ...props}) => {
   const lightTheme = "light";
   const darkTheme = "dark";
   let theme;
@@ -15,30 +13,30 @@ const ThemeSwitcher = () => {
   }
 
   if (theme === lightTheme || theme === darkTheme) {
-    body.classList.add(theme);
+    document.body.classList.add(theme);
   } else {
-    body.classList.add(lightTheme);
+    document.body.classList.add(lightTheme);
   }
 
   const switchTheme = (e) => {
     if (theme === darkTheme) {
-      body.classList.replace(darkTheme, lightTheme);
-      e.target.classList.remove(clickedClass);
+      document.body.classList.replace(darkTheme, lightTheme);
+      e.target.classList.remove("clicked");
       localStorage.setItem("theme", "light");
       theme = lightTheme;
     } else {
-      body.classList.replace(lightTheme, darkTheme);
-      e.target.classList.add(clickedClass);
+      document.body.classList.replace(lightTheme, darkTheme);
+      e.target.classList.add("clicked");
       localStorage.setItem("theme", "dark");
       theme = darkTheme;
     }
   };
 
   return (
-    <button onClick={(e) => switchTheme(e)} className={`${classes.btn_circle} ${"btn"} ${"shadow-none"}`} >
-                        <ThemeSwitcherIcon/>
-                        <i className={`${"bi"} ${"bi-brightness-high-fill"}`}></i>
-                      </button>
+    <button  onClick={(e) => switchTheme(e)} className={`${classes.btn_circle} ${additionalCl} ${"btn"} ${"shadow-none"}`} {...props}>
+      <ThemeSwitcherIcon/>
+      <i className={`${"bi"} ${"bi-brightness-high-fill"}`}></i>
+    </button>
  
   );
 };

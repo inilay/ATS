@@ -6,8 +6,8 @@ function MobileMenuIcon() {
       <svg
       className={classes.my_svg}
       xmlns="http://www.w3.org/2000/svg"
-      width="30"
-      height="30"
+      width="35"
+      height="35"
       ariaHidden="true"
       viewBox="0 0 14 14"
     >

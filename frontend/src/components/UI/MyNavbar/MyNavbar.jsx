@@ -13,10 +13,11 @@ const MyNavbar = () => {
   const { user, logoutUser } = useContext(AuthContext);
   return (
     <Navbar className={`${classes.my_navbar} mb-3`} abg="dark" expand="lg">
-      <Container fluid>
+      <Container fluid> 
         <Navbar.Brand as={Link} to="/">
           <HomeIcon />
         </Navbar.Brand>
+        <ThemeSwitcher additionalCl={`${classes.theme_swither_min}`}/>
         <Navbar.Toggle className={`${classes.navbar_toggler}`} aria-controls="navbarScroll">
           <MobileMenuIcon />
         </Navbar.Toggle>
@@ -29,7 +30,7 @@ const MyNavbar = () => {
               <h5>Create Tournament</h5>
             </Link>
           </Nav>
-          <ThemeSwitcher></ThemeSwitcher>
+          <ThemeSwitcher additionalCl={`${classes.theme_swither_max}`}/>
           {user ? (
             <>
               <Nav className="ml-auto" navbar>
