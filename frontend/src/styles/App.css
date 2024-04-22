@@ -94,10 +94,7 @@ a:hover {
     color: var(--highlight-color);
 }
 
-.tournament-img {
-    width: 50rem;
-    height: 100%;
-}
+
 
 .card-header-text {
     color: var(--bright-color);
@@ -227,14 +224,6 @@ a:hover {
     margin-top: 50px;
 }
 
-.tournament_img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 26rem;
-    height: 26rem;
-    text-align: center;
-}
 
 [data-tooltip] {
     position: relative; 
