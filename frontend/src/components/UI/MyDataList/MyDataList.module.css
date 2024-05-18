@@ -3,19 +3,17 @@
     border: 1px solid var(--highlight-color);
     text-decoration: none;
     outline: none;
+    background-color: red;
 }
 
 .myInput {
-    background: var(--opposite);
-    color: var(--dark-font-color);
-    border-color: var(--dark-green);
-    outline: var(--green);
+    border: none;
+    color: var(--highlight-color);
+    background-color: inherit;
+    padding-left: 0.75rem;
+    
 }
 
-
 .myInput:focus {
-    background: var(--opposite);
-    color: var(--dark-font-color);
-    border-color: var(--green);
-    outline:var(--green);
+    outline: none;
 }

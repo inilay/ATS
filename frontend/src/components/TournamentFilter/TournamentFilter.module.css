@@ -1,0 +1,8 @@
+.filter_btn {
+    max-height: 40px;
+}
+
+.filter_ul {
+    border: 1px solid var(--highlight-color);
+    background-color: inherit;
+}

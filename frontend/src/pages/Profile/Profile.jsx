@@ -3,7 +3,7 @@ import PostService from "../../API/PostService";
 import { useParams } from "react-router-dom";
 import { useFetching } from "../../hooks/useFetching";
 import { useTournaments } from "../../hooks/useTournaments";
-import TournamentList from "../../components/TournamentList";
+import TournamentList from "../../components/TournamentList/TournamentList.jsx";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";

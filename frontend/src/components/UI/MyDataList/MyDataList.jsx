@@ -30,9 +30,9 @@ const data = [
     return (
       <div className="d-flex">
         <div>
-          <input className="search-input shadow-none" type="search" list="list" autoComplete="on"  value={filter.game} onChange={onChange} />
+          <input className={`${classes.myInput} shadow-none`} type="search" list="list" autoComplete="on"  value={filter.game} onChange={onChange} />
           <datalist className={classes.myDL} id="list">
-            {gamesFilter.map(game => <option key={game} value={game} />)}
+            {gamesFilter.map(game => <option className={classes.myDLOpt} key={game} value={game} />)}
           </datalist>
         </div>
         {/* <div>
