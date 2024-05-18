@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import MySelect from "./UI/MySelect/MySelect";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -29,7 +28,7 @@ const TournamentFilter = ({ filter, setFilter }) => {
             <input
               value={filter.title}
               onChange={(e) => setFilter({game: filter.game, title: e.target.value })}
-              placeholder="Search for tournaments"
+              placeholder="Search"
               className="search-input my-2 shadow-none"
             />
           </Col>
