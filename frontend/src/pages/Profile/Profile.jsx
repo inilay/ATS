@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import MyButton from "../../components/UI/MyButton/MyButton";
 import moment from "moment";
 import MyCard from "../../components/UI/MyCard/MyCard";
+import classes from "./Profile.module.css";
 
 const Profile = () => {
   const api = useAxios();
@@ -140,7 +141,7 @@ const Profile = () => {
               </button>
             </div>
             <Collapse in={openProfileChange} className="mt-2">
-              <div id="example-collapse-text">
+              <div id="example-collapse-text" className={classes.profile_setting_form}>
                 <Form onSubmit={handleImageChangeSubmit} className="my-4">
                   <MyCard border="success">
                     <Card.Header className="card-header-text">
@@ -178,7 +179,7 @@ const Profile = () => {
               </button>
             </div>
             <Collapse in={openPasswordChange} className="mt-2">
-              <div id="example-collapse-text">
+              <div id="example-collapse-text" className={classes.security_setting_form}>
                 <Form onSubmit={handlePasswordChangeSubmit} className="my-4">
                   <MyCard>
                     <Card.Header className="card-header-text">

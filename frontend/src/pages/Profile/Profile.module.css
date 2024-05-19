@@ -1,0 +1,25 @@
+.profile_setting_form {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 60%;
+    @media (max-width: 992px){
+        width: 70%;
+    }
+
+    @media (max-width: 576px){
+        width: 100%;
+    }
+}
+
+.security_setting_form {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 60%;
+    @media (max-width: 992px){
+        width: 70%;
+    }
+
+    @media (max-width: 576px){
+        width: 100%;
+    }
+}
