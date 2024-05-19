@@ -13,7 +13,7 @@ import "../../styles/App.css";
 
 function Tournaments() {
   const [tournaments, setTournaments] = useState([]);
-  const [filter, setFilter] = useState({ game: null, title: null });
+  const [filter, setFilter] = useState({ game: '', title: '' });
   const [totalPages, setTotalPages] = useState(0);
   const [limit, setLimit] = useState(12);
   const [page, setPage] = useState(1);

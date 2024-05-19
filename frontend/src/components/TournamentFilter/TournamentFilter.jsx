@@ -35,7 +35,10 @@ const TournamentFilter = ({ filter, setFilter }) => {
           <Col className="d-flex justify-content-end">
             <div class="btn-group dropdown-menu-end">
               <MyButton additionalCl={`${classes.filter_btn}`} data-bs-toggle="dropdown" aria-expanded="false">
-                Game
+                {filter.game === '' ?
+                  "Game"
+                  : filter.game
+                }
               </MyButton>
               <ul className={`${classes.filter_ul} dropdown-menu`}>
                 <li>
