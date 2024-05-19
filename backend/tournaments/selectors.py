@@ -10,7 +10,7 @@ def get_brackets_for_tournamnet(tournament:Tournament, **kwargs) -> QuerySet[Bra
 
 def tournaments_list(*, filters=None) -> QuerySet[Tournament]:
     filter = filters or {}
-    query_set = Tournament.objects.all()
+    query_set = Tournament.objects.select_related('owner').all()
     return TournamentFilter(filter, query_set).qs
 
 def game_list(*, filters=None) -> list:
