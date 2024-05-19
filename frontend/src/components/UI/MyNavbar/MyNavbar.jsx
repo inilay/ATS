@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { Fragment, useContext } from "react";
 import classes from "./MyNavbar.module.css";
 import { AuthContext } from "../../../context";
 import { Container, Nav, Navbar, Dropdown } from "react-bootstrap";
@@ -29,12 +29,20 @@ const MyNavbar = () => {
             <Link className={classes.nav_link} to="/create_tournament">
               <h5>Create Tournament</h5>
             </Link>
+            {user && <Fragment>
+                <Link className={`${classes.nav_link} ${classes.inner_navbar_min}`} to={`/profile/${user.username}`}>
+                  <h5>Profile</h5>
+                </Link>
+                <Link className={`${classes.nav_link} ${classes.inner_navbar_min}`} to="/">
+                  <h5>Log out</h5>
+                </Link>
+              </Fragment>
+            }
           </Nav>
           <ThemeSwitcher additionalCl={`${classes.theme_swither_max}`}/>
           {user ? (
-            <>
-              <Nav className="ml-auto" navbar>
-                <Dropdown>
+              <Nav className={`ml-auto`} navbar>
+                <Dropdown className={classes.inner_navbar_max}>
                   <Dropdown.Toggle
                     drop="down"
                     className={`${classes.my_toggle} ${"shadow-none"}`}
@@ -60,9 +68,8 @@ const MyNavbar = () => {
                   </Dropdown.Menu>
                 </Dropdown>
               </Nav>
-            </>
+
           ) : (
-            <>
               <Nav className="my-lg-0" navbarScroll>
                 <Link to="/login" className={classes.nav_link}>
                   <h5>Log in</h5>
@@ -71,8 +78,6 @@ const MyNavbar = () => {
                   <h5>Sign up</h5>
                 </Link>
               </Nav>
-
-            </>
           )}
         </Navbar.Collapse>
       </Container>

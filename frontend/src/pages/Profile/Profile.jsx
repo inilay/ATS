@@ -142,7 +142,7 @@ const Profile = () => {
             <Collapse in={openProfileChange} className="mt-2">
               <div id="example-collapse-text">
                 <Form onSubmit={handleImageChangeSubmit} className="my-4">
-                  <MyCard border="success" style={{ width: "80%" }}>
+                  <MyCard border="success">
                     <Card.Header className="card-header-text">
                       Avatar
                     </Card.Header>
@@ -180,7 +180,7 @@ const Profile = () => {
             <Collapse in={openPasswordChange} className="mt-2">
               <div id="example-collapse-text">
                 <Form onSubmit={handlePasswordChangeSubmit} className="my-4">
-                  <MyCard style={{ width: "80%" }}>
+                  <MyCard>
                     <Card.Header className="card-header-text">
                       Change password
                     </Card.Header>

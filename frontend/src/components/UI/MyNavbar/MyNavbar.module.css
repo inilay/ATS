@@ -2,7 +2,7 @@
     color: var(--dark-ligth) !important; 
     padding-left: 0.35rem;
     padding-right: 0.35rem;
-    padding-top: 0.75rem;
+    padding-top: 0.5rem;
 }
 
 .nav_link:hover {
@@ -77,3 +77,14 @@
     justify-content: flex-end;
 }
 
+.inner_navbar_max {
+    @media (max-width: 991px){
+        display: none;
+    }
+}
+
+.inner_navbar_min {
+    @media (min-width: 992px){
+        display: none;
+    }
+}
