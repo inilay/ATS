@@ -17,7 +17,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from .models import CustomUser
 from rest_framework import status
 from .permissions import IsProfileOwnerOrReadOnly
-
+from rest_framework.views import APIView
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -134,3 +134,8 @@ class EmailVerify(View):
             user = None
         return user
 
+
+class ReportAPIView(APIView):
+
+    def post(self, request):
+        return Response(status=status.HTTP_201_CREATED)
