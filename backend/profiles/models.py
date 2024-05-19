@@ -20,7 +20,7 @@ class CustomUser(AbstractUser):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField('CustomUser', on_delete=models.CASCADE)
+    user = models.OneToOneField('CustomUser', related_name='reports', on_delete=models.CASCADE)
     slug = models.SlugField(max_length=255, unique=True)
     user_icon = models.ImageField(upload_to='photos/media/%Y/%m/%d/', default='/user_icon_default.png')
 
@@ -33,6 +33,22 @@ class Profile(models.Model):
 
     def get_absolute_url(self):
         return reverse('profile', kwargs={'slug': self.slug})
+    
+
+class Report(models.Model):
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
+    description = models.TextField()
+
+    class ReportType(models.TextChoices):
+        BUG = 'BUG', _('Bug')
+        PROPOSAL = 'PROPOSAL', _('Proposal')
+        OTHER = 'OTHER', _('Other')
+
+    type = models.CharField(
+        max_length=255,
+        choices=ReportType.choices,
+        default=ReportType.BUG,
+    )
 
 
 @receiver(post_save, sender=CustomUser)
