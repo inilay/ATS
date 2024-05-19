@@ -5,6 +5,19 @@ const baseURL = "http://127.0.0.1:49088/api/v1";
 
 export default class PostService {
 
+    static async sendFeedback(responseBody) {
+
+        const response = await axios.post(`${baseURL}/create_report/`, responseBody, {
+
+            validateStatus: function (status) {
+    
+                    return status == 201;
+                },
+            })
+        return  response
+
+    }
+
     static async getAllTournaments(limit=12, page=1, title="", game="") {
       
         const response = await axios.get(`${baseURL}/tournaments/`, 

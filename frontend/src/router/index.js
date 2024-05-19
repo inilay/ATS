@@ -10,7 +10,7 @@ import EditTournament from "../pages/EditTournament/EditTournament";
 import PasswordReset from "../pages/PasswordReset/PasswordReset";
 import PasswordResetConfirm from "../pages/PasswordResetConfirm/PasswordResetConfirm";
 import Login from "../pages/Login/Login";
-
+import FeedBack from "../pages/Feedback/FeedBack";
 
 
 export const privateRoutes = [
@@ -23,6 +23,7 @@ export const privateRoutes = [
     { path: '/create_bracket', element: <CreateBracket />, exact: true },
     { path: '/profile/:slug', element: <Profile />, exact: true },
     { path: '/register', element: <Register />, exact: true },
+    { path: '/feedback', element: <FeedBack />, exact: true}
 ]
 
 export const publicRoutes = [

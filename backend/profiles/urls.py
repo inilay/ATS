@@ -18,6 +18,6 @@ urlpatterns = [
     path('api/v1/img_change/<str:slug>/', ImgChangeAPIView.as_view(), name="password_change"),
     path("api/v1/password_change/", PasswordChangeAPIView.as_view(), name="password_change"),
     path('confirm_email/<uidb64>/<token>/', EmailVerify.as_view(), name="verify_email"),
-    path('api/v1/create_report', ReportAPIView.as_view(), name='create_report')
+    path('api/v1/create_report/', ReportAPIView.as_view(), name='create_report')
 
 ]
