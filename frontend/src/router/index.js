@@ -11,6 +11,7 @@ import PasswordReset from "../pages/PasswordReset/PasswordReset";
 import PasswordResetConfirm from "../pages/PasswordResetConfirm/PasswordResetConfirm";
 import Login from "../pages/Login/Login";
 import FeedBack from "../pages/Feedback/FeedBack";
+import Test from "../pages/Test/Test";
 
 
 export const privateRoutes = [
@@ -23,7 +24,8 @@ export const privateRoutes = [
     { path: '/create_bracket', element: <CreateBracket />, exact: true },
     { path: '/profile/:slug', element: <Profile />, exact: true },
     { path: '/register', element: <Register />, exact: true },
-    { path: '/feedback', element: <FeedBack />, exact: true}
+    { path: '/feedback', element: <FeedBack />, exact: true},
+    { path: 'test', element: <Test />, exact: true }
 ]
 
 export const publicRoutes = [
@@ -37,4 +39,5 @@ export const publicRoutes = [
     { path: '/register', element: <Register />, exact: true },
     { path: '/password_reset', element: <PasswordReset />, exact: true },
     { path: '/password_reset_confirm/:uid/:token', element: <PasswordResetConfirm />, exact: true },
+    { path: 'test', element: <Test />, exact: true }
 ]
