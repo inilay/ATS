@@ -20,7 +20,7 @@ class CustomUser(AbstractUser):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField('CustomUser', related_name='reports', on_delete=models.CASCADE)
+    user = models.OneToOneField('CustomUser', related_name='profile', on_delete=models.CASCADE)
     slug = models.SlugField(max_length=255, unique=True)
     user_icon = models.ImageField(upload_to='photos/media/%Y/%m/%d/', default='/user_icon_default.png')
 

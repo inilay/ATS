@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
+
 from django.utils.translation import gettext_lazy as _
 from profiles.models import Profile
 import random
@@ -61,7 +61,7 @@ class Tournament(models.Model):
     link = models.SlugField(max_length=255, unique=True)
     poster = models.ImageField(upload_to='photos/media/%Y/%m/%d/', blank=True)
     game = models.CharField(max_length=255)
-    prize = models.FloatField()
+    prize = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     start_time = models.DateTimeField()
     owner = models.ForeignKey(Profile, related_name='tournaments', on_delete=models.CASCADE)
@@ -70,9 +70,9 @@ class Tournament(models.Model):
 
 class Bracket(models.Model):
     tournament = models.ForeignKey('Tournament', related_name='brackets', on_delete=models.CASCADE)
+    bracket_type = models.ForeignKey('BracketType', related_name='brackets', on_delete=models.CASCADE)
     participant_in_match = models.IntegerField()
-    bracket_type = models.ForeignKey('BracketType', related_name='brackets', on_delete=models.SET_NULL)
-
+    
 
 class BracketType(models.Model):
     name = models.CharField(max_length=255)

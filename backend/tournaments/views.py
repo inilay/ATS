@@ -84,8 +84,8 @@ class TournamentAPIView(APIView):
             model = Tournament
             fields = "__all__"  
         
-    def get(self, request, slug):
-        tournament = get_object(Tournament, slug=slug)
+    def get(self, request, link):
+        tournament = get_object(Tournament, link=link)
         serializer = self.OutputSerializer(tournament, context={'request': request})
         return Response(serializer.data)
 
@@ -102,37 +102,40 @@ class TournamentCreateView(APIView):
 
         title = serializers.CharField()
         content = serializers.CharField()
-        participants = serializers.CharField()
+        # participants = serializers.CharField()
         poster = serializers.ImageField(use_url=True, default=None)
         game = serializers.CharField()
         prize = serializers.FloatField()
         start_time = serializers.DateTimeField()
-        creater_email = serializers.EmailField()
+        # creater_email = serializers.EmailField()
 
-        type = serializers.ChoiceField(choices=['SE', 'DE', 'RR', 'SW'])
-        secod_final = serializers.BooleanField(required=False)
-        points_victory = serializers.IntegerField(required=False)
-        points_loss = serializers.IntegerField(required=False)
-        points_draw = serializers.IntegerField(required=False)
+        bracket_type = serializers.IntegerField()
+        # secod_final = serializers.BooleanField(required=False)
+        # points_victory = serializers.IntegerField(required=False)
+        # points_loss = serializers.IntegerField(required=False)
+        # points_draw = serializers.IntegerField(required=False)
 
-        time_managment = serializers.BooleanField()
-        avg_game_time = serializers.IntegerField(required=False)
-        max_games_number = serializers.IntegerField(required=False)
-        break_between = serializers.IntegerField(required=False)
-        mathes_same_time = serializers.IntegerField(required=False)
+        # time_managment = serializers.BooleanField()
+        # avg_game_time = serializers.IntegerField(required=False)
+        # max_games_number = serializers.IntegerField(required=False)
+        # break_between = serializers.IntegerField(required=False)
+        # mathes_same_time = serializers.IntegerField(required=False)
 
-        tournament_type = serializers.BooleanField()
-        group_type = serializers.ChoiceField(required=False, choices=['SE', 'DE', 'RR', 'SW'])
-        compete_in_group = serializers.IntegerField(required=False)
-        advance_from_group = serializers.IntegerField(required=False)
-        groups_per_day = serializers.IntegerField(required=False)
-        final_stage_time = serializers.BooleanField(required=False)
+        # tournament_type = serializers.BooleanField()
+        # group_type = serializers.ChoiceField(required=False, choices=['SE', 'DE', 'RR', 'SW'])
+        # compete_in_group = serializers.IntegerField(required=False)
+        # advance_from_group = serializers.IntegerField(required=False)
+        # groups_per_day = serializers.IntegerField(required=False)
+        # final_stage_time = serializers.BooleanField(required=False)
 
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
-        serializer.is_valid()
+        if not serializer.is_valid():
+            print(serializer.errors)
         
-        tournament = create_tournament(**serializer.validated_data)
+        print('serializer.validated_data', serializer.validated_data)
+        
+        tournament = create_tournament(**serializer.validated_data, user=request.user,)
 
         return Response(status=status.HTTP_201_CREATED)
 
@@ -150,8 +153,8 @@ class TournamentCreateView(APIView):
 class TournamentDeleteAPIView(APIView):
     permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
 
-    def delete(self, request, slug, *args, **kwargs):
-        tournament = get_object(Tournament, slug=slug)
+    def delete(self, request, link, *args, **kwargs):
+        tournament = get_object(Tournament, link=link)
         self.check_object_permissions(request, tournament)
         tournament.delete()
 
@@ -177,15 +180,15 @@ class TournamentUpdateApiView(APIView):
         start_time = serializers.DateTimeField()
         creater_email = serializers.EmailField()
 
-    def patch(self, request, slug):
+    def patch(self, request, link):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        tournament = get_object(Tournament, slug=slug)
+        tournament = get_object(Tournament, link=link)
         self.check_object_permissions(request, tournament)
         tournament = update_tournament(tournament=tournament, data=serializer.validated_data)
 
-        return Response(data={'slug': tournament.slug}, status=status.HTTP_200_OK)
+        return Response(data={'link': tournament.link}, status=status.HTTP_200_OK)
 
 
 # class BracketAPIView(generics.RetrieveAPIView):
@@ -263,8 +266,8 @@ class AllBracketAPIView(APIView):
             model = Bracket
             fields = "__all__"
 
-    def get(self, request, slug):
-        tournament = get_object(Tournament, slug=slug)
+    def get(self, request, link):
+        tournament = get_object(Tournament, link=link)
         brackets = get_brackets_for_tournamnet(tournament)
         serializer = self.OutputSerializer(brackets, many=True)
 

@@ -2,7 +2,7 @@ from .brackets import RoundRobin, SingleEl, DoubleEl, Swiss, MultiStage
 from .models import Bracket, Tournament
 from .utils import clear_participants 
 from typing import Any, Dict, List, Tuple
-from profiles.models import Profile
+from profiles.models import Profile, CustomUser
 from django.db import models
 from django.utils.text import slugify
 
@@ -57,69 +57,77 @@ def model_update(*, instance, fields: List[str], data: Dict[str, Any], auto_upda
     return instance, has_updated
 
 
-def create_tournament(*, title: str, content: str, participants: str, poster, game: str, prize:float, start_time, type: str,
-                    creater_email, tournament_type:bool, secod_final:bool, points_victory:int, points_loss:int, points_draw:int,
-                    time_managment:bool, avg_game_time:int, max_games_number:int, break_between:int, mathes_same_time:int,
-                    compete_in_group:int, advance_from_group:int, group_type:str, groups_per_day:int, final_stage_time:bool) -> Tournament:
-    if tournament_type == True:
-            multi_stage = MultiStage(clear_participants(participants),
-                                    {'compete_in_group': compete_in_group, 'advance_from_group': advance_from_group,
-                                    'type': type, 'group_type': group_type,},
-                                    {'time_managment': time_managment, 'start_time': start_time,
-                                    'avg_game_time': avg_game_time, 'max_games_number': max_games_number,
-                                    'break_between': break_between,'mathes_same_time': mathes_same_time,
-                                    'groups_per_day': groups_per_day, 'final_stage_time': final_stage_time},
-                                    {'win': points_victory, 'loss': points_loss, 'draw': points_draw},
-                                    secod_final
-                                    )
+def create_tournament(*, title: str, content: str,  poster, game: str, prize: float, start_time, bracket_type: str, user: CustomUser,
+                    # participants: str,
+                    # creater_email, tournament_type: bool, secod_final: bool, points_victory: int, points_loss: int, points_draw: int,
+                    # time_managment: bool, avg_game_time: int, max_games_number: int, break_between: int, mathes_same_time: int,
+                    # compete_in_group: int, advance_from_group: int, group_type: str, groups_per_day: int, final_stage_time: bool
+                    ) -> Tournament:
+    
+    link = slugify(title)
+    
+    tournament = Tournament.objects.create(title=title, content=content, poster=poster, link=link,
+                                            game=game, prize=prize, start_time=start_time, owner=user.profile)
+
+    # if tournament_type == True:
+    #         multi_stage = MultiStage(clear_participants(participants),
+    #                                 {'compete_in_group': compete_in_group, 'advance_from_group': advance_from_group,
+    #                                 'type': type, 'group_type': group_type,},
+    #                                 {'time_managment': time_managment, 'start_time': start_time,
+    #                                 'avg_game_time': avg_game_time, 'max_games_number': max_games_number,
+    #                                 'break_between': break_between,'mathes_same_time': mathes_same_time,
+    #                                 'groups_per_day': groups_per_day, 'final_stage_time': final_stage_time},
+    #                                 {'win': points_victory, 'loss': points_loss, 'draw': points_draw},
+    #                                 secod_final
+    #                                 )
             
-            brackets = multi_stage.create_multi_stage_brackets()
-            tournament = Tournament.objects.create(title=title, content=content, participants=participants, poster=poster,
-                                            game=game, prize=prize, start_time=start_time, owner=Profile.objects.get(user__email=creater_email))
+    #         brackets = multi_stage.create_multi_stage_brackets()
+    #         tournament = Tournament.objects.create(title=title, content=content, participants=participants, poster=poster,
+    #                                         game=game, prize=prize, start_time=start_time, owner=Profile.objects.get(user__email=creater_email))
            
-            for i in brackets[0:-1]:
-                Bracket.objects.create(tournament=tournament, bracket=i, final=False, type=group_type)
+    #         for i in brackets[0:-1]:
+    #             Bracket.objects.create(tournament=tournament, bracket=i, final=False, type=group_type)
                 
-            Bracket.objects.create(tournament=tournament, bracket=brackets[-1], participants_from_group=advance_from_group, type=type)
+    #         Bracket.objects.create(tournament=tournament, bracket=brackets[-1], participants_from_group=advance_from_group, type=type)
 
-    else:
-        if type == 'SE':
-            single_el = SingleEl(clear_participants(participants),
-                                {'time_managment': time_managment, 'start_time': start_time,
-                                'avg_game_time': avg_game_time, 'max_games_number': max_games_number,
-                                'break_between': break_between,'mathes_same_time': mathes_same_time},
-                                secod_final)
+    # else:
+    #     if type == 'SE':
+    #         single_el = SingleEl(clear_participants(participants),
+    #                             {'time_managment': time_managment, 'start_time': start_time,
+    #                             'avg_game_time': avg_game_time, 'max_games_number': max_games_number,
+    #                             'break_between': break_between,'mathes_same_time': mathes_same_time},
+    #                             secod_final)
             
-            bracket = single_el.create_se_bracket()
+    #         bracket = single_el.create_se_bracket()
 
-        elif type == 'DE':
-            double_el = DoubleEl(clear_participants(participants),
-                                {'time_managment': time_managment, 'start_time': start_time,
-                                'avg_game_time': avg_game_time, 'max_games_number': max_games_number,
-                                'break_between': break_between,'mathes_same_time': mathes_same_time})
-            bracket = double_el.create_de_bracket()
+    #     elif type == 'DE':
+    #         double_el = DoubleEl(clear_participants(participants),
+    #                             {'time_managment': time_managment, 'start_time': start_time,
+    #                             'avg_game_time': avg_game_time, 'max_games_number': max_games_number,
+    #                             'break_between': break_between,'mathes_same_time': mathes_same_time})
+    #         bracket = double_el.create_de_bracket()
 
-        elif type == 'RR':
-            round_robin = RoundRobin(clear_participants(participants),
-                                    {'win': points_victory, 'loss': points_loss,'draw': points_draw},
-                                    {'time_managment': time_managment, 'start_time': start_time,
-                                    'avg_game_time': avg_game_time, 'max_games_number': max_games_number,
-                                    'break_between': break_between, 'mathes_same_time': mathes_same_time,})
-            bracket = round_robin.create_round_robin_bracket()
+    #     elif type == 'RR':
+    #         round_robin = RoundRobin(clear_participants(participants),
+    #                                 {'win': points_victory, 'loss': points_loss,'draw': points_draw},
+    #                                 {'time_managment': time_managment, 'start_time': start_time,
+    #                                 'avg_game_time': avg_game_time, 'max_games_number': max_games_number,
+    #                                 'break_between': break_between, 'mathes_same_time': mathes_same_time,})
+    #         bracket = round_robin.create_round_robin_bracket()
 
-        elif type == 'SW':
-            swiss = Swiss(clear_participants(participants),
-                        {'win': points_victory, 'loss': points_loss, 'draw': points_draw},
-                        {'time_managment': time_managment, 'start_time': start_time,
-                        'avg_game_time': avg_game_time, 'max_games_number': max_games_number,
-                        'break_between': break_between,'mathes_same_time': mathes_same_time,})
-            bracket = swiss.create_swiss_bracket()
+    #     elif type == 'SW':
+    #         swiss = Swiss(clear_participants(participants),
+    #                     {'win': points_victory, 'loss': points_loss, 'draw': points_draw},
+    #                     {'time_managment': time_managment, 'start_time': start_time,
+    #                     'avg_game_time': avg_game_time, 'max_games_number': max_games_number,
+    #                     'break_between': break_between,'mathes_same_time': mathes_same_time,})
+    #         bracket = swiss.create_swiss_bracket()
 
-        tournament = Tournament.objects.create(title=title, content=content, participants=participants, poster=poster,
-                                            game=game, prize=prize, start_time=start_time, owner=Profile.objects.get(user__email=creater_email))
-        Bracket.objects.create(tournament=tournament, bracket=bracket, type=type)
+    #     tournament = Tournament.objects.create(title=title, content=content, participants=participants, poster=poster,
+    #                                         game=game, prize=prize, start_time=start_time, owner=Profile.objects.get(user__email=creater_email))
+    #     Bracket.objects.create(tournament=tournament, bracket=bracket, type=type)
             
-    return tournament
+    # return tournament
 
 
 def create_bracket(*, participants: str, type: str, secod_final: bool = False, points_victory: int, points_loss: int,  points_draw: int) -> dict:
@@ -145,9 +153,9 @@ def update_tournament(*, tournament:Tournament, data) -> Tournament:
     
     if tournament.title != data['title']:
         tournament.title = data['title']
-        tournament.slug = slugify(data['title'])
+        tournament.link = slugify(data['title'])
         tournament.full_clean()
-        tournament.save(update_fields=["title", "slug"])
+        tournament.save(update_fields=["title", "link"])
 
     return tournament
 

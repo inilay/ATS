@@ -7,13 +7,13 @@ import json
 
 
 class TournamentSerializer(serializers.ModelSerializer):
-    slug = serializers.CharField(required=False)
+    link = serializers.CharField(required=False)
     owner = serializers.StringRelatedField(required=False) 
     start_time = serializers.DateTimeField(format='%Y-%m-%dT%H:%M')
 
     class Meta:
         model = Tournament
-        fields = ['id', 'slug', 'title', 'content', 'participants', 'poster', 'game', 'prize', 'created_at', 'start_time', 'owner']  
+        fields = ['id', 'link', 'title', 'content', 'participants', 'poster', 'game', 'prize', 'created_at', 'start_time', 'owner']  
 
     def create(self, validated_data):
         if self.initial_data.get('tournamentType') == '1':
