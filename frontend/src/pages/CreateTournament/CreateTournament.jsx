@@ -19,7 +19,7 @@ const CreateTournament = () => {
   const { user } = useContext(AuthContext);
   const [responseBody, setResponseBody] = useState({
 
-    type: "SE",
+    bracket_type: 1,
     points_loss: "0",
     points_draw: "0",
     points_victory: "1",
@@ -50,7 +50,7 @@ const CreateTournament = () => {
 
   const inputSelectChangeHandler = (event) => {
     const { name, value } = event.target;
-    setResponseBody({ ...responseBody, [name]: value });
+    setResponseBody({ ...responseBody, [name]: parseInt(value) });
   };
 
   const inputRadioChangeHandler = (event) => {
@@ -94,7 +94,7 @@ const CreateTournament = () => {
       },
     ).then(function (response) {
       if (response.status == 201) {
-        navigate(`/tournament/${responseBody.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')}`)
+        // navigate(`/tournament/${responseBody.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')}`)
       }
     });
 
@@ -211,10 +211,10 @@ const CreateTournament = () => {
                           name="group_type"
                           onChange={(e) => inputSelectChangeHandler(e)}
                         >
-                          <option value="RR">Round Robin</option>
-                          <option value="SE">Single Elimination</option>
-                          <option value="DE">Double Elimination</option>
-                          <option value="SW">Swiss</option>
+                          <option value="1">Single Elimination</option>
+                          <option value="2">Round Robin</option>
+                          <option value="3">Double Elimination</option>
+                          <option value="4">Swiss</option>
                         </Form.Select>
                       </Form.Group>
                       <div className="row">

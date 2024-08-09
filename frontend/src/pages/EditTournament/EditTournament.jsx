@@ -19,8 +19,8 @@ const EditTournament = () => {
   const navigate = useNavigate();
   const params = useParams();
   const { user } = useContext(AuthContext);
-  const [fetchTournament, isLoading, error] = useFetching(async (slug) => {
-    const response = await PostService.getTournamentBySlug(slug);
+  const [fetchTournament, isLoading, error] = useFetching(async (link) => {
+    const response = await PostService.getTournamentBySlug(link);
     setResponseBody({
       title: response.data.title,
       content: response.data.content,
@@ -47,7 +47,7 @@ const EditTournament = () => {
   const [inputFile, setInputFile] = useState(null);
 
   useEffect(() => {
-    fetchTournament(params.slug);
+    fetchTournament(params.link);
   }, []);
 
   const inputChangeHandler = (inputValue) => {
@@ -57,7 +57,7 @@ const EditTournament = () => {
 
   const onSubmitHandler = () => {
     const response = api.patch(
-      `/edit_tournament/${params.slug}/`,
+      `/edit_tournament/${params.link}/`,
       { ...responseBody, poster: inputFile },
       {
         headers: {
@@ -66,7 +66,7 @@ const EditTournament = () => {
       }
     ).then(function (response) {
       if (response.status == 200) {
-        navigate(`/tournament/${response.data.slug}`)
+        navigate(`/tournament/${response.data.link}`)
       }
     });
 

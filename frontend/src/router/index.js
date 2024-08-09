@@ -16,10 +16,10 @@ import Test from "../pages/Test/Test";
 
 export const privateRoutes = [
     { path: '/create_tournament', element: <CreateTournament />, exact: true },
-    { path: '/edit_tournament/:slug', element: <EditTournament />, exact: true },
+    { path: '/edit_tournament/:link', element: <EditTournament />, exact: true },
     { path: '/', element: <Home />, exact: true },
     { path: '/tournaments', element: <Tournaments />, exact: true },
-    { path: '/tournament/:slug', element: <Tournament />, exact: true },
+    { path: '/tournament/:link', element: <Tournament />, exact: true },
     { path: '/bracket/:id', element: <Bracket />, exact: true },
     { path: '/create_bracket', element: <CreateBracket />, exact: true },
     { path: '/profile/:slug', element: <Profile />, exact: true },
@@ -31,7 +31,7 @@ export const privateRoutes = [
 export const publicRoutes = [
     { path: '/', element: <Home />, exact: true },
     { path: '/tournaments', element: <Tournaments />, exact: true },
-    { path: '/tournament/:slug', element: <Tournament />, exact: true },
+    { path: '/tournament/:link', element: <Tournament />, exact: true },
     { path: '/bracket/:id', element: <Bracket />, exact: true },
     { path: '/create_bracket', element: <CreateBracket />, exact: true },
     { path: '/profile/:slug', element: <Profile />, exact: true },

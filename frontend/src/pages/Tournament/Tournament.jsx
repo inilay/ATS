@@ -25,15 +25,15 @@ const Tournament = () => {
   const [tournament, setTournament] = useState({});
 
   const { user } = useContext(AuthContext);
-  const [fetchTournament, isLoading, error] = useFetching(async (slug) => {
-    const response = await PostService.getTournamentBySlug(slug);
+  const [fetchTournament, isLoading, error] = useFetching(async (link) => {
+    const response = await PostService.getTournamentBySlug(link);
     setTournament(response.data);
   });
 
   const api = useAxios();
   const navigate = useNavigate();
   const onDelete = async () => {
-    const response = await api.delete(`/delete_tournament/${params.slug}/`).then(function (response) {
+    const response = await api.delete(`/delete_tournament/${params.link}/`).then(function (response) {
       if (response.status == 204) {
         navigate(`/tournaments`)
       }
@@ -41,11 +41,11 @@ const Tournament = () => {
   };
 
   const onEdit = async () => {
-    navigate(`/edit_tournament/${params.slug}/`);
+    navigate(`/edit_tournament/${params.link}/`);
   };
 
-  const [fetchBrackets, isBraLoadind, braError] = useFetching(async (slug) => {
-    const response = await PostService.allTournamentBrackets(slug);
+  const [fetchBrackets, isBraLoadind, braError] = useFetching(async (link) => {
+    const response = await PostService.allTournamentBrackets(link);
 
     if (response.data.length > 1) {
       for (let i = 0; i < response.data.length - 1; i++) {
@@ -68,8 +68,8 @@ const Tournament = () => {
   });
 
   useEffect(() => {
-    fetchTournament(params.slug);
-    fetchBrackets(params.slug);
+    fetchTournament(params.link);
+    fetchBrackets(params.link);
   }, []);
 
   useEffect(() => { }, [bracket]);
