@@ -1,6 +1,6 @@
 import useAxios from "./useAxios";
 import axios from "axios";
-const baseURL = "http://127.0.0.1:49088/api/v1";
+const baseURL = "http://127.0.0.1:8000/api/v1";
 
 
 export default class PostService {

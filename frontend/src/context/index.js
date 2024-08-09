@@ -6,7 +6,7 @@ export const AuthContext = createContext(null)
 
 export const ThemeContext = createContext(null);
 
-const baseURL = "http://127.0.0.1:49088/api/v1";
+const baseURL = "http://127.0.0.1:8000/api/v1";
 
 export const AuthProvider = ({ children }) => {
     const [authTokens, setAuthTokens] = useState(() =>
