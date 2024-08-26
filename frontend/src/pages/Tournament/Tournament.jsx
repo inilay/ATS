@@ -16,22 +16,31 @@ import DoubleEl from "../../components/DoubleEl";
 import classes from "./Tournament.module.css";
 import DefaultTournamnetPoster from "../../assets/svg/DefaultTournamnetPoster";
 
+import { setTournament } from "../../store/tournament";
+import { useSelector, useDispatch } from "react-redux";
+
 const Tournament = () => {
+  const dispatch = useDispatch()
   const params = useParams();
+  const api = useAxios();
+  const navigate = useNavigate();
+
   const [id, setId] = useState(0);
   const [bracket, setBracket] = useState([]);
   const [types, setTypes] = useState("");
   const [groupStage, setGroupStage] = useState([]);
-  const [tournament, setTournament] = useState({});
+
+
+  const tournament = useSelector(state => state.tournament)
 
   const { user } = useContext(AuthContext);
+
+
   const [fetchTournament, isLoading, error] = useFetching(async (link) => {
     const response = await PostService.getTournamentBySlug(link);
-    setTournament(response.data);
+    dispatch(setTournament(response.data));
   });
 
-  const api = useAxios();
-  const navigate = useNavigate();
   const onDelete = async () => {
     const response = await api.delete(`/delete_tournament/${params.link}/`).then(function (response) {
       if (response.status == 204) {
@@ -44,33 +53,41 @@ const Tournament = () => {
     navigate(`/edit_tournament/${params.link}/`);
   };
 
-  const [fetchBrackets, isBraLoadind, braError] = useFetching(async (link) => {
-    const response = await PostService.allTournamentBrackets(link);
+  const [fetchBrackets, isBraLoadind, braError] = useFetching(async () => {
+    console.log('tournament.id', tournament.id);
+    
+    const response = await PostService.allTournamentBrackets(tournament.id);
+    // const response = await PostService.allTournamentBrackets(link);
 
-    if (response.data.length > 1) {
-      for (let i = 0; i < response.data.length - 1; i++) {
-        setGroupStage((groupStage) => [
-          ...groupStage,
-          [
-            response.data[i].id,
-            response.data[i].type,
-            response.data[i].bracket,
-          ],
-        ]);
-      }
-    }
-    setBracket(
+    // if (response.data.length > 1) {
+    //   for (let i = 0; i < response.data.length - 1; i++) {
+    //     setGroupStage((groupStage) => [
+    //       ...groupStage,
+    //       [
+    //         response.data[i].id,
+    //         response.data[i].type,
+    //         response.data[i].bracket,
+    //       ],
+    //     ]);
+    //   }
+    // }
+    // setBracket(
 
-      response.data[response.data.length - 1].bracket
-    );
-    setTypes(response.data[response.data.length - 1].type);
-    setId(response.data[response.data.length - 1].id);
+    //   response.data[response.data.length - 1].bracket
+    // );
+    // setTypes(response.data[response.data.length - 1].type);
+    // setId(response.data[response.data.length - 1].id);
   });
 
   useEffect(() => {
     fetchTournament(params.link);
-    fetchBrackets(params.link);
   }, []);
+
+  useEffect(() => {
+    if (tournament.id) {
+      fetchBrackets();
+    }
+  }, [tournament.id])
 
   useEffect(() => { }, [bracket]);
 
