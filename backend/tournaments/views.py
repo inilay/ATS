@@ -5,10 +5,11 @@ from rest_framework.views import APIView
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 
 from .models import Tournament, Bracket
 from .utils import inline_serializer, get_object
-from .serializer import TournamentSerializer, BracketSerializer, AllBracketSerealizer
+from .serializer import TournamentSerializer, BracketSerializer, AllBracketSerealizer, GetAllBracketsSerializer
 from .selectors import tournaments_list, get_brackets_for_tournamnet, game_list
 from .services import create_tournament, create_bracket, update_bracket, update_tournament
 from .permissions import IsTournamenOwnerOrReadOnly, IsBracketOwnerOrReadOnly, AuthMixin
@@ -17,6 +18,7 @@ from .pagination import get_paginated_response, LimitOffsetPagination
 from rest_framework import parsers
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 
+from django.db import transaction
 
 
 # class LargeResultsSetPagination(PageNumberPagination):
@@ -102,7 +104,7 @@ class TournamentCreateView(APIView):
 
         title = serializers.CharField()
         content = serializers.CharField()
-        # participants = serializers.CharField()
+        participants = serializers.CharField()
         poster = serializers.ImageField(use_url=True, default=None)
         game = serializers.CharField()
         prize = serializers.FloatField()
@@ -127,7 +129,7 @@ class TournamentCreateView(APIView):
         # advance_from_group = serializers.IntegerField(required=False)
         # groups_per_day = serializers.IntegerField(required=False)
         # final_stage_time = serializers.BooleanField(required=False)
-
+    @transaction.atomic
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
         if not serializer.is_valid():
@@ -205,6 +207,7 @@ class BracketAPIView(APIView):
     def get(self, request, id):
         bracket = get_object(Bracket, id=id)
         serializer = self.OutputSerializer(bracket)
+        print('bracket')
         return Response(serializer.data)
 
 
@@ -261,14 +264,11 @@ class BracketUpdateAPIView(APIView):
 
 
 class AllBracketAPIView(APIView): 
-    class OutputSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Bracket
-            fields = "__all__"
 
-    def get(self, request, link):
-        tournament = get_object(Tournament, link=link)
-        brackets = get_brackets_for_tournamnet(tournament)
-        serializer = self.OutputSerializer(brackets, many=True)
+    def get(self, request, tournament_id):
+        print("work")
+        brackets = get_brackets_for_tournamnet(tournament_id=tournament_id)
+        print('brackets', brackets)
+        serializer = GetAllBracketsSerializer(brackets, many=True)
 
-        return Response(serializer.data)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)

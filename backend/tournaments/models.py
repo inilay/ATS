@@ -80,6 +80,7 @@ class BracketType(models.Model):
 
 class Round(models.Model):
     bracket = models.ForeignKey('Bracket', related_name='rounds', on_delete=models.CASCADE)
+    serial_number = models.IntegerField()
     
 
 class Match(models.Model):

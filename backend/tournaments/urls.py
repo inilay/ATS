@@ -11,6 +11,6 @@ urlpatterns = [
     path('api/v1/create_tournament/', TournamentCreateView.as_view()),
     path('api/v1/bracket/<int:id>/', BracketAPIView.as_view()),
     path('api/v1/create_bracket/', BracketCreateView.as_view()),
-    path('api/v1/tournament_brackets/<str:link>/', AllBracketAPIView.as_view(), name='tournament_brackets'),
+    path('api/v1/tournament_brackets/<int:tournament_id>/', AllBracketAPIView.as_view(), name='tournament_brackets'),
     path('api/v1/update_bracket/<int:id>/', BracketUpdateAPIView.as_view())
 ]
