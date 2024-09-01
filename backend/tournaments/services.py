@@ -62,8 +62,9 @@ def create_se_bracket(bracket: Bracket, participants: list):
     # log(player_in_match)total_players -  total number of rounds in the tournament 
 
     number_of_rounds = math.ceil(math.log(len(participants), bracket.participant_in_match))
-    number_of_match_in_round = bracket.participant_in_match**(number_of_rounds-1)
-
+    # number_of_match_in_round = bracket.participant_in_match**(number_of_rounds-1)
+    
+    match_serial_number_cnt = len(participants) - 1
     number_of_match_in_round = 1
 
     print('participants', participants)
@@ -72,120 +73,131 @@ def create_se_bracket(bracket: Bracket, participants: list):
 
     rounds = []
     unsaved_matches = []
-    saved_matches = []
     matches_info = []
 
     # Создаем раунды
-    for number in range(number_of_rounds, 0, -1):
+    for number in range(number_of_rounds-1, -1, -1):
         rounds.append(Round(bracket=bracket, serial_number=number))
     Round.objects.bulk_create(rounds)
 
     # Заполняем раунды матчами с последнего по первый
-    for r in range(number_of_rounds-1, -1, -1):
-        print('r', r)
+    for r in range(number_of_rounds):
         for m in range(number_of_match_in_round):
-            # Для последнего раунда
+            match = Match(round=rounds[r], serial_number=match_serial_number_cnt, result_id=1)
+            unsaved_matches.append(match)
+            # Для первого
             if r == number_of_rounds-1:
-                unsaved_matches.append(Match(round=rounds[r], child=None, result_id=1))
                 for p in range(bracket.participant_in_match):
                     matches_info.append(MatchParticipantInfo(
-                        match=unsaved_matches[m],
-                        participant_scoore=0,
-                        participant=''
-                    ))
-            # Для первого
-            elif r == 0:
-                # Позиция child в массиве saved_matches, созданном на предыдущей итерации,
-                # высчитывается как целая часть от деления номера матча в раунде на количество участников в матче
-                unsaved_matches.append(Match(round=rounds[r], child=saved_matches[m//bracket.participant_in_match], result_id=1))
-                for _ in range(bracket.participant_in_match):
-                    matches_info.append(MatchParticipantInfo(
-                        match=unsaved_matches[m],
+                        match=match,
                         participant_scoore=0,
                         participant=participants[m+p]
                     ))
             # Для остальных
             else:
-                unsaved_matches.append(Match(round=rounds[r], child=saved_matches[m//bracket.participant_in_match], result_id=1))
                 for _ in range(bracket.participant_in_match):
                     matches_info.append(MatchParticipantInfo(
-                        match=unsaved_matches[m],
+                        match=match,
                         participant_scoore=0,
                         participant=''
                     ))
+            # Уменьшаем серийный номер матча
+            match_serial_number_cnt = match_serial_number_cnt - 1
         # Увеличиваем количество матчей раунде
         number_of_match_in_round = number_of_match_in_round * bracket.participant_in_match
         # Сохраняем матчи
-        saved_matches = Match.objects.bulk_create(unsaved_matches)
-        unsaved_matches = []
 
+    Match.objects.bulk_create(unsaved_matches)
     MatchParticipantInfo.objects.bulk_create(matches_info)
         
-def create_de_bracket(bracket: Bracket, participants: list):
+def create_de_bracket(bracket_w: Bracket, bracket_l: Bracket, participants: list):
     # log(player_in_match)total_players -  total number of rounds in the tournament 
+    p_in_m = bracket_w.participant_in_match
 
-    number_of_rounds = math.ceil(math.log(len(participants), bracket.participant_in_match))
-    number_of_match_in_round = bracket.participant_in_match**(number_of_rounds-1)
-
-    number_of_match_in_round = 1
+    number_of_rounds_w = math.ceil(math.log(len(participants), p_in_m)) + 1
+    number_of_rounds_l = (math.ceil(math.log(len(participants), p_in_m)) - 1) * 2
 
     print('participants', participants)
-    print('number_of_rounds', number_of_rounds)
-    print('number_of_match_in_round', number_of_match_in_round)
-
-    rounds = []
+    print('number_of_rounds_w', number_of_rounds_w)
+    print('number_of_rounds_l', number_of_rounds_l)
+    
     unsaved_matches = []
-    saved_matches = []
     matches_info = []
 
-    # Создаем раунды
-    for number in range(number_of_rounds, 0, -1):
-        rounds.append(Round(bracket=bracket, serial_number=number))
-    Round.objects.bulk_create(rounds)
+    rounds_l = []
+    rounds_w = []
 
-    # Заполняем раунды матчами с последнего по первый
-    for r in range(number_of_rounds-1, -1, -1):
-        print('r', r)
-        for m in range(number_of_match_in_round):
-            # Для последнего раунда
-            if r == number_of_rounds-1:
-                unsaved_matches.append(Match(round=rounds[r], child=None, result_id=1))
-                for p in range(bracket.participant_in_match):
-                    matches_info.append(MatchParticipantInfo(
-                        match=unsaved_matches[m],
-                        participant_scoore=0,
-                        participant=''
-                    ))
+    # Создаем раунды  для нижней сетки
+    for number in range(number_of_rounds_l-1, -1, -1):
+        rounds_l.append(Round(bracket=bracket_l, serial_number=number))
+
+    # Создаем раунды для верхней сетки
+    for number in range(number_of_rounds_w-1, -1, -1):
+        rounds_w.append(Round(bracket=bracket_w, serial_number=number))
+
+    Round.objects.bulk_create(rounds_l+rounds_w)
+
+    number_of_match_in_round_l = 1
+    match_serial_number_cnt = 0
+    flag_l = False
+
+    # Заполняем нижнию сетку с последнего по первый
+    for r in range(number_of_rounds_l):
+        for m in range(number_of_match_in_round_l):
+            match = Match(round=rounds_l[r], serial_number=match_serial_number_cnt, result_id=1)
+            unsaved_matches.append(match)
+            for _ in range(bracket_l.participant_in_match):
+                matches_info.append(MatchParticipantInfo(
+                    match=match,
+                    participant_scoore=0,
+                    participant=''
+                ))
+            # Уменьшаем серийный номер матча
+            match_serial_number_cnt = match_serial_number_cnt + 1
+
+        if flag_l:
+            # Увеличиваем количество матчей раунде
+            number_of_match_in_round_l = number_of_match_in_round_l * 2
+            flag_l = False
+        else:
+            flag_l = True
+    
+    number_of_match_in_round_w = 1
+    match_serial_number_cnt = len(participants)
+    flag_l = False
+
+    # Заполняем верхнию сетку с последнего по первый
+    for r in range(number_of_rounds_w):
+        for m in range(number_of_match_in_round_w):
+            match = Match(round=rounds_w[r], serial_number=match_serial_number_cnt, result_id=1)
+            unsaved_matches.append(match)
             # Для первого
-            elif r == 0:
-                # Позиция child в массиве saved_matches, созданном на предыдущей итерации,
-                # высчитывается как целая часть от деления номера матча в раунде на количество участников в матче
-                unsaved_matches.append(Match(round=rounds[r], child=saved_matches[m//bracket.participant_in_match], result_id=1))
-                for _ in range(bracket.participant_in_match):
+            if r == number_of_rounds_w-1:
+                for p in range(bracket_w.participant_in_match):
                     matches_info.append(MatchParticipantInfo(
-                        match=unsaved_matches[m],
+                        match=match,
                         participant_scoore=0,
                         participant=participants[m+p]
                     ))
             # Для остальных
             else:
-                unsaved_matches.append(Match(round=rounds[r], child=saved_matches[m//bracket.participant_in_match], result_id=1))
-                for _ in range(bracket.participant_in_match):
+                for _ in range(bracket_w.participant_in_match):
                     matches_info.append(MatchParticipantInfo(
-                        match=unsaved_matches[m],
+                        match=match,
                         participant_scoore=0,
                         participant=''
                     ))
+            # Уменьшаем серийный номер матча
+            match_serial_number_cnt = match_serial_number_cnt - 1
+
         # Увеличиваем количество матчей раунде
-        number_of_match_in_round = number_of_match_in_round * bracket.participant_in_match
-        # Сохраняем матчи
-        saved_matches = Match.objects.bulk_create(unsaved_matches)
-        unsaved_matches = []
-
+        if flag_l:
+            number_of_match_in_round_w = number_of_match_in_round_w * p_in_m
+        else:
+            flag_l = True
+            
+    Match.objects.bulk_create(unsaved_matches)
     MatchParticipantInfo.objects.bulk_create(matches_info)
-
-    
-    
     
         
 
@@ -201,14 +213,17 @@ def create_tournament(*, title: str, content: str,  poster, game: str, prize: fl
     tournament = Tournament.objects.create(title=title, content=content, poster=poster, link=link,
                                             game=game, prize=prize, start_time=start_time, owner=user.profile)
     
-    bracket = Bracket.objects.create(tournament=tournament, bracket_type_id=1, participant_in_match=2)
+    
 
     participants = clear_participants(participants)
 
-    if bracket_type == 1:
-        create_se_bracket(bracket, participants)
-    else:
-        create_de_bracket(bracket, participants)
+    # if bracket_type == 1:
+    #     bracket = Bracket.objects.create(tournament=tournament, bracket_type_id=1, participant_in_match=2)
+    #     create_se_bracket(bracket, participants)
+    # else:
+    bracket_w = Bracket.objects.create(tournament=tournament, bracket_type_id=2, participant_in_match=2)
+    bracket_l = Bracket.objects.create(tournament=tournament, bracket_type_id=3, participant_in_match=2)
+    create_de_bracket(bracket_w, bracket_l, participants)
 
     # if tournament_type == True:
     #         multi_stage = MultiStage(clear_participants(participants),

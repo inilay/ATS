@@ -12,7 +12,7 @@ def get_brackets_for_tournamnet(tournament_id:int, **kwargs) -> QuerySet[Bracket
                 Prefetch('matches', queryset=Match.objects.prefetch_related(
                     Prefetch('info', queryset=MatchParticipantInfo.objects.only('participant_scoore', 'participant'))
                 ).all())
-            ).all())
+            ).all().order_by('serial_number'))
         ).filter(tournament_id=tournament_id)
         
     return brackets

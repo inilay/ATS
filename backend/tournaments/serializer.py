@@ -132,18 +132,19 @@ class AllBracketSerealizer(serializers.ModelSerializer):
         model = Tournament
         fields = ['brackets']  
 
-class GetAllBracketsMatchParticipantInfoSerializer(serializers.Serializer):
+class GetAllBracketsMPISerializer(serializers.Serializer):
     participant_scoore = serializers.IntegerField()
     participant = serializers.CharField()
 
-class GetAllBracketsMatchSerializer(serializers.Serializer): 
+class GetAllBracketsMSerializer(serializers.Serializer): 
     id = serializers.IntegerField()
-    info = GetAllBracketsMatchParticipantInfoSerializer(many=True)
+    info = GetAllBracketsMPISerializer(many=True)
 
-class GetAllBracketsRoundSerializer(serializers.Serializer):
+class GetAllBracketsRSerializer(serializers.Serializer):
     serial_number = serializers.IntegerField()
-    matches = GetAllBracketsMatchSerializer(many=True)
+    matches = GetAllBracketsMSerializer(many=True)
 
 class GetAllBracketsSerializer(serializers.Serializer):    
     id = serializers.IntegerField()
-    rounds = GetAllBracketsRoundSerializer(many=True)
+    type = serializers.IntegerField(source='bracket_type.id')
+    rounds = GetAllBracketsRSerializer(many=True)
