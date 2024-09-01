@@ -1,0 +1,90 @@
+.bracket {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+  .column {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    justify-content: space-around;
+    align-content: center;
+  }
+  .match {
+    position: relative;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+  
+  .team {
+    border: 1px solid black;
+  }
+  
+  .match_lines {
+    display: block;
+    position: absolute;
+    top: 50%;
+    bottom: 0;
+    margin-top: 0px;
+    right: -1px;
+  }
+  .match_lines .line {
+    background: red;
+    position: absolute;
+  }
+  
+  .match_lines.alt {
+    left: -25px;
+  }
+  
+  .match_lines .line.one {
+    height: 1px;
+    width: 25px;
+  }
+  .column:last-child .match_lines {
+    display: none;
+  }
+  
+  .column:first-child .match_lines.alt {
+    display: none;
+  }
+  
+  .column:last-child .match_lines.alt {
+    display: block;
+  }
+  
+  .column_lines_wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+  }
+
+
+  .column_lines_wrapper:last-child {
+    display: none;
+  }
+  
+  .column_lines {
+      height: 25%;
+      width: 1px;
+      background: red;
+  }
+
+  .column_lines_last {
+    height: 25%;
+    width: 1px;
+    background: linear-gradient(red 50%, white 50%);
+  }
+
+  .column_lines_first {
+    height: 25%;    
+    width: 1px;
+    background: linear-gradient(white 50%, red 50%);
+  }
+
+  .score {
+    margin-left: 10px;
+  }

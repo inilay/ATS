@@ -3,19 +3,19 @@ import { createSlice } from "@reduxjs/toolkit";
 const bracketSlice = createSlice({
     name: 'bracket',
     initialState: {
-        id: '',
-        bracket: '',
+        brackets: [],
     },
     reducers: {
         setBracket(state, action) {
-            state.id = action.payload.id
-            state.bracket = action.payload.bracket
+
+            console.log('action', action.payload);
+    
+            state.brackets = action.payload.brackets
         
         },
        
         clearBracket(state) {
-            state.id = ''
-            state.bracket = ''
+            state.brackets = []
         },
     }
 })
