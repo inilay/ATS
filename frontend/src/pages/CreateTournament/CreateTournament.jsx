@@ -168,7 +168,7 @@ const CreateTournament = () => {
                 <Form.Label>Poster</Form.Label>
                 <UploadButton setInputFileValue={setInputFile} />
               </Form.Group>
-              <p>Tournament type</p>
+              {/* <p>Tournament type</p>
               <div className="mb-3">
                 <Form.Check
                   inline
@@ -192,7 +192,7 @@ const CreateTournament = () => {
                     inputRadioChangeHandler(event);
                   }}
                 ></Form.Check>
-              </div>
+              </div> */}
             </Card.Body>
           </MyCard>
 
@@ -256,13 +256,13 @@ const CreateTournament = () => {
                   <Form.Label>Bracket type</Form.Label>
                   <Form.Select
                     className="shadow-none select-input"
-                    name="type"
+                    name="bracket_type"
                     onChange={(e) => inputSelectChangeHandler(e)}
                   >
-                    <option value="SE">Single Elimination</option>
-                    <option value="DE">Double Elimination</option>
-                    <option value="RR">Round Robin</option>
-                    <option value="SW">Swiss</option>
+                    <option value="1">Single Elimination</option>
+                    <option value="2">Double Elimination</option>
+                    <option value="4">Round Robin</option>
+                    <option value="5">Swiss</option>
                   </Form.Select>
                 </Form.Group>
 

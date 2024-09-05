@@ -17,10 +17,37 @@
     margin-bottom: 10px;
     margin-left: 25px;
     margin-right: 25px;
+    width: 160px;
   }
-  
+
+  .score {
+    order: 999;
+    border-left: 1px solid black;
+    margin-left: auto;
+    width: 28px;
+    text-align: center;
+  }
+
+  .name {
+    text-align: center;
+    width: 130px;
+  }
+
   .team {
-    border: 1px solid black;
+    display: flex;
+    flex-flow: row wrap;
+    border-color: black;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-left: 1px solid ;
+    border-right: 1px solid;
+  }
+
+  .team:nth-child(2n) {
+    border-top: 0px;
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
   }
   
   .match_lines {
@@ -85,6 +112,3 @@
     background: linear-gradient(white 50%, red 50%);
   }
 
-  .score {
-    margin-left: 10px;
-  }

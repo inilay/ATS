@@ -9,14 +9,13 @@ import { useNavigate } from "react-router-dom";
 import MyButton from "../../components/UI/MyButton/MyButton";
 import Accordion from "react-bootstrap/Accordion";
 import moment from "moment";
-import RoundRobin from "../../components/RoundRobin";
-import Swiss from "../../components/Swiss";
-import SingleEl from "../../components/SingleEl";
-import DoubleEl from "../../components/DoubleEl";
+
 import classes from "./Tournament.module.css";
 import DefaultTournamnetPoster from "../../assets/svg/DefaultTournamnetPoster";
 
 import SingleElimination from "../../components/Brackets/SE/SingleElimination.jsx";
+import RoundRobin from "../../components/Brackets/RR/RoundRobin.jsx";
+import Swiss from "../../components/Brackets/SW/Swiss.jsx";
 
 import { setTournament } from "../../store/tournament";
 import { setBracket } from "../../store/bracket";
@@ -150,18 +149,14 @@ const Tournament = () => {
                                     return <SingleElimination
                                       bracket={br.rounds}
                                     />
-                                } else if (br.type == 3) {
-                                    return <SingleElimination
+                                } else if (br.type == 4) {
+                                    return <RoundRobin
                                       bracket={br.rounds}
                                     />
-                                } else if (br.type == "SW") {
-                                   (
-                                    <Swiss
-                                      id={id}
-                                      bracket={bracket}
-                                      owner={tournament.owner}
+                                } else if (br.type == 5) {
+                                    return <Swiss
+                                      bracket={br.rounds}
                                     />
-                                  );
                                 }
                               })
                               }
