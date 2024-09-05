@@ -57,6 +57,51 @@ def model_update(*, instance, fields: List[str], data: Dict[str, Any], auto_upda
 
     return instance, has_updated
 
+
+def create_sw_bracket(bracket: Bracket, participants: list):
+    participants_cnt = len(participants)
+    number_of_rounds = math.ceil(math.log2(len(participants_cnt)))
+
+    rounds = []
+    unsaved_matches = []
+    matches_info = []
+
+    match_serial_number_cnt = 0
+
+    if participants_cnt % 2 == 1: 
+        participants = participants + ['None']
+
+    # O(log(n))
+    for i in range(number_of_rounds):
+        _round = rounds.append(Round(bracket=bracket, serial_number=i))
+        round = []
+        # O(n / 2)
+        for j in range(math.ceil(participants_cnt / 2)):
+            match = Match(round=_round, serial_number=match_serial_number_cnt, result_id=1)
+            unsaved_matches.append(match)
+            if i == 0:
+                t1 = participants[j]
+                t2 = participants[participants_cnt // 2 + j]
+            else: 
+                t1 = 'TBO'
+                t2 = 'TBO'
+            matches_info.append(MatchParticipantInfo(
+                    match=match,
+                    participant_scoore=0,
+                    participant=t1
+                ))
+            matches_info.append(MatchParticipantInfo(
+                    match=match,
+                    participant_scoore=0,
+                    participant=t2
+                ))
+              
+            match_serial_number_cnt = match_serial_number_cnt + 1
+    
+    Round.objects.bulk_create(rounds)
+    Match.objects.bulk_create(unsaved_matches)
+    MatchParticipantInfo.objects.bulk_create(matches_info)
+
 def create_rr_bracket(bracket: Bracket, participants: list):
     participants_cnt = len(participants)
     rounds = []
@@ -82,35 +127,26 @@ def create_rr_bracket(bracket: Bracket, participants: list):
         l2 = permutations[mid:]
         # O(n/2)
         l2.reverse()
-        round = []
         # O(n/2)
         for j in range(start, mid):
             match = Match(round=_round, serial_number=match_serial_number_cnt, result_id=1)
             unsaved_matches.append(match)
-            t1 = participants[l1[j]]
-            t2 = participants[l2[j]]
             if j == 0 and i % 2 == 1:
-                matches_info.append(MatchParticipantInfo(
-                        match=match,
-                        participant_scoore=0,
-                        participant=t2
-                    ))
-                matches_info.append(MatchParticipantInfo(
-                        match=match,
-                        participant_scoore=0,
-                        participant=t1
-                    ))
+                t2 = participants[l1[j]]
+                t1 = participants[l2[j]]
             else:
-                matches_info.append(MatchParticipantInfo(
+                t1 = participants[l1[j]]
+                t2 = participants[l2[j]]
+            matches_info.append(MatchParticipantInfo(
                         match=match,
                         participant_scoore=0,
                         participant=t1
                     ))
-                matches_info.append(MatchParticipantInfo(
-                        match=match,
-                        participant_scoore=0,
-                        participant=t2
-                    ))
+            matches_info.append(MatchParticipantInfo(
+                    match=match,
+                    participant_scoore=0,
+                    participant=t2
+                ))
             match_serial_number_cnt = match_serial_number_cnt + 1
 
         permutations = permutations[mid:-1] + permutations[:mid] + permutations[-1:]
@@ -286,6 +322,7 @@ def create_tournament(*, title: str, content: str,  poster, game: str, prize: fl
         create_rr_bracket(bracket, participants)
     elif bracket_type == 5:
         bracket = Bracket.objects.create(tournament=tournament, bracket_type_id=5, participant_in_match=2)
+        create_sw_bracket(bracket, participants)
     else:
         bracket_w = Bracket.objects.create(tournament=tournament, bracket_type_id=2, participant_in_match=2)
         bracket_l = Bracket.objects.create(tournament=tournament, bracket_type_id=3, participant_in_match=2)
