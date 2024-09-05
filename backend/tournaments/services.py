@@ -60,7 +60,7 @@ def model_update(*, instance, fields: List[str], data: Dict[str, Any], auto_upda
 
 def create_sw_bracket(bracket: Bracket, participants: list):
     participants_cnt = len(participants)
-    number_of_rounds = math.ceil(math.log2(len(participants_cnt)))
+    number_of_rounds = math.ceil(math.log2(participants_cnt))
 
     rounds = []
     unsaved_matches = []
@@ -73,8 +73,8 @@ def create_sw_bracket(bracket: Bracket, participants: list):
 
     # O(log(n))
     for i in range(number_of_rounds):
-        _round = rounds.append(Round(bracket=bracket, serial_number=i))
-        round = []
+        _round = Round(bracket=bracket, serial_number=i)
+        rounds.append(_round)
         # O(n / 2)
         for j in range(math.ceil(participants_cnt / 2)):
             match = Match(round=_round, serial_number=match_serial_number_cnt, result_id=1)
@@ -85,12 +85,14 @@ def create_sw_bracket(bracket: Bracket, participants: list):
             else: 
                 t1 = 'TBO'
                 t2 = 'TBO'
-            matches_info.append(MatchParticipantInfo(
+            matches_info.append(
+                MatchParticipantInfo(
                     match=match,
                     participant_scoore=0,
                     participant=t1
                 ))
-            matches_info.append(MatchParticipantInfo(
+            matches_info.append(
+                MatchParticipantInfo(
                     match=match,
                     participant_scoore=0,
                     participant=t2
@@ -120,16 +122,20 @@ def create_rr_bracket(bracket: Bracket, participants: list):
     mid = participants_cnt // 2 
     match_serial_number_cnt = 0
 
+    # Создаем раунды
+    for number in range(participants_cnt-1):
+        rounds.append(Round(bracket=bracket, serial_number=number))
+    Round.objects.bulk_create(rounds)
+
     # O(n)
-    for i in range(participants_cnt-1):
-        _round = rounds.append(Round(bracket=bracket, serial_number=i))
+    for i, r in enumerate(rounds):
         l1 = permutations[:mid]
         l2 = permutations[mid:]
         # O(n/2)
         l2.reverse()
         # O(n/2)
         for j in range(start, mid):
-            match = Match(round=_round, serial_number=match_serial_number_cnt, result_id=1)
+            match = Match(round=r, serial_number=match_serial_number_cnt, result_id=1)
             unsaved_matches.append(match)
             if j == 0 and i % 2 == 1:
                 t2 = participants[l1[j]]
@@ -151,7 +157,6 @@ def create_rr_bracket(bracket: Bracket, participants: list):
 
         permutations = permutations[mid:-1] + permutations[:mid] + permutations[-1:]
 
-    Round.objects.bulk_create(rounds)
     Match.objects.bulk_create(unsaved_matches)
     MatchParticipantInfo.objects.bulk_create(matches_info)
 
@@ -295,10 +300,8 @@ def create_de_bracket(bracket_w: Bracket, bracket_l: Bracket, participants: list
             
     Match.objects.bulk_create(unsaved_matches)
     MatchParticipantInfo.objects.bulk_create(matches_info)
-    
-        
 
-def create_tournament(*, title: str, content: str,  poster, game: str, prize: float, start_time, bracket_type: str, user: CustomUser,
+def create_tournament(*, title: str, content: str,  poster, game: str, prize: float, start_time, bracket_type: int, user: CustomUser,
                     participants: str,
                     # creater_email, tournament_type: bool, secod_final: bool, points_victory: int, points_loss: int, points_draw: int,
                     # time_managment: bool, avg_game_time: int, max_games_number: int, break_between: int, mathes_same_time: int,
@@ -327,6 +330,9 @@ def create_tournament(*, title: str, content: str,  poster, game: str, prize: fl
         bracket_w = Bracket.objects.create(tournament=tournament, bracket_type_id=2, participant_in_match=2)
         bracket_l = Bracket.objects.create(tournament=tournament, bracket_type_id=3, participant_in_match=2)
         create_de_bracket(bracket_w, bracket_l, participants)
+
+    print('end m')
+    return
 
     # if tournament_type == True:
     #         multi_stage = MultiStage(clear_participants(participants),
