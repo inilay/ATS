@@ -12,6 +12,17 @@
     align-content: center;
 }
 
+.button_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+.icon_button {
+    background: var(--opposite);
+    border: none;
+}
+
 .match {
     position: relative;
     flex-direction: column;
@@ -21,9 +32,36 @@
     margin-right: 25px;
 }
 
-.team {
-    border: 1px solid black;
+.score {
+    color: var(--dark-ligth);
+    order: 999;
+    margin-left: auto;
+    width: 28px;
+    text-align: center;
+  }
+  
+.name {
+    padding-left: 10px;
+    color: var(--dark-ligth);
+    width: 130px;
 }
+
+.team {
+    display: flex;
+    flex-flow: row wrap;
+    height: 30px;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+}
+
+.team:nth-child(2n) {
+    border-top: 0px;
+    border-bottom: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+  }
 
 .score {
     margin-left: 10px;

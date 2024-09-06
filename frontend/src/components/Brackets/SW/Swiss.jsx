@@ -2,14 +2,15 @@ import { useState, useContext, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import classes from "./Swiss.module.css";
-
+import MatchInfoIcon from "../../../assets/svg/MatchInfoIcon";
+import MatchJudgeIcon from "../../../assets/svg/MatchJudgeIcon";
 
 const Swiss = ({bracket}) => {
 
   console.log('bracket ыц', bracket);
 
   return (
-    <section>
+    <div>
       <div className={`${classes.bracket}`}>
         {bracket.map((round) => (
           <Fragment>
@@ -19,19 +20,32 @@ const Swiss = ({bracket}) => {
                     {
                     match.info.map((team) => (
                         <div className={`${classes.team}`}>
-                        <span className={`${classes.name}`}>{team.participant}</span>
-                        <span className={`${classes.score}`}>{team.participant_scoore}</span>
+                          <div className={`${classes.name}`}>{team.participant}</div>
+                          <div className={`${classes.score}`}>{team.participant_scoore}</div>
                         </div>
                     ))
                     }
+                    <div className={classes.button_container}>
+                      <button
+                        className={classes.icon_button}
+                      >
+                        <MatchInfoIcon />
+                      </button>
+                      <button
+                        className={classes.icon_button}
+                      >
+                        <MatchJudgeIcon />
+                      </button>
+                    </div>
                 </div>
+                
             )
             )}
             </div>
           </Fragment>
         ))}
       </div>
-    </section>
+    </div>
   );
 };
 

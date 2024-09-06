@@ -1,7 +1,8 @@
 import { useState, useContext, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
+import MatchInfoIcon from "../../../assets/svg/MatchInfoIcon";
+import MatchJudgeIcon from "../../../assets/svg/MatchJudgeIcon";
 import classes from "./SingleElimination.module.css";
 
 
@@ -38,7 +39,7 @@ const SingleElimination = ({bracket}) => {
   console.log('bracket', bracket);
 
   return (
-    <section>
+    <div>
       <div className={`${classes.bracket}`}>
         {bracket.map((round) => (
           <Fragment>
@@ -53,6 +54,18 @@ const SingleElimination = ({bracket}) => {
                     </div>
                   ))
                 }
+                <div className={classes.button_container}>
+                  <button
+                    className={classes.icon_button}
+                  >
+                    <MatchInfoIcon />
+                  </button>
+                  <button
+                    className={classes.icon_button}
+                  >
+                    <MatchJudgeIcon />
+                  </button>
+                </div>
                 <div className={`${classes.match_lines}`}>
                   <div className={`${classes.line} ${classes.one}`}></div>
                 </div>
@@ -77,7 +90,7 @@ const SingleElimination = ({bracket}) => {
 
         )}
       </div>
-    </section>
+    </div>
   );
 };
 
