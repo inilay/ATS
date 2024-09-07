@@ -1,32 +1,18 @@
 import { useState, useContext, Fragment } from "react";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import MatchInfoIcon from "../../../assets/svg/MatchInfoIcon";
 import MatchJudgeIcon from "../../../assets/svg/MatchJudgeIcon";
 import classes from "./SingleElimination.module.css";
-
+import InfoModal from "../Modals/InfoModal/InfoModal.jsx";
+import EditModal from "../Modals/EditModal/EditModal.jsx";
+import { setCurrentMatch } from "../../../store/bracket.js";
+import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
 
 const SingleElimination = ({bracket}) => {
-  // bracket [ 
-  //   round [ 
-  //     match [
-
-  //     ]
-  //   ]
-  // ]
-  // const [bracket, setBracket] = useState([ [ [{'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Gin'}, {'name': 'Add'}], [{'name': 'Bill'}, {'name': 'Tom'}], [{'name': 'Gin'}, {'name': 'Add'}], [{'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Gin'}, {'name': 'Add'}], [{'name': 'Bill'}, {'name': 'Tom'}], [{'name': 'Gin'}, {'name': 'Add'}] ],
-  //                                          [ [{'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Gin'}, {'name': 'Add'}]],
-  //                                         //  [ [{'name': 'Bill'}, {'name': 'Add'}], [{'name': 'Bill'}, {'name': 'Add'}] ],
-  //                                          [ [{'name': 'Bill'}, {'name': 'Add'}] ]
-  //                                         ]);
-
-  // const [bracket, setBracket] = useState([ 
-  //   [ [{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'},], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'},],[{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'},], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'},] ],
-  //   [ [{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'},], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'},] ],
-  //   [ [{'name': 'Bill'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'},], [{'name': 'Bill'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'},] ],
-  //   [ [{'name': 'Bill'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Add'}] ]
-  //  ]);
-
+  const dispatch = useDispatch()
+  const [modalShow, setMatchCardModalShow] = useState(false);
+  const [modalEditShow, setEditMatchCardModalShow] = useState(false);
   const t = 2
 
   // const [bracket, setBracket] = useState([ 
@@ -36,7 +22,17 @@ const SingleElimination = ({bracket}) => {
   //   [ [{'name': 'Bill'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Add'}] ]
   //  ]);
 
-  console.log('bracket', bracket);
+  const openInfoModal = (match) => {  
+    setMatchCardModalShow(true)
+    dispatch(setCurrentMatch({currentMatch: match}))
+
+  }
+  
+  const openEditModal = (match) => {  
+    setEditMatchCardModalShow(true)
+    dispatch(setCurrentMatch({currentMatch: match}))
+
+  }
 
   return (
     <div>
@@ -46,6 +42,11 @@ const SingleElimination = ({bracket}) => {
           <div className={`${classes.column}`}>
           { round.matches.map((match) => (
               <div className={`${classes.match}`}>
+                <div className={classes.button_container}>
+                {match?.startTime && 
+                  <span>{moment.parseZone(match?.startTime).format("DD.MM h:mm a") || ""}</span>
+                }
+                </div>
                 {
                   match.info.map((team) => (
                     <div className={`${classes.team}`}>
@@ -56,11 +57,13 @@ const SingleElimination = ({bracket}) => {
                 }
                 <div className={classes.button_container}>
                   <button
+                    onClick={() => openInfoModal(match)}
                     className={classes.icon_button}
                   >
                     <MatchInfoIcon />
                   </button>
                   <button
+                    onClick={() => openEditModal(match)}
                     className={classes.icon_button}
                   >
                     <MatchJudgeIcon />
@@ -90,6 +93,8 @@ const SingleElimination = ({bracket}) => {
 
         )}
       </div>
+        <EditModal modalEditShow={modalEditShow} setEditMatchCardModalShow={setEditMatchCardModalShow} match={{}}/>
+        <InfoModal modalShow={modalShow} setMatchCardModalShow={setMatchCardModalShow} match={{}}/>
     </div>
   );
 };

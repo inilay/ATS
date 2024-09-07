@@ -1,0 +1,95 @@
+.side {
+    border-right: 2px solid var(--border-color);
+    border-left: 2px solid var(--border-color);
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+.side:first-of-type {
+    border-top: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
+  }
+
+.side:last-of-type{
+    border-top: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.hoverSide{
+    border-right: 2px solid;
+    border-left: 2px solid;
+    border-color: var(--border-highlight-color);
+}
+
+.hoverSide:first-of-type {
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+    border-color: var(--border-highlight-color);
+  }
+
+.hoverSide:last-of-type{
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+    border-color: var(--border-highlight-color);
+}
+
+.iconButton {
+    background: var(--opposite);
+    border: none;
+}
+
+
+.myModalHeader{
+    color: var(--dark-ligth);
+    background: var(--opposite);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.myModalBody{
+    color: var(--dark-ligth);
+    background: var(--opposite);
+}
+
+.divVS {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+
+.score{
+    display: flex;
+    padding: 0 1rem;
+    align-items: center;
+    width: 20%;
+    justify-content: center;
+    
+}
+
+
+.matchTitle {
+    margin-left: auto;
+}
+
+.dateInput {
+    background: inherit;
+    color: inherit;
+    outline: none;
+    border: none;
+}
+
+.myInput {
+    width: 50%;
+    text-align: center;
+    background: inherit;
+    color: inherit;
+    border-color: var(--border-color) !important;
+    outline:var(--border-color) !important;
+}
+
+.myInput:focus {
+    border: 1px solid;
+    background: inherit;
+    color: inherit;
+    border-color: var(--border-color) !important;
+    outline:var(--border-color) !important;
+    }

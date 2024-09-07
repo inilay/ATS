@@ -24,6 +24,8 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  width: 160px;
+  height: 20px;
 }
 
 .icon_button {
@@ -50,18 +52,18 @@
   display: flex;
   flex-flow: row wrap;
   height: 30px;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
-  border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
+  border-top: 2px solid var(--border-color);
+  border-bottom: 2px solid var(--border-color);
+  border-left: 2px solid var(--border-color);
+  border-right: 2px solid var(--border-color);
   
 }
 
 .team:nth-child(2n) {
-  border-top: 0px;
-  border-bottom: 1px solid var(--border-color);
-  border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
+  border-bottom: 0px;
+  border-top: 2px solid var(--border-color);
+  border-left: 2px solid var(--border-color);
+  border-right: 2px solid var(--border-color);
 }
 
 .match_lines {
@@ -82,7 +84,7 @@
 
 .match_lines .line.one {
   height: 1px;
-  top: -1px;
+  top: 0px;
   width: 26px;
 }
 .column:last-child .match_lines {
@@ -111,6 +113,7 @@
 .column_lines {
     height: 25%;
     width: 1px;
+    
     background: var(--border-color);
 }
 

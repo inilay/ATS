@@ -10,6 +10,11 @@
     fill: var(--fill-color)
 }
 
+.tournament_svg {
+    width: 280px;
+    height: 250px;
+}
+
 .match_svg {
     display: block;
     fill: var(--dark-ligth);

@@ -26,22 +26,14 @@ const CreateTournament = () => {
 
     secod_final: false,
 
-    time_managment: false,
-    avg_game_time: 30,
-    max_games_number: 3,
-    break_between: 10,
-    mathes_same_time: 16,
-
     group_type: "RR",
     compete_in_group: 4,
     advance_from_group: 2,
-    groups_per_day: 1,
-    final_stage_time: false,
+
     creater_email: user.email,
   });
   const [inputFile, setInputFile] = useState(null);
   const [tournamentType, setTournamentType] = useState("0");
-  const [timeManagment, setTimeManagment] = useState(false);
 
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
@@ -65,14 +57,6 @@ const CreateTournament = () => {
     const value = target.type === "checkbox" ? target.checked : target.value;
     const { name } = target;
     setResponseBody({ ...responseBody, [name]: value });
-  };
-
-  const inputCheckBoxTimeManagmentChangeHandler = (e) => {
-    const { target } = e;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const { name } = target;
-    setTimeManagment(!timeManagment);
-    setResponseBody({ ...responseBody, [name]: !timeManagment });
   };
 
   const {
@@ -125,7 +109,7 @@ const CreateTournament = () => {
                 errors={errors}
                 register={register}
                 validationSchema={{
-                  required: "⚠ This input is required.",
+                 
                 }}
                 onChange={inputChangeHandler}
               ></MyFormGroupInput>
@@ -135,7 +119,6 @@ const CreateTournament = () => {
                 errors={errors}
                 register={register}
                 validationSchema={{
-                  required: "⚠ This input is required.",
                   pattern: {
                     value: /^[+-]?\d+(\.\d+)?$/,
                     message: "⚠ Invalid data.",
@@ -328,6 +311,20 @@ const CreateTournament = () => {
                 ) : (
                   <></>
                 )}
+                  <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          Accordion Item #1
+                        </button>
+                      </h2>
+                      <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                 <MyFormGroupInput
                   label="Participants"
@@ -344,107 +341,6 @@ const CreateTournament = () => {
                   }}
                   onChange={inputChangeHandler}
                 ></MyFormGroupInput>
-
-                <Form.Check type="checkbox">
-                  <Form.Check.Input
-                    name="time_managment"
-                    onChange={(e) => inputCheckBoxTimeManagmentChangeHandler(e)}
-                    className="my_ckeckbox"
-                    type="checkbox"
-                  />
-                  <Form.Check.Label
-                    style={{ color: "inherit" }}
-                  >{`Add time managment`}</Form.Check.Label>
-                </Form.Check>
-
-                {timeManagment === true ? (
-                  <>
-                    <div className="col">
-                      <MyFormGroupInput
-                        label="Mathes at the same time"
-                        name="mathes_same_time"
-                        errors={errors}
-                        defaultValue={16}
-                        register={register}
-                        validationSchema={{
-                          required: "⚠ This input is required.",
-                        }}
-                        onChange={inputChangeHandler}
-                      ></MyFormGroupInput>
-                    </div>
-                    <div className="col">
-                      <MyFormGroupInput
-                        label="Average game time in minutes"
-                        name="avg_game_time"
-                        errors={errors}
-                        defaultValue={30}
-                        register={register}
-                        validationSchema={{
-                          required: "⚠ This input is required.",
-                        }}
-                        onChange={inputChangeHandler}
-                      ></MyFormGroupInput>
-                    </div>
-                    <div className="col">
-                      <MyFormGroupInput
-                        label="Maximum number of games per match (best of ...)"
-                        name="max_games_number"
-                        errors={errors}
-                        defaultValue={3}
-                        register={register}
-                        validationSchema={{
-                          required: "⚠ This input is required.",
-                        }}
-                        onChange={inputChangeHandler}
-                      ></MyFormGroupInput>
-                    </div>
-                    <div className="col">
-                      <MyFormGroupInput
-                        label="Break between matches in minutes"
-                        name="break_between"
-                        errors={errors}
-                        defaultValue={10}
-                        register={register}
-                        validationSchema={{
-                          required: "⚠ This input is required.",
-                        }}
-                        onChange={inputChangeHandler}
-                      ></MyFormGroupInput>
-                    </div>
-                    {tournamentType === "1" ? (
-                      <>
-                        <div className="col">
-                          <MyFormGroupInput
-                            label="Groups per day"
-                            name="groups_per_day"
-                            errors={errors}
-                            defaultValue={1}
-                            register={register}
-                            validationSchema={{
-                              required: "⚠ This input is required.",
-                            }}
-                            onChange={inputChangeHandler}
-                          ></MyFormGroupInput>
-                        </div>
-                        <Form.Check type="checkbox">
-                          <Form.Check.Input
-                            name="final_stage_time"
-                            onChange={(e) => inputCheckBoxChangeHandler(e)}
-                            className="my_ckeckbox"
-                            type="checkbox"
-                          />
-                          <Form.Check.Label
-                            style={{ color: "inherit" }}
-                          >{`Final on a separate day`}</Form.Check.Label>
-                        </Form.Check>
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                ) : (
-                  <></>
-                )}
               </Card.Body>
             </MyCard>
           </div>
