@@ -57,7 +57,7 @@ import json
 
 class Tournament(models.Model):
     title = models.CharField(max_length=255)
-    content = models.TextField(blank=True)
+    content = models.TextField(null=True)
     link = models.SlugField(max_length=255, unique=True)
     poster = models.ImageField(upload_to='photos/media/%Y/%m/%d/', blank=True)
     game = models.CharField(max_length=255)

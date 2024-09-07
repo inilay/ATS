@@ -1,10 +1,9 @@
-from rest_framework import viewsets, generics
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework import status
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 
 from .models import Tournament, Bracket
@@ -15,22 +14,6 @@ from .services import create_tournament, create_bracket, update_bracket, update_
 from .permissions import IsTournamenOwnerOrReadOnly, IsBracketOwnerOrReadOnly, AuthMixin
 from .pagination import get_paginated_response, LimitOffsetPagination
 
-from rest_framework import parsers
-from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
-
-from django.db import transaction
-
-
-# class LargeResultsSetPagination(PageNumberPagination):
-#     page_size = 9
-#     page_size_query_param = 'page_size'
-#     max_page_size = 1000
-
-
-# class TournamentsAPIList(generics.ListCreateAPIView):
-#     queryset = Tournament.objects.all().order_by('id')
-#     serializer_class = TournamentSerializer
-#     pagination_class = LargeResultsSetPagination
 
 class TournamentsAPIList(APIView):
     class Pagination(LimitOffsetPagination):
@@ -61,16 +44,6 @@ class TournamentsAPIList(APIView):
             view=self
         )
 
-# class TournamentAPIView(generics.RetrieveAPIView): 
-#     class OutputSerializer(serializers.ModelSerializer):
-#         start_time = serializers.DateTimeField(format='%Y-%m-%dT%H:%M')
-#         class Meta:
-#             model = Tournament
-#             fields = "__all__" 
-#     queryset = Tournament.objects.all()
-#     serializer_class = OutputSerializer
-#     lookup_field = 'slug'
-
 class GamesApiView(APIView):
     
     def get(self, requet):
@@ -91,25 +64,18 @@ class TournamentAPIView(APIView):
         serializer = self.OutputSerializer(tournament, context={'request': request})
         return Response(serializer.data)
 
-# class TournamentCreateView(generics.CreateAPIView):
-#     queryset = Tournament.objects.all()
-#     serializer_class = TournamentSerializer
-#     permission_classes = (IsAuthenticated, )
-
-
 class TournamentCreateView(APIView):
     permission_classes = (IsAuthenticated, )
 
     class InputSerializer(serializers.Serializer):
 
         title = serializers.CharField()
-        content = serializers.CharField()
+        content = serializers.CharField(default=None)
         participants = serializers.CharField()
         poster = serializers.ImageField(use_url=True, default=None)
         game = serializers.CharField()
-        prize = serializers.FloatField()
+        prize = serializers.FloatField(default=0)
         start_time = serializers.DateTimeField()
-        # creater_email = serializers.EmailField()
 
         bracket_type = serializers.IntegerField()
         # secod_final = serializers.BooleanField(required=False)
@@ -117,18 +83,11 @@ class TournamentCreateView(APIView):
         # points_loss = serializers.IntegerField(required=False)
         # points_draw = serializers.IntegerField(required=False)
 
-        # time_managment = serializers.BooleanField()
-        # avg_game_time = serializers.IntegerField(required=False)
-        # max_games_number = serializers.IntegerField(required=False)
-        # break_between = serializers.IntegerField(required=False)
-        # mathes_same_time = serializers.IntegerField(required=False)
-
         # tournament_type = serializers.BooleanField()
         # group_type = serializers.ChoiceField(required=False, choices=['SE', 'DE', 'RR', 'SW'])
         # compete_in_group = serializers.IntegerField(required=False)
         # advance_from_group = serializers.IntegerField(required=False)
-        # groups_per_day = serializers.IntegerField(required=False)
-        # final_stage_time = serializers.BooleanField(required=False)
+
     @transaction.atomic
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
@@ -141,34 +100,16 @@ class TournamentCreateView(APIView):
 
         return Response(status=status.HTTP_201_CREATED)
 
-
-# class TournamentDeleteAPIView(generics.DestroyAPIView):
-#     queryset = Tournament.objects.all()
-#     serializer_class = TournamentSerializer
-#     permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
-#     lookup_field = 'slug'
-
-#     def delete(self, request, *args, **kwargs):
-#         return self.destroy(request, *args, **kwargs)
-
-
 class TournamentDeleteAPIView(APIView):
     permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
 
+    @transaction.atomic
     def delete(self, request, link, *args, **kwargs):
         tournament = get_object(Tournament, link=link)
         self.check_object_permissions(request, tournament)
         tournament.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-# class TournamentUpdateApiView(generics.UpdateAPIView):
-#     queryset = Tournament.objects.all()
-#     serializer_class = TournamentSerializer
-#     permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
-#     lookup_field = 'slug'
-
 
 class TournamentUpdateApiView(APIView):
     permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
@@ -182,6 +123,7 @@ class TournamentUpdateApiView(APIView):
         start_time = serializers.DateTimeField()
         creater_email = serializers.EmailField()
 
+    @transaction.atomic
     def patch(self, request, link):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -191,12 +133,6 @@ class TournamentUpdateApiView(APIView):
         tournament = update_tournament(tournament=tournament, data=serializer.validated_data)
 
         return Response(data={'link': tournament.link}, status=status.HTTP_200_OK)
-
-
-# class BracketAPIView(generics.RetrieveAPIView):
-#     queryset = Bracket.objects.all()
-#     serializer_class = BracketSerializer
-#     lookup_field = 'id'
 
 class BracketAPIView(APIView):
     class OutputSerializer(serializers.ModelSerializer):
@@ -210,11 +146,6 @@ class BracketAPIView(APIView):
         print('bracket')
         return Response(serializer.data)
 
-
-# class BracketCreateView(generics.CreateAPIView):
-#     queryset = Bracket.objects.all()
-#     serializer_class = BracketSerializer
-
 class BracketCreateView(APIView):
 
     class InputSerializer(serializers.Serializer):
@@ -225,20 +156,13 @@ class BracketCreateView(APIView):
         points_loss = serializers.IntegerField(required=False)
         points_draw = serializers.IntegerField(required=False)
 
+    @transaction.atomic
     def post(self, request):
         input_serializer = self.InputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
         bracket = create_bracket(**input_serializer.validated_data)
 
         return Response(data={'id': bracket.id}, status=status.HTTP_201_CREATED)
-
-
-# class BracketUpdateAPIView(generics.UpdateAPIView):
-#     queryset = Bracket.objects.all()
-#     serializer_class = BracketSerializer
-#     permission_classes = ((IsBracketOwnerOrReadOnly|IsAdminUser),)
-#     lookup_field = 'id'
-
 
 class BracketUpdateAPIView(APIView):
     permission_classes = ((IsBracketOwnerOrReadOnly|IsAdminUser),)
@@ -247,6 +171,7 @@ class BracketUpdateAPIView(APIView):
         participants_from_group = serializers.IntegerField(required=False)
         final = serializers.BooleanField(required=False)
 
+    @transaction.atomic
     def patch(self, request, id):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -256,12 +181,6 @@ class BracketUpdateAPIView(APIView):
         bracket = update_bracket(bracket=bracket, match=request.data, data=serializer.validated_data)
 
         return Response(data={'bracket': bracket.bracket}, status=status.HTTP_200_OK)
-
-# class AllBracketAPIView(generics.RetrieveAPIView): 
-#     queryset = Tournament.objects.all()
-#     serializer_class = AllBracketSerealizer
-#     lookup_field = 'slug'
-
 
 class AllBracketAPIView(APIView): 
 
