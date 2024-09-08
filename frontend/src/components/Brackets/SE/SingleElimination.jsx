@@ -13,8 +13,7 @@ const SingleElimination = ({bracket, bracketId}) => {
   const dispatch = useDispatch()
   const [modalShow, setMatchCardModalShow] = useState(false);
   const [modalEditShow, setEditMatchCardModalShow] = useState(false);
-  const t = 3
-  console.log('bracketId', bracketId);
+  const participantsInMatch = bracket[0].matches[0].info.length
 
   const openInfoModal = (match) => {  
     setMatchCardModalShow(true)
@@ -74,11 +73,17 @@ const SingleElimination = ({bracket, bracketId}) => {
           )
           )}
           </div>
+          
           {round.matches.length >= 2 &&
             <div className={`${classes.column_lines_wrapper}`}>
               {[...Array.from(Array(round.matches.length).keys())].map((num, i) => 
-                <div 
-                  className={`${(round.matches.length > 2 && (i % t === 0 || i % t === t-1)) ? i % t === 0 ? classes.column_lines_first : classes.column_lines_last : classes.column_lines}`}
+                participantsInMatch % 2 === 1 ?
+                  <div 
+                    className={`${(round.matches.length > 2 && (i % participantsInMatch === 0 || i % participantsInMatch === participantsInMatch-1)) ? i % participantsInMatch === 0 ? classes.column_lines_first_odd : classes.column_lines_last_odd : classes.column_lines_odd}`}
+                    >
+                  </div>
+                : <div 
+                  className={`${(round.matches.length > 2 && (i % participantsInMatch === 0 || i % participantsInMatch === participantsInMatch-1)) ? i % participantsInMatch === 0 ? classes.column_lines_first : classes.column_lines_last : classes.column_lines}`}
                   >
                 </div>)}
             </div>

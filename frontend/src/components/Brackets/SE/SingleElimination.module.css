@@ -18,6 +18,7 @@
   margin-left: 25px;
   margin-right: 25px;
   
+  
 }
 
 .button_container {
@@ -131,4 +132,23 @@
   width: 1px;
   background: linear-gradient(var(--opposite) 50%, var(--border-color) 50%);
 }
+
+.column_lines_odd {
+  height: 100%;
+  width: 1px;
+  background: var(--border-color);
+}
+
+.column_lines_last_odd {
+  height: 25%;
+  width: 1px;
+  background: var(--opposite);
+}
+
+.column_lines_first_odd {
+  height: 25%;    
+  width: 1px;
+  background: var(--opposite);
+}
+
 
