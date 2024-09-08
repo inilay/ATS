@@ -5,7 +5,7 @@ import classes from "./Swiss.module.css";
 import MatchInfoIcon from "../../../assets/svg/MatchInfoIcon";
 import MatchJudgeIcon from "../../../assets/svg/MatchJudgeIcon";
 
-const Swiss = ({bracket}) => {
+const Swiss = ({bracket, bracketId}) => {
 
   console.log('bracket ыц', bracket);
 

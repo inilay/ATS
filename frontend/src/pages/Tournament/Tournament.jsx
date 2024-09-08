@@ -144,18 +144,22 @@ const Tournament = () => {
                                 if (br.type === 1) {
                                     return <SingleElimination
                                       bracket={br.rounds}
+                                      bracketId={br.id}
                                     />
                                 } else if (br.type === 2) {
                                     return <SingleElimination
                                       bracket={br.rounds}
+                                      bracketId={br.id}
                                     />
                                 } else if (br.type == 4) {
                                     return <RoundRobin
                                       bracket={br.rounds}
+                                      bracketId={br.id}
                                     />
                                 } else if (br.type == 5) {
                                     return <Swiss
                                       bracket={br.rounds}
+                                      bracketId={br.id}
                                     />
                                 }
                               })

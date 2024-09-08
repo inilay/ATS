@@ -6,13 +6,14 @@ import classes from "./EditModal.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import React, { useState } from "react";
 import moment from "moment";
+import bracketApi from "../../../../services/api/bracketApi";
 
 const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     const match = useSelector(state => state.bracket.currentMatch)
 
     const [matchState, setMatchState] = useState(match?.state);
     const [matchTime, setMatchTime] = useState(match?.startTime);
-    const [matchResults, setMatchResults] = useState({});
+    const [matchResults, setMatchResults] = useState([]);
 
     const matchStateHandler = (state) => {
         setMatchState(state);
@@ -26,21 +27,35 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     const matchResultsHandler = (e) => {
         e.preventDefault();
         let _matchResults = matchResults;
-        _matchResults[e.target.name] = e.target.value;
-        setMatchResults(_matchResults);
+        if  (!_matchResults.some(o => o.participant === e.target.name)) {
+            setMatchResults([...matchResults, {'participant': e.target.name, 'score': e.target.value}]);
+        }
+        else {
+            _matchResults.find(item => {
+                if (item.participant === e.target.name) {
+                    item.score = e.target.value;
+                    return true;
+                }
+            });
+            setMatchResults(_matchResults)
+        }
     };
 
     const onSubmitHandler = () => {
-        // const response = api.patch(`/update_bracket/${id}/`, {
-        //         id: match.id,
-        //         startTime: matchTime,
-        //         state: matchState,
-        //         match_results: matchResults
-        //     })
-        //     .then(function (res) {
-  
-        //     });
-        setEditMatchCardModalShow(false);
+        let data = {
+            id: match.id,
+            start_time: matchTime,
+            state: matchState,
+            match_results: matchResults
+        }
+
+        console.log(data);
+        
+
+        const response = bracketApi.updateBracket(1, data).then(() => {
+            setEditMatchCardModalShow(false);
+        });
+        
     };
 
     return (
@@ -97,8 +112,8 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
                 <MyRadioButton
                     defValue={matchState}
                     radios={[
-                        { name: "Scheduled", value: "SCHEDULED" },
-                        { name: "Played", value: "PLAYED" },
+                        { name: "Scheduled", value: '1' },
+                        { name: "Played", value: '2' },
                     ]}
                     onChange={matchStateHandler}
                 />

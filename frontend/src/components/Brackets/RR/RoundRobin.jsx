@@ -6,7 +6,7 @@ import MatchJudgeIcon from "../../../assets/svg/MatchJudgeIcon";
 import classes from "./RoundRobin.module.css";
 
 
-const RoundRobin = ({bracket}) => {
+const RoundRobin = ({bracket, bracketId}) => {
 
   console.log('bracket ыц', bracket);
 

@@ -5,22 +5,16 @@ import MatchJudgeIcon from "../../../assets/svg/MatchJudgeIcon";
 import classes from "./SingleElimination.module.css";
 import InfoModal from "../Modals/InfoModal/InfoModal.jsx";
 import EditModal from "../Modals/EditModal/EditModal.jsx";
-import { setCurrentMatch } from "../../../store/bracket.js";
+import { setCurrentMatch, setCurrentBracketId } from "../../../store/bracket.js";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 
-const SingleElimination = ({bracket}) => {
+const SingleElimination = ({bracket, bracketId}) => {
   const dispatch = useDispatch()
   const [modalShow, setMatchCardModalShow] = useState(false);
   const [modalEditShow, setEditMatchCardModalShow] = useState(false);
-  const t = 2
-
-  // const [bracket, setBracket] = useState([ 
-  //   [ [{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'},], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'},],[{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'},], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'},] ],
-  //   // [ [{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'}, ], [{'name': 'Bill'}, {'name': 'Tom'}, {'name': 'Bill'}, {'name': 'Tom'},], [{'name': 'Gin'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'},] ],
-  //   [ [{'name': 'Bill'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'},], [{'name': 'Bill'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Tom'},] ],
-  //   [ [{'name': 'Bill'}, {'name': 'Add'}, {'name': 'Bill'}, {'name': 'Add'}] ]
-  //  ]);
+  const t = 3
+  console.log('bracketId', bracketId);
 
   const openInfoModal = (match) => {  
     setMatchCardModalShow(true)
@@ -31,6 +25,7 @@ const SingleElimination = ({bracket}) => {
   const openEditModal = (match) => {  
     setEditMatchCardModalShow(true)
     dispatch(setCurrentMatch({currentMatch: match}))
+    dispatch(setCurrentBracketId({currentBracketId: bracketId}))
 
   }
 
@@ -55,25 +50,25 @@ const SingleElimination = ({bracket}) => {
                     </div>
                   ))
                 }
-                <div className={classes.button_container}>
-                  <button
-                    onClick={() => openInfoModal(match)}
-                    className={classes.icon_button}
-                  >
-                    <MatchInfoIcon />
-                  </button>
-                  <button
-                    onClick={() => openEditModal(match)}
-                    className={classes.icon_button}
-                  >
-                    <MatchJudgeIcon />
-                  </button>
-                </div>
                 <div className={`${classes.match_lines}`}>
                   <div className={`${classes.line} ${classes.one}`}></div>
                 </div>
                 <div className={`${classes.match_lines} ${classes.alt}`}>
                   <div className={`${classes.line} ${classes.one}`}></div>
+                </div>
+                <div className={classes.button_container}>
+                  <button
+                    className={classes.icon_button}
+                    onClick={() => openInfoModal(match)}
+                  >
+                    <MatchInfoIcon />
+                  </button>
+                  <button
+                    className={classes.icon_button}
+                    onClick={() => openEditModal(match)}
+                  >
+                    <MatchJudgeIcon />
+                  </button>
                 </div>
               </div>
           )

@@ -4,7 +4,8 @@ const bracketSlice = createSlice({
     name: 'bracket',
     initialState: {
         brackets: [],
-        currentMatch: null
+        currentMatch: null,
+        currentBracketId: null
     },
     reducers: {
         setBracket(state, action) {
@@ -17,13 +18,17 @@ const bracketSlice = createSlice({
         setCurrentMatch(state, action) {
             state.currentMatch = action.payload.currentMatch
         },
+        setCurrentBracketId(state, action) {
+            state.currentBracketId = action.payload.currentBracketId
+        },
         clearBracket(state) {
             state.brackets = []
-            state.currentMatch = {}
+            state.currentBracketId = null
+            state.currentMatch = null
         },
     }
 })
 
-export const { setBracket, clearBracket, setCurrentMatch } = bracketSlice.actions;
+export const { setBracket, clearBracket, setCurrentMatch, setCurrentBracketId } = bracketSlice.actions;
 
 export default bracketSlice.reducer;
