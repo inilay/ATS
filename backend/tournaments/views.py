@@ -165,22 +165,28 @@ class BracketCreateView(APIView):
         return Response(data={'id': bracket.id}, status=status.HTTP_201_CREATED)
 
 class BracketUpdateAPIView(APIView):
-    permission_classes = ((IsBracketOwnerOrReadOnly|IsAdminUser),)
+    permission_classes = []
 
     class InputSerializer(serializers.Serializer):
-        participants_from_group = serializers.IntegerField(required=False)
-        final = serializers.BooleanField(required=False)
+        id = serializers.IntegerField()
+        start_time = serializers.DateTimeField(required=False)
+        state = serializers.IntegerField(required=False)
+        match_results = inline_serializer(many=True, fields={
+            'participant': serializers.CharField(),
+            'score': serializers.IntegerField(),
+        })
 
     @transaction.atomic
-    def patch(self, request, id):
+    def put(self, request, id):
         serializer = self.InputSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        if not serializer.is_valid():
+            print(serializer.errors)
+        print('serializer.validated_data', serializer.validated_data)
+        # bracket = get_object(Bracket, id=id)
+        # self.check_object_permissions(request, bracket)
+        # bracket = update_bracket(bracket=bracket, match=request.data, data=serializer.validated_data)
 
-        bracket = get_object(Bracket, id=id)
-        self.check_object_permissions(request, bracket)
-        bracket = update_bracket(bracket=bracket, match=request.data, data=serializer.validated_data)
-
-        return Response(data={'bracket': bracket.bracket}, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
 class AllBracketAPIView(APIView): 
 

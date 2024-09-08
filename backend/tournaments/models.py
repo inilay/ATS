@@ -86,6 +86,7 @@ class Round(models.Model):
 class Match(models.Model):
     round = models.ForeignKey('Round', related_name='matches', on_delete=models.CASCADE)
     result = models.ForeignKey('MatchResult', on_delete=models.CASCADE)
+    start_time = models.DateTimeField(null=True)
     serial_number = models.IntegerField()
     
 
