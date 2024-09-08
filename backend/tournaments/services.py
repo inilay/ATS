@@ -245,11 +245,19 @@ def create_se_bracket(bracket: Bracket, participants: list):
 def create_se_bracket_1(bracket: Bracket, participants: list):
     # log(player_in_match)total_players -  total number of rounds in the tournament 
     participants_cnt = len(participants)
-    # bracket.participant_in_match
-    p_in_m = 3
+    # bracket.participant_in_match max 6 ?
+    p_in_m = 6
     next_round_p = 2
 
-    number_of_rounds = math.ceil(math.log(participants_cnt, p_in_m))
+    if next_round_p != 1:
+        number_of_rounds = 1
+        p = participants_cnt
+        while p != p_in_m:
+            number_of_rounds = number_of_rounds + 1
+            p = p / (p_in_m / next_round_p)
+    else:
+        # для next_round_p = 1
+        number_of_rounds = math.ceil(math.log(participants_cnt, p_in_m))
     # number_of_match_in_round = bracket.participant_in_match**(number_of_rounds-1)
 
     
@@ -303,7 +311,7 @@ def create_se_bracket_1(bracket: Bracket, participants: list):
             # Уменьшаем серийный номер матча
             match_serial_number_cnt = match_serial_number_cnt - 1
         # Увеличиваем количество матчей раунде
-        number_of_match_in_round = number_of_match_in_round * p_in_m
+        number_of_match_in_round = number_of_match_in_round * (p_in_m // next_round_p)
         # Сохраняем матчи
 
     Match.objects.bulk_create(unsaved_matches)
