@@ -184,9 +184,9 @@ def create_se_bracket(bracket: Bracket, participants: list):
     print('missing_participant_cnt', missing_participant_cnt)
 
     if missing_participant_cnt != 0:
-        where_insert_cnt = participants_cnt  // 2
+        where_insert_cnt = participants_cnt // 2
         for _ in range(missing_participant_cnt):
-            participants.appe(where_insert_cnt, '---')
+            participants.insert(where_insert_cnt, '---')
             where_insert_cnt = where_insert_cnt + 1
 
     # Создаем раунды
@@ -245,21 +245,22 @@ def create_se_bracket(bracket: Bracket, participants: list):
 def create_se_bracket_1(bracket: Bracket, participants: list):
     # log(player_in_match)total_players -  total number of rounds in the tournament 
     participants_cnt = len(participants)
-    # bracket.participant_in_match max 6 ?
+    # p_in_m work from 2 to 8 
     p_in_m = 6
-    next_round_p = 2
+    # next_round_p work from 1 to 4
+    next_round_p = 1
 
     if next_round_p != 1:
         number_of_rounds = 1
         p = participants_cnt
-        while p != p_in_m:
+        while p > p_in_m:
             number_of_rounds = number_of_rounds + 1
             p = p / (p_in_m / next_round_p)
+            print('p', p)
     else:
         # для next_round_p = 1
         number_of_rounds = math.ceil(math.log(participants_cnt, p_in_m))
     # number_of_match_in_round = bracket.participant_in_match**(number_of_rounds-1)
-
     
     match_serial_number_cnt = participants_cnt - 1
     number_of_match_in_round = 1
@@ -272,14 +273,15 @@ def create_se_bracket_1(bracket: Bracket, participants: list):
     unsaved_matches = []
     matches_info = []
 
-    missing_participant_cnt = 2**number_of_rounds - participants_cnt
+    # Не правильно работает дополнение для next_round_p > 1
+    missing_participant_cnt = ((p_in_m)**number_of_rounds) // next_round_p - participants_cnt
 
     print('missing_participant_cnt', missing_participant_cnt)
 
-    if missing_participant_cnt != 0:
+    if missing_participant_cnt > 0:
         where_insert_cnt = participants_cnt  // 2
         for _ in range(missing_participant_cnt):
-            participants.appe(where_insert_cnt, '---')
+            participants.insert(where_insert_cnt, '---')
             where_insert_cnt = where_insert_cnt + 1
 
     # Создаем раунды
@@ -295,6 +297,7 @@ def create_se_bracket_1(bracket: Bracket, participants: list):
             # Для первого
             if r == number_of_rounds-1:
                 for p in range(p_in_m):
+                    print('m*p_in_m+p', m*p_in_m+p)
                     matches_info.append(MatchParticipantInfo(
                         match=match,
                         participant_scoore=0,
