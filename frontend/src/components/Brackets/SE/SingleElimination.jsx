@@ -13,7 +13,7 @@ const SingleElimination = ({bracket, bracketId}) => {
   const dispatch = useDispatch()
   const [modalShow, setMatchCardModalShow] = useState(false);
   const [modalEditShow, setEditMatchCardModalShow] = useState(false);
-  const participantsInMatch = bracket[0].matches[0].info.length
+  const participantsInMatch = bracket[0]?.matches[0]?.info.length
 
   const openInfoModal = (match) => {  
     setMatchCardModalShow(true)

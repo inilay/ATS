@@ -16,6 +16,7 @@ import DefaultTournamnetPoster from "../../assets/svg/DefaultTournamnetPoster";
 import SingleElimination from "../../components/Brackets/SE/SingleElimination.jsx";
 import RoundRobin from "../../components/Brackets/RR/RoundRobin.jsx";
 import Swiss from "../../components/Brackets/SW/Swiss.jsx";
+import DoubleElimination from "../../components/Brackets/DE/DoubleElimination.jsx";
 
 import { setTournament } from "../../store/tournament";
 import { setBracket } from "../../store/bracket";
@@ -147,16 +148,16 @@ const Tournament = () => {
                                       bracketId={br.id}
                                     />
                                 } else if (br.type === 2) {
-                                    return <SingleElimination
+                                    return <DoubleElimination
                                       bracket={br.rounds}
                                       bracketId={br.id}
                                     />
-                                } else if (br.type == 4) {
+                                } else if (br.type == 3) {
                                     return <RoundRobin
                                       bracket={br.rounds}
                                       bracketId={br.id}
                                     />
-                                } else if (br.type == 5) {
+                                } else if (br.type == 4) {
                                     return <Swiss
                                       bracket={br.rounds}
                                       bracketId={br.id}
