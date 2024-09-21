@@ -76,12 +76,15 @@ class TournamentCreateView(APIView):
         game = serializers.CharField()
         prize = serializers.FloatField(default=0)
         start_time = serializers.DateTimeField()
+        advances_to_next = serializers.IntegerField()
+        participant_in_match = serializers.IntegerField()
 
         bracket_type = serializers.IntegerField()
         # secod_final = serializers.BooleanField(required=False)
-        # points_victory = serializers.IntegerField(required=False)
-        # points_loss = serializers.IntegerField(required=False)
-        # points_draw = serializers.IntegerField(required=False)
+        points_victory = serializers.IntegerField(required=False)
+        points_loss = serializers.IntegerField(required=False)
+        points_draw = serializers.IntegerField(required=False)
+        number_of_rounds = serializers.IntegerField(default=None)
 
         # tournament_type = serializers.BooleanField()
         # group_type = serializers.ChoiceField(required=False, choices=['SE', 'DE', 'RR', 'SW'])
@@ -91,6 +94,8 @@ class TournamentCreateView(APIView):
     @transaction.atomic
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
+
+        print('raw data', request.data)
         if not serializer.is_valid():
             print(serializer.errors)
         

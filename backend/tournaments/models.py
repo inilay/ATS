@@ -71,8 +71,32 @@ class Tournament(models.Model):
 class Bracket(models.Model):
     tournament = models.ForeignKey('Tournament', related_name='brackets', on_delete=models.CASCADE)
     bracket_type = models.ForeignKey('BracketType', related_name='brackets', on_delete=models.CASCADE)
-    participant_in_match = models.IntegerField()
-    
+    participant_in_match = models.IntegerField(default=2)
+
+
+class GroupBracketSettings(models.Model):
+    final_bracket = models.ForeignKey('Tournament', related_name='final_brackets', on_delete=models.CASCADE)
+    group_bracket = models.ForeignKey('Tournament', related_name='group_brackets', on_delete=models.CASCADE)
+
+
+class SEBracketSettings(models.Model):
+    bracket = models.ForeignKey('Bracket', related_name='se_settings', on_delete=models.CASCADE)
+    advances_to_next = models.IntegerField(default=1)
+
+
+class RRBracketSettings(models.Model):
+    bracket = models.ForeignKey('Bracket', related_name='rr_settings', on_delete=models.CASCADE)
+    points_per_loss = models.IntegerField(default=0)
+    points_per_draw = models.IntegerField(default=0)
+    points_per_victory = models.IntegerField(default=1)
+
+
+class SWBracketSettings(models.Model):
+    bracket = models.ForeignKey('Bracket', related_name='sw_settings', on_delete=models.CASCADE)
+    points_per_loss = models.IntegerField(default=0)
+    points_per_draw = models.IntegerField(default=0)
+    points_per_victory = models.IntegerField(default=1)
+
 
 class BracketType(models.Model):
     name = models.CharField(max_length=255)
