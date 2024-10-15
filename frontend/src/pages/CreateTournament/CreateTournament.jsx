@@ -17,6 +17,9 @@ const CreateTournament = () => {
   const api = useAxios();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+
+  const [inputFile, setInputFile] = useState(null);
+  const [tournamentType, setTournamentType] = useState("0");
   const [responseBody, setResponseBody] = useState({
 
     bracket_type: 1,
@@ -27,13 +30,12 @@ const CreateTournament = () => {
     advances_to_next: 1,
     participant_in_match: 2,
     number_of_rounds: null,
+    tournament_type: tournamentType,
 
-    group_type: "RR",
-    compete_in_group: 4,
+    group_type: 5,
+    participant_in_group: 4,
     advance_from_group: 2,
   });
-  const [inputFile, setInputFile] = useState(null);
-  const [tournamentType, setTournamentType] = useState("0");
 
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
@@ -151,6 +153,31 @@ const CreateTournament = () => {
                 <Form.Label>Poster</Form.Label>
                 <UploadButton setInputFileValue={setInputFile} />
               </Form.Group>
+              <p>Tournament type</p>
+              <div className="mb-3">
+                <Form.Check
+                  inline
+                  label="One stage"
+                  name="tournament_type"
+                  type="radio"
+                  value="0"
+                  checked={tournamentType === "0" ? true : false}
+                  onChange={(event) => {
+                    inputRadioChangeHandler(event);
+                  }}
+                ></Form.Check>
+                <Form.Check
+                  inline
+                  label="Group two stage"
+                  name="tournament_type"
+                  type="radio"
+                  value="1"
+                  checked={tournamentType === "1" ? true : false}
+                  onChange={(event) => {
+                    inputRadioChangeHandler(event);
+                  }}
+                ></Form.Check>
+              </div>
             </Card.Body>
           </MyCard>
           <div className="my-4">
@@ -168,17 +195,17 @@ const CreateTournament = () => {
                           name="group_type"
                           onChange={(e) => inputSelectChangeHandler(e)}
                         >
-                          <option value="1">Single Elimination</option>
-                          <option value="2">Round Robin</option>
-                          <option value="3">Double Elimination</option>
-                          <option value="4">Swiss</option>
+                          <option value="5">Single Elimination</option>
+                          <option value="6">Double Elimination</option>
+                          <option value="7">Round Robin</option>
+                          <option value="8">Swiss</option>
                         </Form.Select>
                       </Form.Group>
                       <div className="row">
                         <div className="col">
                           <MyFormGroupInput
                             label="Compete in each group"
-                            name="compete_in_group"
+                            name="participant_in_group"
                             errors={errors}
                             defaultValue={4}
                             register={register}
@@ -223,7 +250,7 @@ const CreateTournament = () => {
                   </Form.Select>
                 </Form.Group>
 
-                {(responseBody.bracket_type == 1 || responseBody.bracket_type == 3 || responseBody.bracket_type == 4) &&
+                {(responseBody.bracket_type == 1 || responseBody.bracket_type == 2 || responseBody.bracket_type == 3 || responseBody.bracket_type == 4) &&
                   <div class="accordion" id="accordionExtend">
                     <div class="accordion-item">
                       <h2 class="accordion-header">
@@ -232,7 +259,7 @@ const CreateTournament = () => {
                         </MyButton>
                       </h2>
                       <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExtend">
-                        {responseBody.bracket_type == 1 ?
+                        {responseBody.bracket_type == 1 || responseBody.bracket_type == 2 ?
                           <Fragment>
                             <MyFormGroupInput
                               label="Participant in match"
@@ -242,7 +269,7 @@ const CreateTournament = () => {
                               register={register}
                               onChange={inputChangeHandler}
                             ></MyFormGroupInput>
-                            <MyFormGroupInput
+                            {responseBody.bracket_type == 1 && <MyFormGroupInput
                               label="Advances to next match"
                               name="advances_to_next"
                               defaultValue={1}
@@ -250,6 +277,7 @@ const CreateTournament = () => {
                               register={register}
                               onChange={inputChangeHandler}
                             ></MyFormGroupInput>
+                            }
                           </Fragment>
                           : 
                           <Fragment>
