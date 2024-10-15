@@ -75,8 +75,10 @@ class Bracket(models.Model):
 
 
 class GroupBracketSettings(models.Model):
-    final_bracket = models.ForeignKey('Tournament', related_name='final_brackets', on_delete=models.CASCADE)
-    group_bracket = models.ForeignKey('Tournament', related_name='group_brackets', on_delete=models.CASCADE)
+    participant_in_group = models.IntegerField()
+    advance_from_group = models.IntegerField()
+    final_bracket = models.ForeignKey('Bracket', related_name='final_brackets', on_delete=models.CASCADE)
+    group_brackets = models.ManyToManyField('Bracket', related_name='group_brackets')
 
 
 class SEBracketSettings(models.Model):

@@ -68,7 +68,7 @@ class TournamentCreateView(APIView):
     permission_classes = (IsAuthenticated, )
 
     class InputSerializer(serializers.Serializer):
-
+        # tournament
         title = serializers.CharField()
         content = serializers.CharField(default=None)
         participants = serializers.CharField()
@@ -76,20 +76,19 @@ class TournamentCreateView(APIView):
         game = serializers.CharField()
         prize = serializers.FloatField(default=0)
         start_time = serializers.DateTimeField()
+        # bracket 
         advances_to_next = serializers.IntegerField()
         participant_in_match = serializers.IntegerField()
-
         bracket_type = serializers.IntegerField()
-        # secod_final = serializers.BooleanField(required=False)
         points_victory = serializers.IntegerField(required=False)
         points_loss = serializers.IntegerField(required=False)
         points_draw = serializers.IntegerField(required=False)
         number_of_rounds = serializers.IntegerField(default=None)
-
-        # tournament_type = serializers.BooleanField()
-        # group_type = serializers.ChoiceField(required=False, choices=['SE', 'DE', 'RR', 'SW'])
-        # compete_in_group = serializers.IntegerField(required=False)
-        # advance_from_group = serializers.IntegerField(required=False)
+        # group bracket
+        tournament_type = serializers.IntegerField(required=False)
+        group_type = serializers.IntegerField(required=False)
+        participant_in_group = serializers.IntegerField(required=False)
+        advance_from_group = serializers.IntegerField(required=False)
 
     @transaction.atomic
     def post(self, request):
