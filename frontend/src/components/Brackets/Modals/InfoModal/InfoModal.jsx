@@ -3,11 +3,11 @@ import Modal from "react-bootstrap/Modal";
 import classes from "./InfoModal.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
-
+import { Fragment } from "react";
 
 const InfoModal = ({modalShow, setMatchCardModalShow}) => {
     const match = useSelector(state => state.bracket.currentMatch)
-
+    const participantCount = match?.info.length
     return (
             <MyModal
                 show={modalShow}
@@ -22,21 +22,33 @@ const InfoModal = ({modalShow, setMatchCardModalShow}) => {
             </Modal.Header>
             <Modal.Body className={classes.myModalBody}>
             <div className={classes.divVS}>
-                <div className="row align-items-center">
-                <div className="col">
-                    {match?.info[0]?.participant || "NO TEAM "}
-                </div>
-                <div className="col"></div>
-                <div className="col">
-                    {match?.info[1]?.participant || "NO TEAM "}
-                </div>
-                </div>
-                <div className="row align-items-center">
-                <div className="col">{match?.info[0]?.participant_scoore}</div>
-                <div className="col">
-                    <h4>VS</h4>
-                </div>
-                <div className="col">{match?.info[1]?.participant_scoore}</div>
+                <div className="row ">
+                    <div className="row align-items-center">
+                        <div className="col mb-4">
+                            <h4>Participant</h4>
+                        </div>
+                        <div className="col mb-4">
+                            <h4>Score</h4>
+                        </div>
+                    </div>
+                    {match?.info.map((p, i) =>
+                        <Fragment>
+                            <div className="row align-items-center">
+                                <div className="col">
+                                    {p?.participant || "NO TEAM "}
+                                </div>
+                                <div className="col">
+                                    {p?.participant_scoore}
+                                </div>
+                            </div>
+                            {i != participantCount-1 &&
+                                <div className="row">
+                                    <h4>VS</h4>
+                                </div>
+                            }
+                            {i != participantCount-1 && <div ></div>}
+                        </Fragment>
+                    )}
                 </div>
             </div>
             </Modal.Body>
