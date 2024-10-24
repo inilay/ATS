@@ -93,8 +93,3 @@
     border-color: var(--border-color) !important;
     outline:var(--border-color) !important;
 }
-
-
-.toolTip {
-    margin-bottom: 10px;
-}
