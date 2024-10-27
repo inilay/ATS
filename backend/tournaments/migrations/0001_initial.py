@@ -5,93 +5,192 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('profiles', '0004_alter_profile_user'),
+        ("profiles", "0004_alter_profile_user"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Bracket',
+            name="Bracket",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('participant_in_match', models.IntegerField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("participant_in_match", models.IntegerField()),
             ],
         ),
         migrations.CreateModel(
-            name='BracketType',
+            name="BracketType",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
-            name='Match',
+            name="Match",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('serial_number', models.IntegerField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("serial_number", models.IntegerField()),
             ],
         ),
         migrations.CreateModel(
-            name='MatchResult',
+            name="MatchResult",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
-            name='Tournament',
+            name="Tournament",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('content', models.TextField(blank=True)),
-                ('link', models.SlugField(max_length=255, unique=True)),
-                ('poster', models.ImageField(blank=True, upload_to='photos/media/%Y/%m/%d/')),
-                ('game', models.CharField(max_length=255)),
-                ('prize', models.FloatField(default=0)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('start_time', models.DateTimeField()),
-                ('admins', models.ManyToManyField(related_name='administrated_tournaments', to='profiles.profile')),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tournaments', to='profiles.profile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("content", models.TextField(blank=True)),
+                ("link", models.SlugField(max_length=255, unique=True)),
+                (
+                    "poster",
+                    models.ImageField(blank=True, upload_to="photos/media/%Y/%m/%d/"),
+                ),
+                ("game", models.CharField(max_length=255)),
+                ("prize", models.FloatField(default=0)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("start_time", models.DateTimeField()),
+                (
+                    "admins",
+                    models.ManyToManyField(
+                        related_name="administrated_tournaments", to="profiles.profile"
+                    ),
+                ),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="tournaments",
+                        to="profiles.profile",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Round',
+            name="Round",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('serial_number', models.IntegerField()),
-                ('bracket', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rounds', to='tournaments.bracket')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("serial_number", models.IntegerField()),
+                (
+                    "bracket",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="rounds",
+                        to="tournaments.bracket",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='MatchParticipantInfo',
+            name="MatchParticipantInfo",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('participant_scoore', models.IntegerField()),
-                ('participant', models.CharField(max_length=255)),
-                ('match', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='info', to='tournaments.match')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("participant_score", models.IntegerField()),
+                ("participant", models.CharField(max_length=255)),
+                (
+                    "match",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="info",
+                        to="tournaments.match",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='match',
-            name='result',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tournaments.matchresult'),
+            model_name="match",
+            name="result",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="tournaments.matchresult",
+            ),
         ),
         migrations.AddField(
-            model_name='match',
-            name='round',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='matches', to='tournaments.round'),
+            model_name="match",
+            name="round",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="matches",
+                to="tournaments.round",
+            ),
         ),
         migrations.AddField(
-            model_name='bracket',
-            name='bracket_type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='brackets', to='tournaments.brackettype'),
+            model_name="bracket",
+            name="bracket_type",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="brackets",
+                to="tournaments.brackettype",
+            ),
         ),
         migrations.AddField(
-            model_name='bracket',
-            name='tournament',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='brackets', to='tournaments.tournament'),
+            model_name="bracket",
+            name="tournament",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="brackets",
+                to="tournaments.tournament",
+            ),
         ),
     ]

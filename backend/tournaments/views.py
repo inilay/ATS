@@ -172,23 +172,32 @@ class BracketUpdateAPIView(APIView):
     permission_classes = []
 
     class InputSerializer(serializers.Serializer):
-        id = serializers.IntegerField()
+        bracket_id = serializers.IntegerField()
+        match_id = serializers.IntegerField()
         start_time = serializers.DateTimeField(required=False)
-        state = serializers.IntegerField(required=False)
-        match_results = inline_serializer(many=True, fields={
+        state = serializers.CharField(required=False)
+
+        match_results = serializers.DictField(child=inline_serializer(fields={
             'participant': serializers.CharField(),
             'score': serializers.IntegerField(),
-        })
+        }))
+        # match_results = inline_serializer(many=True, fields={
+        #     'id' : serializers.IntegerField(),
+        #     'participant': serializers.CharField(),
+        #     'score': serializers.IntegerField(),
+        # })
 
     @transaction.atomic
-    def put(self, request, id):
+    def put(self, request):
         serializer = self.InputSerializer(data=request.data)
+
+        print('data', request.data)
         if not serializer.is_valid():
             print(serializer.errors)
         print('serializer.validated_data', serializer.validated_data)
         # bracket = get_object(Bracket, id=id)
         # self.check_object_permissions(request, bracket)
-        # bracket = update_bracket(bracket=bracket, match=request.data, data=serializer.validated_data)
+        bracket = update_bracket(data=serializer.validated_data)
 
         return Response(status=status.HTTP_200_OK)
 

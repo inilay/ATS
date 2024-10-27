@@ -1,10 +1,6 @@
 from django.db import models
-from django.urls import reverse
 
-from django.utils.translation import gettext_lazy as _
 from profiles.models import Profile
-import random
-import json
 
 
 # class Tournament(models.Model):
@@ -18,7 +14,7 @@ import json
 #     created_at = models.DateTimeField(auto_now_add=True)
 #     owner = models.ForeignKey(Profile, related_name='tournaments', on_delete=models.CASCADE)
 #     start_time = models.DateTimeField()
-    
+
 #     def save(self, *args, **kwargs):
 #         self.slug = slugify(self.title)
 #         # if not self.poster:
@@ -27,7 +23,7 @@ import json
 
 #     def __str__(self):
 #         return self.title
-    
+
 #     def get_absolute_url(self):
 #         return reverse('tournament', kwargs={'slug': self.slug})
 
@@ -38,7 +34,7 @@ import json
 #     bracket = models.JSONField(blank=True)
 #     final = models.BooleanField(default=True)
 #     participants_from_group = models.IntegerField(default=0)
-    
+
 #     class BracketType(models.TextChoices):
 #         SINGLEELIMINATION = 'SE', _('Single elimination')
 #         DOUBLEELIMINATION = 'DE', _('Double elimination')
@@ -59,42 +55,56 @@ class Tournament(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField(null=True)
     link = models.SlugField(max_length=255, unique=True)
-    poster = models.ImageField(upload_to='photos/media/%Y/%m/%d/', blank=True)
+    poster = models.ImageField(upload_to="photos/media/%Y/%m/%d/", blank=True)
     game = models.CharField(max_length=255)
     prize = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     start_time = models.DateTimeField()
-    owner = models.ForeignKey(Profile, related_name='tournaments', on_delete=models.CASCADE)
-    admins = models.ManyToManyField(Profile, related_name='administrated_tournaments')
+    owner = models.ForeignKey(
+        Profile, related_name="tournaments", on_delete=models.CASCADE
+    )
+    admins = models.ManyToManyField(Profile, related_name="administrated_tournaments")
 
 
 class Bracket(models.Model):
-    tournament = models.ForeignKey('Tournament', related_name='brackets', on_delete=models.CASCADE)
-    bracket_type = models.ForeignKey('BracketType', related_name='brackets', on_delete=models.CASCADE)
+    tournament = models.ForeignKey(
+        "Tournament", related_name="brackets", on_delete=models.CASCADE
+    )
+    bracket_type = models.ForeignKey(
+        "BracketType", related_name="brackets", on_delete=models.CASCADE
+    )
     participant_in_match = models.IntegerField(default=2)
 
 
 class GroupBracketSettings(models.Model):
     participant_in_group = models.IntegerField()
     advance_from_group = models.IntegerField()
-    final_bracket = models.ForeignKey('Bracket', related_name='final_brackets', on_delete=models.CASCADE)
-    group_brackets = models.ManyToManyField('Bracket', related_name='group_brackets')
+    final_bracket = models.ForeignKey(
+        "Bracket", related_name="final_brackets", on_delete=models.CASCADE
+    )
+    group_brackets = models.ManyToManyField("Bracket", related_name="group_brackets")
 
 
 class SEBracketSettings(models.Model):
-    bracket = models.ForeignKey('Bracket', related_name='se_settings', on_delete=models.CASCADE)
+    bracket = models.ForeignKey(
+        "Bracket", related_name="se_settings", on_delete=models.CASCADE
+    )
     advances_to_next = models.IntegerField(default=1)
 
 
 class RRBracketSettings(models.Model):
-    bracket = models.ForeignKey('Bracket', related_name='rr_settings', on_delete=models.CASCADE)
+    bracket = models.ForeignKey(
+        "Bracket", related_name="rr_settings", on_delete=models.CASCADE
+    )
     points_per_loss = models.IntegerField(default=0)
     points_per_draw = models.IntegerField(default=0)
     points_per_victory = models.IntegerField(default=1)
 
 
 class SWBracketSettings(models.Model):
-    bracket = models.ForeignKey('Bracket', related_name='sw_settings', on_delete=models.CASCADE)
+    bracket = models.ForeignKey(
+        "Bracket", related_name="sw_settings", on_delete=models.CASCADE
+    )
     points_per_loss = models.IntegerField(default=0)
     points_per_draw = models.IntegerField(default=0)
     points_per_victory = models.IntegerField(default=1)
@@ -105,22 +115,24 @@ class BracketType(models.Model):
 
 
 class Round(models.Model):
-    bracket = models.ForeignKey('Bracket', related_name='rounds', on_delete=models.CASCADE)
+    bracket = models.ForeignKey(
+        "Bracket", related_name="rounds", on_delete=models.CASCADE
+    )
     serial_number = models.IntegerField()
-    
+
 
 class Match(models.Model):
-    round = models.ForeignKey('Round', related_name='matches', on_delete=models.CASCADE)
-    result = models.ForeignKey('MatchResult', on_delete=models.CASCADE)
+    round = models.ForeignKey("Round", related_name="matches", on_delete=models.CASCADE)
+    state = models.ForeignKey("MatchState", on_delete=models.CASCADE)
     start_time = models.DateTimeField(null=True)
     serial_number = models.IntegerField()
-    
 
-class MatchResult(models.Model):
+
+class MatchState(models.Model):
     name = models.CharField(max_length=255)
 
 
 class MatchParticipantInfo(models.Model):
-    match = models.ForeignKey('Match', related_name='info', on_delete=models.CASCADE)
-    participant_scoore = models.IntegerField()
+    match = models.ForeignKey("Match", related_name="info", on_delete=models.CASCADE)
+    participant_score = models.IntegerField()
     participant = models.CharField(max_length=255)
