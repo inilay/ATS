@@ -45,7 +45,7 @@ const SingleElimination = ({bracket, bracketId}) => {
                   match.info.map((team) => (
                     <div className={`${classes.team}`}>
                       <div className={`${classes.name}`}>{team.participant}</div>
-                      <div className={`${classes.score}`}>{team.participant_scoore}</div>
+                      <div className={`${classes.score}`}>{team.participant_score}</div>
                     </div>
                   ))
                 }

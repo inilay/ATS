@@ -38,7 +38,7 @@ const InfoModal = ({modalShow, setMatchCardModalShow}) => {
                                     {p?.participant || "NO TEAM "}
                                 </div>
                                 <div className="col">
-                                    {p?.participant_scoore}
+                                    {p?.participant_score}
                                 </div>
                             </div>
                             {i != participantCount-1 &&

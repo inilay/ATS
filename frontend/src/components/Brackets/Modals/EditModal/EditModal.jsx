@@ -9,12 +9,14 @@ import moment from "moment";
 import bracketApi from "../../../../services/api/bracketApi";
 
 const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
+    const bracket = useSelector(state => state.bracket)
     const match = useSelector(state => state.bracket.currentMatch)
     const participantCount = match?.info.length
 
     const [matchState, setMatchState] = useState(match?.state);
     const [matchTime, setMatchTime] = useState(match?.startTime);
     const [matchResults, setMatchResults] = useState([]);
+    
 
     const matchStateHandler = (state) => {
         setMatchState(state);
@@ -25,15 +27,15 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
         setMatchTime(e.target.value);
     };
 
-    const matchResultsHandler = (e) => {
+    const matchResultsHandler = (e, id) => {
         e.preventDefault();
         let _matchResults = matchResults;
         if  (!_matchResults.some(o => o.participant === e.target.name)) {
-            setMatchResults([...matchResults, {'participant': e.target.name, 'score': e.target.value}]);
+            setMatchResults([...matchResults, {'id': id, 'participant': e.target.name, 'score': e.target.value}]);
         }
         else {
             _matchResults.find(item => {
-                if (item.participant === e.target.name) {
+                if (item.id === id) {
                     item.score = e.target.value;
                     return true;
                 }
@@ -43,17 +45,21 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     };
 
     const onSubmitHandler = () => {
+
+        console.log('match_results', matchResults);
+
         let data = {
-            id: match.id,
+            bracket_id: bracket.currentBracketId,
+            match_id: match.id,
             start_time: matchTime,
             state: matchState,
-            match_results: matchResults
+            match_results: matchResults.reduce((res, cur) => ({ ...res, [cur.id]: {score: cur.score, participant: cur.participant}}), {})
         }
 
         console.log(data);
         
 
-        const response = bracketApi.updateBracket(1, data).then(() => {
+        const response = bracketApi.updateBracket(data).then(() => {
             setEditMatchCardModalShow(false);
         });
         
@@ -92,9 +98,9 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
                             </div>
                             <div className="col">
                             <input
-                                name={match?.info[0]?.participant}
+                                name={p?.participant}
                                 className={classes.myInput}
-                                onChange={(e) => matchResultsHandler(e)}
+                                onChange={(e) => matchResultsHandler(e, p.id)}
                                 type="text"
                             />
                             </div>
@@ -110,10 +116,10 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
                 <p>Set State</p>
                 <div>
                 <MyRadioButton
-                    defValue={matchState}
+                    defValue={match?.state}
                     radios={[
-                        { name: "Scheduled", value: '1' },
-                        { name: "Played", value: '2' },
+                        { name: "Scheduled", value: 'SCHEDULED' },
+                        { name: "Played", value: 'PLAYED' },
                     ]}
                     onChange={matchStateHandler}
                 />
