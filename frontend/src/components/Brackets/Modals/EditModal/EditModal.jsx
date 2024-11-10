@@ -7,6 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 import React, { useState, Fragment } from "react";
 import moment from "moment";
 import bracketApi from "../../../../services/api/bracketApi";
+import { changeCurrentMatchInfo } from "../../../../store/bracket";
+
 
 const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     const bracket = useSelector(state => state.bracket)
@@ -16,7 +18,7 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     const [matchState, setMatchState] = useState(match?.state);
     const [matchTime, setMatchTime] = useState(match?.startTime);
     const [matchResults, setMatchResults] = useState([]);
-    
+    const dispatch = useDispatch()
 
     const matchStateHandler = (state) => {
         setMatchState(state);
@@ -30,30 +32,32 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     const matchResultsHandler = (e, id) => {
         e.preventDefault();
         let _matchResults = matchResults;
-        if  (!_matchResults.some(o => o.participant === e.target.name)) {
-            setMatchResults([...matchResults, {'id': id, 'participant': e.target.name, 'score': e.target.value}]);
-        }
-        else {
-            _matchResults.find(item => {
-                if (item.id === id) {
-                    item.score = e.target.value;
-                    return true;
-                }
-            });
-            setMatchResults(_matchResults)
-        }
+        // if  (!_matchResults.some(o => o.participant === e.target.name)) {
+        //     setMatchResults([...matchResults, {'id': id, 'participant': e.target.name, 'score': e.target.value}]);
+        // }
+        // else {
+        //     _matchResults.find(item => {
+        //         if (item.id === id) {
+        //             item.score = e.target.value;
+        //             return true;
+        //         }
+        //     });
+        //     setMatchResults(_matchResults)
+        // }
+        dispatch(changeCurrentMatchInfo({id: id, participant_score: e.target.value}))
     };
 
     const onSubmitHandler = () => {
 
         console.log('match_results', matchResults);
+        console.log('matchState', matchState)
 
         let data = {
             bracket_id: bracket.currentBracketId,
             match_id: match.id,
             start_time: matchTime,
-            state: matchState,
-            match_results: matchResults.reduce((res, cur) => ({ ...res, [cur.id]: {score: cur.score, participant: cur.participant}}), {})
+            state: matchState || match?.state,
+            match_results: match.info?.reduce((res, cur) => ({ ...res, [cur.id]: {score: cur.participant_score, participant: cur.participant}}), {})
         }
 
         console.log(data);
@@ -101,6 +105,7 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
                                 name={p?.participant}
                                 className={classes.myInput}
                                 onChange={(e) => matchResultsHandler(e, p.id)}
+                                defaultValue={p?.participant_score}
                                 type="text"
                             />
                             </div>

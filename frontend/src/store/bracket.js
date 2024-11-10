@@ -18,6 +18,16 @@ const bracketSlice = createSlice({
         setCurrentMatch(state, action) {
             state.currentMatch = action.payload.currentMatch
         },
+        changeCurrentMatchInfo(state, action) {
+            let _info = state.currentMatch.info
+            _info.find(item => {
+                if (item.id === action.payload.id) {
+                    item.participant_score = action.payload.participant_score;
+                    return true;
+                }
+            });
+            state.currentMatch.info = _info
+        },
         setCurrentBracketId(state, action) {
             state.currentBracketId = action.payload.currentBracketId
         },
@@ -29,6 +39,6 @@ const bracketSlice = createSlice({
     }
 })
 
-export const { setBracket, clearBracket, setCurrentMatch, setCurrentBracketId } = bracketSlice.actions;
+export const { setBracket, clearBracket, setCurrentMatch, setCurrentBracketId, changeCurrentMatchInfo } = bracketSlice.actions;
 
 export default bracketSlice.reducer;
