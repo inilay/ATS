@@ -10,7 +10,8 @@ from .models import Tournament, Bracket
 from .utils import inline_serializer, get_object
 from .serializer import TournamentSerializer, BracketSerializer, AllBracketSerealizer, GetAllBracketsSerializer
 from .selectors import tournaments_list, get_brackets_for_tournamnet, game_list
-from .services import create_tournament, create_bracket, update_bracket, update_tournament
+from .services.generation_services import create_tournament, create_bracket
+from .services.update_services import update_bracket, update_tournament
 from .permissions import IsTournamenOwnerOrReadOnly, IsBracketOwnerOrReadOnly, AuthMixin
 from .pagination import get_paginated_response, LimitOffsetPagination
 

@@ -136,3 +136,8 @@ class MatchParticipantInfo(models.Model):
     match = models.ForeignKey("Match", related_name="info", on_delete=models.CASCADE)
     participant_score = models.IntegerField()
     participant = models.CharField(max_length=255)
+    participant_result = models.ForeignKey("ParticipantResult", on_delete=models.CASCADE)
+
+
+class ParticipantResult(models.Model):
+    name = models.CharField(max_length=255)
