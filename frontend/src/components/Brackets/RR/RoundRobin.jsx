@@ -4,11 +4,30 @@ import { useNavigate } from "react-router-dom";
 import MatchInfoIcon from "../../../assets/svg/MatchInfoIcon";
 import MatchJudgeIcon from "../../../assets/svg/MatchJudgeIcon";
 import classes from "./RoundRobin.module.css";
+import InfoModal from "../Modals/InfoModal/InfoModal.jsx";
+import EditModal from "../Modals/EditModal/EditModal.jsx";
+import { setCurrentMatch, setCurrentBracketId } from "../../../store/bracket.js";
+import { useSelector, useDispatch } from "react-redux";
 
 
 const RoundRobin = ({bracket, bracketId}) => {
+  const dispatch = useDispatch()
+  const [modalShow, setMatchCardModalShow] = useState(false);
+  const [modalEditShow, setEditMatchCardModalShow] = useState(false);
+  console.log('bracket rr', bracket);
 
-  console.log('bracket ыц', bracket);
+  const openInfoModal = (match) => {  
+    setMatchCardModalShow(true)
+    dispatch(setCurrentMatch({currentMatch: match}))
+
+  }
+  
+  const openEditModal = (match) => {  
+    setEditMatchCardModalShow(true)
+    dispatch(setCurrentMatch({currentMatch: match}))
+    dispatch(setCurrentBracketId({currentBracketId: bracketId}))
+
+  }
 
   return (
     <div>
@@ -29,11 +48,13 @@ const RoundRobin = ({bracket, bracketId}) => {
                     <div className={classes.button_container}>
                       <button
                         className={classes.icon_button}
+                        onClick={() => openInfoModal(match)}
                       >
                         <MatchInfoIcon />
                       </button>
                       <button
                         className={classes.icon_button}
+                        onClick={() => openEditModal(match)}
                       >
                         <MatchJudgeIcon />
                       </button>
@@ -46,6 +67,8 @@ const RoundRobin = ({bracket, bracketId}) => {
           </Fragment>
         ))}
       </div>
+      <EditModal modalEditShow={modalEditShow} setEditMatchCardModalShow={setEditMatchCardModalShow} match={{}}/>
+      <InfoModal modalShow={modalShow} setMatchCardModalShow={setMatchCardModalShow} match={{}}/>
     </div>
   );
 };
