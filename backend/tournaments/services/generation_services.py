@@ -315,6 +315,7 @@ def create_de_bracket(bracket: Bracket, participants: list):
 
     # Заполняем нижнию сетку с последнего по первый
     for r in range(number_of_rounds_l):
+        match_serial_number_cnt = number_of_match_in_round_l
         for m in range(number_of_match_in_round_l):
             match = Match(
                 round=rounds_l[r], serial_number=match_serial_number_cnt, state_id=1
@@ -327,7 +328,7 @@ def create_de_bracket(bracket: Bracket, participants: list):
                     )
                 )
             # Уменьшаем серийный номер матча
-            match_serial_number_cnt = match_serial_number_cnt + 1
+            match_serial_number_cnt = match_serial_number_cnt - 1
 
         if flag_l:
             # Увеличиваем количество матчей раунде
@@ -342,6 +343,7 @@ def create_de_bracket(bracket: Bracket, participants: list):
 
     # Заполняем верхнию сетку с последнего по первый
     for r in range(number_of_rounds_w):
+        match_serial_number_cnt = number_of_match_in_round_w
         for m in range(number_of_match_in_round_w):
             match = Match(
                 round=rounds_w[r], serial_number=match_serial_number_cnt, state_id=1
@@ -362,7 +364,7 @@ def create_de_bracket(bracket: Bracket, participants: list):
                 for _ in range(bracket.participant_in_match):
                     matches_info.append(
                         MatchParticipantInfo(
-                            match=match, participant_score=0, participant=""
+                            match=match, participant_score=0, participant="---"
                         )
                     )
             # Уменьшаем серийный номер матча
