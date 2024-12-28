@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import React, { useState, Fragment } from "react";
 import moment from "moment";
 import bracketApi from "../../../../services/api/bracketApi";
-import { changeCurrentMatchInfo } from "../../../../store/bracket";
+import { changeCurrentMatchInfo, changeBracket } from "../../../../store/bracket";
 
 
 const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
@@ -63,7 +63,8 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
         console.log(data);
         
 
-        const response = bracketApi.updateBracket(data).then(() => {
+        const response = bracketApi.updateBracket(data).then((response) => {
+            dispatch(changeBracket({bracket: response.data}))
             setEditMatchCardModalShow(false);
         });
         
@@ -117,6 +118,7 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
                         }
                         {i != participantCount-1 && <div ></div>}
                     </div>
+                    
                 )}
                 <p>Set State</p>
                 <div>
