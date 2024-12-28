@@ -9,11 +9,7 @@ const bracketSlice = createSlice({
     },
     reducers: {
         setBracket(state, action) {
-
-            console.log('action', action.payload);
-    
             state.brackets = action.payload.brackets
-        
         },
         changeBracket(state, action) {
             state.brackets = state.brackets.map((bracket) => (
