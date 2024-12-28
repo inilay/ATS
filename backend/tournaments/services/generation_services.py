@@ -41,6 +41,7 @@ def create_sw_bracket(
     matches_info = []
 
     match_serial_number_cnt = 0
+    number_of_match_in_round = math.ceil(participants_cnt / p_in_m)
 
     # if participants_cnt % 2 == 1:
     #     participants = participants + ['---']
@@ -50,7 +51,7 @@ def create_sw_bracket(
         _round = Round(bracket=bracket, serial_number=i)
         rounds.append(_round)
         # O(n / 2)
-        for m in range(math.ceil(participants_cnt / p_in_m)):
+        for m in range(number_of_match_in_round):
             match = Match(
                 round=_round, serial_number=match_serial_number_cnt, state_id=1
             )
@@ -155,23 +156,31 @@ def create_se_bracket(
     bracket: Bracket, participants: list, settings: SEBracketSettings
 ) -> None:
     print("se")
-    # log(player_in_match)total_players -  total number of rounds in the tournament
-    participants_cnt = len(participants)
+    p_cnt = len(participants)
     # p_in_m work from 2 to 8
     p_in_m = bracket.participant_in_match
     # next_round_p work from 1 to 4
     next_round_p = settings.advances_to_next
+    # коэффицент показывающий отношение выбывших и прошедших участников в одном матче
+    multiplicity_factor = p_in_m / next_round_p
 
-    if next_round_p != 1:
-        number_of_rounds = 1
-        p = participants_cnt
-        while p > p_in_m:
-            number_of_rounds = number_of_rounds + 1
-            p = p / (p_in_m / next_round_p)
-            print("p", p)
-    else:
-        # для next_round_p = 1
-        number_of_rounds = math.ceil(math.log(participants_cnt, p_in_m))
+    number_of_rounds = 1
+    remaining_p_cnt = p_cnt
+    # O(log(n))
+    while remaining_p_cnt > p_in_m:
+        number_of_rounds = number_of_rounds + 1
+        remaining_p_cnt = remaining_p_cnt / multiplicity_factor
+
+    # if next_round_p != 1:
+    #     number_of_rounds = 1
+    #     remaining_p_cnt = p_cnt
+    #     while remaining_p_cnt > p_in_m:
+    #         number_of_rounds = number_of_rounds + 1
+    #         remaining_p_cnt = remaining_p_cnt / multiplicity_factor
+    # else:
+    #     # для next_round_p = 1
+    #     number_of_rounds = math.ceil(math.log(p_cnt, p_in_m))
+    #     print('number_of_rounds old', number_of_rounds)
     # number_of_match_in_round = bracket.participant_in_match**(number_of_rounds-1)
 
     number_of_match_in_round = 1
@@ -185,17 +194,19 @@ def create_se_bracket(
     matches_info = []
 
     # Не правильно работает дополнение для next_round_p > 1
-    missing_participant_cnt = (
-        (p_in_m) ** number_of_rounds
-    ) // next_round_p - participants_cnt
+    missing_p_cnt = ((p_in_m // next_round_p) ** number_of_rounds)  - p_cnt
 
-    print("missing_participant_cnt", missing_participant_cnt)
+    print("missing_participant_cnt", missing_p_cnt)
 
-    if missing_participant_cnt > 0:
-        where_insert_cnt = participants_cnt // 2
-        for _ in range(missing_participant_cnt):
+    # Добавить диаграмму
+    if missing_p_cnt > 0:
+        where_insert_cnt = p_cnt // 2
+        for _ in range(missing_p_cnt): # O(n)
             participants.insert(where_insert_cnt, "---")
             where_insert_cnt = where_insert_cnt + 1
+
+    
+    print("participants", participants)
 
     # match_cnt_in_round = 1
     
@@ -206,15 +217,15 @@ def create_se_bracket(
 
     # print("match_serial_number_sum", match_serial_number_cnt)
 
-    # Создаем раунды
+    # Создаем раунды O(log(n))
     for number in range(number_of_rounds - 1, -1, -1):
         rounds.append(Round(bracket=bracket, serial_number=number))
     Round.objects.bulk_create(rounds)
 
-    # Заполняем раунды матчами с последнего по первый
-    for r in range(number_of_rounds):
+    # Заполняем раунды матчами с последнего по первый O(nlog(n))
+    for r in range(number_of_rounds): # O(log(n))
         match_serial_number_cnt = number_of_match_in_round
-        for m in range(number_of_match_in_round):
+        for m in range(number_of_match_in_round): # O(n)
             match = Match(
                 round=rounds[r], serial_number=match_serial_number_cnt, state_id=1
             )

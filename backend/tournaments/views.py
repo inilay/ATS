@@ -199,8 +199,10 @@ class BracketUpdateAPIView(APIView):
         # bracket = get_object(Bracket, id=id)
         # self.check_object_permissions(request, bracket)
         bracket = update_bracket(data=serializer.validated_data)
+        print('bracket', bracket)
+        serializer = GetAllBracketsSerializer(bracket)
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
 
 class AllBracketAPIView(APIView): 
 

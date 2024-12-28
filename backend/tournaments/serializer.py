@@ -314,3 +314,4 @@ class GetAllBracketsSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     type = serializers.IntegerField(source="bracket_type.id")
     rounds = GetAllBracketsRSerializer(many=True)
+    

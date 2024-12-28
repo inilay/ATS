@@ -1,3 +1,4 @@
+from tournaments.orm_functions import JsonGroupArray
 from ..models import (
     Bracket,
     Tournament,
@@ -13,7 +14,7 @@ from ..utils import clear_participants, model_update
 from django.utils.text import slugify
 from django.shortcuts import get_object_or_404
 from django.db.models.query import QuerySet
-from django.db.models import Prefetch, Q, Count, F
+from django.db.models import Prefetch, Q, Count, F, OuterRef, Subquery, Max, Min
 import operator
 from functools import reduce
 
@@ -32,6 +33,13 @@ def update_tournament(*, tournament: Tournament, data) -> Tournament:
     return tournament
 
 
+def set_match_participant_info(match_results: dict, info: QuerySet[MatchParticipantInfo]):
+    for index, i in enumerate(info):
+        i.participant_score = match_results[index].get("score")
+        i.participant = match_results[index].get("participant")
+    MatchParticipantInfo.objects.bulk_update(info, ["participant_score", "participant"])
+
+
 def update_match_participant_info(
     match_results: dict, info: QuerySet[MatchParticipantInfo]
 ):
@@ -41,8 +49,9 @@ def update_match_participant_info(
         if match_result is not None:
             i.participant_score = match_result.get("score")
             i.participant = match_result.get("participant")
+            i.participant_result_id = match_result.get("participant_result", 1)
 
-    MatchParticipantInfo.objects.bulk_update(info, ["participant_score", "participant"])
+    MatchParticipantInfo.objects.bulk_update(info, ["participant_score", "participant", "participant_result_id"])
 
 def reset_match_participant_info(mathes: QuerySet[Match], left_border: int, right_border: int):
     info = []
@@ -280,6 +289,36 @@ def update_de_bracket(data):
     pass
 
 
+def check_for_draw(match_results: dict) -> bool:
+    results = list(match_results.values())
+    print('results', results)
+    max_scoore = results[0].get("score")
+    for result in results:
+        if result.get("score") != max_scoore:
+            return False
+    return True
+
+
+def set_match_participant_results(match_results: dict, info: MatchParticipantInfo) -> None:
+    print('match_results', match_results)
+    print('sort_participant_by_score', sort_participant_by_score(match_results))
+    if check_for_draw(match_results):
+        for result in match_results.values():
+            result['participant_result'] = 4
+        print('match_results', match_results)
+    else:
+        winner_match_info_id = sort_participant_by_score(match_results)[0]
+        for key in match_results.keys():
+            if key == winner_match_info_id:
+                match_results.get(key)['participant_result'] = 2
+            else:
+                match_results.get(key)['participant_result'] = 3
+        print('match_results w - l', match_results)
+
+    update_match_participant_info(match_results, info)
+
+
+
 def update_sw_bracket(data):
     print('data', data)
     bracket = Bracket.objects.prefetch_related("sw_settings").get(id=data.get("bracket_id"))
@@ -296,22 +335,7 @@ def update_sw_bracket(data):
 
     print('match.state', match.state)
     print(match_prev_state, cur_match_state, match.state.id)
-
-    bracket_result = MatchParticipantInfo.objects.filter(Q(match__round__bracket=bracket), ~Q(participant='TBO')).values('participant').annotate(
-                win=Count('participant_result', filter=Q(participant_result__id=2)),
-                loss=Count('participant_result', filter=Q(participant_result__id=3)),
-                draw=Count('participant_result', filter=Q(participant_result__id=4)),
-                total = F('win')*settings.points_per_victory + F('loss')*settings.points_per_loss + F('draw')*settings.points_per_draw
-            )
-    
-    bracket_result = sorted(bracket_result, key=lambda x:x.get("total"), reverse=True)
-    
-    print('bracket_result', bracket_result)
-
-    next_round = [{'participant': p.get('participant'), 'scoore': 0} for p in bracket_result]
-
-    print('next_round', next_round)
-
+    set_match_participant_results(match_results, match.info.all())
     # S
     if cur_match_state == "SCHEDULED":
         match.state_id=1
@@ -319,16 +343,50 @@ def update_sw_bracket(data):
     else:
         match.state_id=2
     match.save()
-    update_match_participant_info(match_results, match.info.all())
+    # update_match_participant_info(match_results, match.info.all())
+
+    # max_value = MatchParticipantInfo.objects.filter(match_id=OuterRef("match_id")).annotate(max_participant_score=Max('participant_score')).order_by('-max_participant_score').values('max_participant_score')
+
+    # print(MatchParticipantInfo.objects.annotate(max_participant_score=Max('participant_score')).filter(match_id=1216, participant_score=Subquery(max_value)).values('participant_score'))
+    # print(MatchParticipantInfo.objects.annotate(max_participant_score=Max('participant_score')).filter(match_id=1216, participant_score=F('max_participant_score')).values('participant_score').query)
+
+    # winner = MatchParticipantInfo.objects.filter(
+    #         participant_score=Subquery(max_value),
+    #         match=OuterRef("pk"),
+    #     ).annotate( 
+    #         winner_count=Count('participant_score')
+    #     ).values('participant')
+
+    # print(Match.objects.filter(Q(round__bracket=bracket), state_id=2).annotate(winner=Subquery(winner)).values_list('winner', flat=True))
+    # print(Match.objects.filter(Q(round__bracket=bracket), state_id=2).annotate(winner=Subquery(winner)).query)
+    
+    bracket_result = MatchParticipantInfo.objects.filter(Q(match__round__bracket=bracket), ~Q(participant='TBO')).values('participant').annotate(
+                win=Count('participant_result', filter=Q(participant_result__id=2)),
+                loss=Count('participant_result', filter=Q(participant_result__id=3)),
+                draw=Count('participant_result', filter=Q(participant_result__id=4)),
+                play_with=JsonGroupArray('participant', distinct=True),
+                total = F('win')*settings.points_per_victory + F('loss')*settings.points_per_loss + F('draw')*settings.points_per_draw
+            )
+    
+    print('bracket_result', bracket_result)
 
     # Все матчи в раунде сыграны
     if not Match.objects.filter(round__bracket=bracket, round=match.round, state_id=1).exists():
+        bracket_result = sorted(bracket_result, key=lambda x:x.get("total"), reverse=True)
+    
+        print('bracket_result', bracket_result)
+
+        next_round = [{'participant': p.get('participant'), 'score': 0} for p in bracket_result]
+
+        print('next_round', next_round)
         round_cnt = bracket.rounds.count()
         next_round_serial_number = match.round.serial_number + 1
         if next_round_serial_number != round_cnt:
-            next_matches = Match.objects.prefetch_related("info").filter(round__bracket=bracket, round__serial_number=next_round_serial_number)
+            next_matches = Match.objects.prefetch_related(
+                Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('id'))
+                ).filter(round__bracket=bracket, round__serial_number=next_round_serial_number)
             for index, math in enumerate(next_matches):
-                update_match_participant_info(
+                set_match_participant_info(
                     next_round[index*bracket.participant_in_match:index*bracket.participant_in_match+bracket.participant_in_match], 
                     math.info.all()
                 )
