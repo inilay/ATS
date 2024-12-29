@@ -13,6 +13,9 @@ import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupIn
 import { useForm } from "react-hook-form";
 import MyButton from "../../components/UI/MyButton/MyButton";
 import MyCard from "../../components/UI/MyCard/MyCard";
+import classes from "./EditTournament.module.css";
+
+
 
 const EditTournament = () => {
   const api = useAxios();
@@ -81,113 +84,115 @@ const EditTournament = () => {
 
   return (
     <section className="section_without_div pt-4">
-      <Form onSubmit={handleSubmit(onSubmitHandler)}>
-        <MyCard>
-          <Card.Header className="tournament_text">Basic Info</Card.Header>
-          <Card.Body>
-            <MyFormGroupInput
-              label="Title"
-              name="title"
-              type="text"
-              errors={errors}
-              register={register}
-              validationSchema={{
-                required: "⚠ This input is required.",
-              }}
-              onChange={inputChangeHandler}
-            ></MyFormGroupInput>
-            <MyFormGroupInput
-              label="Description"
-              name="content"
-              as="textarea"
-              errors={errors}
-              register={register}
-              validationSchema={{
-                required: "⚠ This input is required.",
-              }}
-              onChange={inputChangeHandler}
-            ></MyFormGroupInput>
-            <MyFormGroupInput
-              label="Prize fund"
-              name="prize"
-              errors={errors}
-              register={register}
-              validationSchema={{
-                required: "⚠ This input is required.",
-                pattern: {
-                  value: /^[+-]?\d+(\.\d+)?$/,
-                  message: "⚠ Invalid data.",
-                },
-              }}
-              onChange={inputChangeHandler}
-            ></MyFormGroupInput>
-            <MyFormGroupInput
-              label="Game"
-              name="game"
-              errors={errors}
-              register={register}
-              validationSchema={{
-                required: "⚠ This input is required.",
-              }}
-              onChange={inputChangeHandler}
-            ></MyFormGroupInput>
-            <MyFormGroupInput
-              label="Start of the tournament"
-              name="start_time"
-              type="datetime-local"
-              errors={errors}
-              register={register}
-              validationSchema={{
-                required: "⚠ This input is required.",
-              }}
-              onChange={inputChangeHandler}
-            ></MyFormGroupInput>
-            <Form.Group className="mb-3">
-              <Form.Label>Poster</Form.Label>
-              <UploadButton setInputFileValue={setInputFile} />
-            </Form.Group>
-          </Card.Body>
-        </MyCard>
-        {/* <div className="my-4">
+      <div className={`${classes.edit_tournament_form}`}>
+        <Form onSubmit={handleSubmit(onSubmitHandler)}>
           <MyCard>
-            <Card.Header className="tournament_text">Bracket Info</Card.Header>
+            <Card.Header className="tournament_text">Basic Info</Card.Header>
             <Card.Body>
               <MyFormGroupInput
-                label="Participants"
-                name="participants"
+                label="Title"
+                name="title"
+                type="text"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
+              <MyFormGroupInput
+                label="Description"
+                name="content"
                 as="textarea"
                 errors={errors}
                 register={register}
                 validationSchema={{
                   required: "⚠ This input is required.",
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
+              <MyFormGroupInput
+                label="Prize fund"
+                name="prize"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
                   pattern: {
-                    value: /^.+\s+./i,
-                    message: "⚠ Minimum two participants.",
+                    value: /^[+-]?\d+(\.\d+)?$/,
+                    message: "⚠ Invalid data.",
                   },
                 }}
                 onChange={inputChangeHandler}
               ></MyFormGroupInput>
+              <MyFormGroupInput
+                label="Game"
+                name="game"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
+              <MyFormGroupInput
+                label="Start of the tournament"
+                name="start_time"
+                type="datetime-local"
+                errors={errors}
+                register={register}
+                validationSchema={{
+                  required: "⚠ This input is required.",
+                }}
+                onChange={inputChangeHandler}
+              ></MyFormGroupInput>
               <Form.Group className="mb-3">
-                <Form.Label>Bracket type</Form.Label>
-                <Form.Select
-                  className="shadow-none my_input"
-                  name="type"
-                  onChange={(e) => inputChangeHandler(e)}
-                >
-                  <option value="SE">Single Elimination</option>
-                  <option value="DE">Double Elimination</option>
-                  <option value="RR">Round Robin</option>
-                </Form.Select>
+                <Form.Label>Poster</Form.Label>
+                <UploadButton setInputFileValue={setInputFile} />
               </Form.Group>
             </Card.Body>
           </MyCard>
-        </div> */}
-        <div className="form_button_div pb-4 pt-4">
-          <MyButton additionalCl={"btn-md"} type="submit">
-            Edit Tournament
-          </MyButton>
-        </div>
-      </Form>
+          {/* <div className="my-4">
+            <MyCard>
+              <Card.Header className="tournament_text">Bracket Info</Card.Header>
+              <Card.Body>
+                <MyFormGroupInput
+                  label="Participants"
+                  name="participants"
+                  as="textarea"
+                  errors={errors}
+                  register={register}
+                  validationSchema={{
+                    required: "⚠ This input is required.",
+                    pattern: {
+                      value: /^.+\s+./i,
+                      message: "⚠ Minimum two participants.",
+                    },
+                  }}
+                  onChange={inputChangeHandler}
+                ></MyFormGroupInput>
+                <Form.Group className="mb-3">
+                  <Form.Label>Bracket type</Form.Label>
+                  <Form.Select
+                    className="shadow-none my_input"
+                    name="type"
+                    onChange={(e) => inputChangeHandler(e)}
+                  >
+                    <option value="SE">Single Elimination</option>
+                    <option value="DE">Double Elimination</option>
+                    <option value="RR">Round Robin</option>
+                  </Form.Select>
+                </Form.Group>
+              </Card.Body>
+            </MyCard>
+          </div> */}
+          <div className="pb-4 pt-4">
+            <MyButton additionalCl={"btn-md"} type="submit">
+              Edit Tournament
+            </MyButton>
+          </div>
+        </Form>
+      </div>
     </section>
   );
 };
