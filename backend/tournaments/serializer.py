@@ -18,7 +18,6 @@ class TournamentSerializer(serializers.ModelSerializer):
             "link",
             "title",
             "content",
-            "participants",
             "poster",
             "game",
             "prize",
