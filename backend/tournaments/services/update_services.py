@@ -57,6 +57,9 @@ def update_match_participant_info(
 def reset_match_participant_info(mathes: QuerySet[Match], left_border: int, right_border: int):
     info = []
     for m in mathes:
+        print('reset math', m)
+        print('left_border', left_border, 'right_border', right_border)
+        print('clear', m.info.all()[left_border:right_border])
         for i in m.info.all()[left_border:right_border]:
             print('info', i)
             i.participant_score = 0
@@ -71,15 +74,19 @@ def sort_participant_by_score(match_results: dict, reverse=True):
 def get_next_math_serial_number(serial_number: int, p_i_m: int, advances_to_next: int) -> int:
     flag = 1 if (serial_number % (p_i_m // advances_to_next)) > 0 else 0
     next_serial_number = serial_number // (p_i_m // advances_to_next) + flag
-    print('flag and next_serial_number serial_number', flag, next_serial_number, serial_number)
     return next_serial_number
 
-def get_low_bracket_math_serial_number(current_round: int, round_count: int, serial_number: int, p_i_m: int) -> int:
+def get_low_bracket_math_serial_number_for_high(current_round: int, round_count: int, serial_number: int, p_i_m: int) -> int:
     if current_round == 0:
         return serial_number // p_i_m + serial_number % p_i_m
     elif current_round == round_count - 3:
         return 1
     
+    return serial_number
+
+def get_low_bracket_math_serial_number(current_round: int, round_count: int, serial_number: int, p_i_m: int) -> int:
+    if (current_round // 2) % 2 == 1:
+        return math.ceil(serial_number / 2)
     return serial_number
 
 def check_results(prev: list, cur: list) -> bool:
@@ -310,247 +317,470 @@ def update_de_bracket(data):
 
     print('match.state', match.state)
     print(match_prev_state, cur_match_state, match.state.id)
-
+    match_cur_round_number = match.round.serial_number
     # Main bracket
-    # P -> S
-    if match_prev_state == "PLAYED" and cur_match_state == "SCHEDULED":
-        print('P -> S')
-    
-        round_cnt = bracket.rounds.count()
-        match_cur_round_number = match.round.serial_number
-
-        print('match_cur_round_number', match_cur_round_number)
-        print('round_cnt', round_cnt)
-
-        if match_cur_round_number+1 != round_cnt:
-            # обновляем результаты следующего матча верхней сетки
-            next_matches_predicates = [Q()]
-            cur_serial_number = match.serial_number
-            for round_number in range(match_cur_round_number+2, round_cnt, 2):
-                next_serial_number = get_next_math_serial_number(cur_serial_number, bracket.participant_in_match, advances_to_next)
-                next_matches_predicates.append(Q(Q(round__serial_number=round_number) & Q(serial_number=next_serial_number)))
-                cur_serial_number = next_serial_number
-
-            next_matches = Match.objects.prefetch_related(
-                Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
-            ).filter(reduce(operator.or_, next_matches_predicates), round__bracket=bracket)
+    if match_cur_round_number % 2 == 0:
+        # P -> S
+        if match_prev_state == "PLAYED" and cur_match_state == "SCHEDULED":
+            print('P -> S')
+        
+            round_cnt = bracket.rounds.count()
             
-            print('round_cnt', round_cnt)
+
             print('match_cur_round_number', match_cur_round_number)
-            print('next_matches_predicates', next_matches_predicates)
-            print('next_matches', next_matches)
-
-            match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
-            match_participant_info_r = match_participant_info_l + advances_to_next
-
-            print('match_participant_info_l', match_participant_info_l)
-            print('match_participant_info_r', match_participant_info_r)
-
-            reset_match_participant_info(next_matches, match_participant_info_l, match_participant_info_r)
-
-            # обновляем результаты следующего матча нижней сетки
-            next_matches_predicates = [Q()]
-            cur_serial_number = match.serial_number
-            for round_number in range(match_cur_round_number+1, round_cnt, 2):
-                next_serial_number = get_next_math_serial_number(cur_serial_number, bracket.participant_in_match, advances_to_next)
-                next_matches_predicates.append(Q(Q(round__serial_number=round_number) & Q(serial_number=next_serial_number)))
-                cur_serial_number = next_serial_number
-
-            next_matches = Match.objects.prefetch_related(
-                Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
-            ).filter(reduce(operator.or_, next_matches_predicates), round__bracket=bracket)
-            
             print('round_cnt', round_cnt)
-            print('match_cur_round_number', match_cur_round_number)
-            print('next_matches_predicates', next_matches_predicates)
-            print('next_matches', next_matches)
 
-            match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
-            match_participant_info_r = match_participant_info_l + advances_to_next
+            order_by_param = '-id'
 
-            print('match_participant_info_l', match_participant_info_l)
-            print('match_participant_info_r', match_participant_info_r)
+            if match_cur_round_number+1 != round_cnt:
+                # обновляем результаты следующего матча верхней сетки
+                next_matches_predicates = [Q()]
+                cur_serial_number = match.serial_number
+                for round_number in range(match_cur_round_number+2, round_cnt, 2):
+                    next_serial_number = get_next_math_serial_number(cur_serial_number, bracket.participant_in_match, advances_to_next)
+                    next_matches_predicates.append(Q(Q(round__serial_number=round_number) & Q(serial_number=next_serial_number)))
+                    cur_serial_number = next_serial_number
 
-            reset_match_participant_info(next_matches, match_participant_info_l, match_participant_info_r)
+                if match_cur_round_number == round_cnt - 4:
+                    order_by_param = 'id'
 
-        # обновляем результаты текущего матча
-        update_match_participant_info(match_results, match.info.all())
-        match.state_id=1
-        match.save()
+                next_matches = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by(order_by_param))
+                ).filter(reduce(operator.or_, next_matches_predicates), round__bracket=bracket)
+                
+                print('round_cnt', round_cnt)
+                print('match_cur_round_number', match_cur_round_number)
+                print('next_matches_predicates', next_matches_predicates)
+                print('next_matches', next_matches)
 
-    # P -> P
-    elif match_prev_state == "PLAYED" and cur_match_state == "PLAYED":
-        print('P -> P')
-        match_prev_res = match.info.order_by('-participant_score').values_list('id', flat=True)
-        match_cur_res = sort_participant_by_score(match_results)
+                match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
+                match_participant_info_r = match_participant_info_l + advances_to_next
 
-        print('match_prev_res', match_prev_res)
-        print('match_cur_res', match_cur_res)
+                print('match_participant_info_l', match_participant_info_l)
+                print('match_participant_info_r', match_participant_info_r)
 
-        round_cnt = bracket.rounds.count()
-        match_cur_round_number = match.round.serial_number
+                reset_match_participant_info(next_matches, match_participant_info_l, match_participant_info_r)
+                next_matches.update(state_id=1)
+                # обновляем результаты следующего матча нижней сетки
+                print('low')
+                next_matches_predicates = [Q()]
+                cur_serial_number = match.serial_number
+                for round_number in range(match_cur_round_number+1, round_cnt, 2):
+                    next_serial_number = get_next_math_serial_number(cur_serial_number, bracket.participant_in_match, advances_to_next)
+                    next_matches_predicates.append(Q(Q(round__serial_number=round_number) & Q(serial_number=next_serial_number)))
+                    cur_serial_number = next_serial_number
 
-        if not check_results(match_prev_res, list(map(int, match_cur_res))) and round_cnt != match_cur_round_number+2 and match_cur_round_number+1 != round_cnt:
-            
-            next_matches_predicates = [Q()]
-            cur_serial_number = get_next_math_serial_number(match.serial_number, bracket.participant_in_match, advances_to_next)
-            for round_number in range(match_cur_round_number+2, round_cnt):
-                next_serial_number = get_next_math_serial_number(cur_serial_number, bracket.participant_in_match, advances_to_next)
-                next_matches_predicates.append(Q(Q(round__serial_number=round_number) & Q(serial_number=next_serial_number)))
-                cur_serial_number = next_serial_number
+                next_matches = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
+                ).filter(reduce(operator.or_, next_matches_predicates), round__bracket=bracket)
+                
+                print('round_cnt', round_cnt)
+                print('match_cur_round_number', match_cur_round_number)
+                print('next_matches_predicates', next_matches_predicates)
+                print('next_matches', next_matches)
 
-            next_matches = Match.objects.prefetch_related(
-                Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
-            ).filter(reduce(operator.or_, next_matches_predicates), round__bracket=bracket)
-            
-            print('round_cnt', round_cnt)
-            print('match_cur_round_number', match_cur_round_number)
-            print('next_match_numbers', next_matches_predicates)
-            print('next_matches', next_matches)
+                match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
+                match_participant_info_r = match_participant_info_l + advances_to_next
 
-            match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
-            match_participant_info_r = match_participant_info_l + advances_to_next
+                print('match_participant_info_l', match_participant_info_l)
+                print('match_participant_info_r', match_participant_info_r)
 
-            reset_match_participant_info(next_matches, match_participant_info_l, match_participant_info_r)
+                reset_match_participant_info(next_matches, match_participant_info_l, match_participant_info_r)
 
-        # обновляем результаты текущего матча
-        update_match_participant_info(match_results, match.info.all())
-        if match_cur_round_number+1 != round_cnt:
-            # обновляем результаты следующего матча
-            sorted_participant_ids = sort_participant_by_score(match_results)
-            next_match = Match.objects.prefetch_related(
-                Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
-            ).get(serial_number=get_next_math_serial_number(match.serial_number, bracket.participant_in_match, advances_to_next), 
-                                        round__bracket=bracket, round__serial_number=match.round.serial_number+2)
-            
-            match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
-            match_participant_info_r = match_participant_info_l + advances_to_next
+            # обновляем результаты текущего матча
+            update_match_participant_info(match_results, match.info.all())
+            match.state_id=1
+            match.save()
 
-            next_match_info_ids = [f"{id}" for id in next_match.info.values_list('id', flat=True)]
+        # P -> P
+        elif match_prev_state == "PLAYED" and cur_match_state == "PLAYED":
+            print('P -> P')
+            match_prev_res = match.info.order_by('-participant_score').values_list('id', flat=True)
+            match_cur_res = sort_participant_by_score(match_results)
 
-            print('match_participant_info_l', match_participant_info_l)
-            print('match_participant_info_r', match_participant_info_r)
+            print('match_prev_res', match_prev_res)
+            print('match_cur_res', match_cur_res)
 
-            next_match_results = dict(
-                zip(
-                    next_match_info_ids[match_participant_info_l:match_participant_info_r][::-1], 
-                    [{
-                        'participant': match_results.get(sorted_participant_ids[i]).get('participant'),
-                        'score': 0
-                    } for i in range(advances_to_next)]
-                )
-            )
+            round_cnt = bracket.rounds.count()
+            match_cur_round_number = match.round.serial_number
+            order_by_param = '-id'
 
-            print('next_match_results', next_match_results)
-            print('next_match_info_ids', next_match_info_ids)
+            if match_cur_round_number == round_cnt - 4:
+                order_by_param = 'id'
 
-            update_match_participant_info(next_match_results, next_match.info.all())
+            if not check_results(match_prev_res, list(map(int, match_cur_res))) and match_cur_round_number+2 != round_cnt:
+                # обновляем результаты следующего матча верхней сетки
+                next_matches_predicates = [Q()]
+                cur_serial_number = match.serial_number
+                for round_number in range(match_cur_round_number+2, round_cnt, 2):
+                    next_serial_number = get_next_math_serial_number(cur_serial_number, bracket.participant_in_match, advances_to_next)
+                    next_matches_predicates.append(Q(Q(round__serial_number=round_number) & Q(serial_number=next_serial_number)))
+                    cur_serial_number = next_serial_number
 
-            print('next_match', next_match)
-            print('sorted_participant_ids', sorted_participant_ids)
+                next_matches = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by(order_by_param))
+                ).filter(reduce(operator.or_, next_matches_predicates), round__bracket=bracket)
+                
+                print('round_cnt', round_cnt)
+                print('match_cur_round_number', match_cur_round_number)
+                print('next_matches_predicates', next_matches_predicates)
+                print('next_matches', next_matches)
 
-        match.state_id=2
-        match.save()
-    # S -> P
-    elif match_prev_state == "SCHEDULED" and cur_match_state == "PLAYED":
-        # обновляем результаты текущего матча
-        update_match_participant_info(match_results, match.info.all())
+                match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
+                match_participant_info_r = match_participant_info_l + advances_to_next
 
-        round_cnt = bracket.rounds.count()
-        match_cur_round_number = match.round.serial_number
+                print('match_participant_info_l', match_participant_info_l)
+                print('match_participant_info_r', match_participant_info_r)
 
-        if match_cur_round_number+2 != round_cnt:
-            # обновляем результаты следующего матча верхней сетки
-            sorted_participant_ids = sort_participant_by_score(match_results)
+                reset_match_participant_info(next_matches, match_participant_info_l, match_participant_info_r)
+                next_matches.update(state_id=1)
 
-            print('next_match serial_number', get_next_math_serial_number(match.serial_number, bracket.participant_in_match, advances_to_next))
-            print('next_match round__serial_number', match.round.serial_number+2)
+                # обновляем результаты следующего матча нижней сетки
+                next_matches_predicates = [Q()]
+                cur_serial_number = match.serial_number
+                for round_number in range(match_cur_round_number+1, round_cnt, 2):
+                    next_serial_number = get_next_math_serial_number(cur_serial_number, bracket.participant_in_match, advances_to_next)
+                    next_matches_predicates.append(Q(Q(round__serial_number=round_number) & Q(serial_number=next_serial_number)))
+                    cur_serial_number = next_serial_number
 
-            next_match = Match.objects.prefetch_related(
-                Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
-            ).get(serial_number=get_next_math_serial_number(match.serial_number, bracket.participant_in_match, advances_to_next), 
-                                        round__bracket=bracket, round__serial_number=match.round.serial_number+2)
-            
-            print('match.serial_number-1', match.serial_number-advances_to_next)
-            match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
-            match_participant_info_r = match_participant_info_l + advances_to_next
+                next_matches = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
+                ).filter(reduce(operator.or_, next_matches_predicates), round__bracket=bracket)
+                
+                print('round_cnt', round_cnt)
+                print('match_cur_round_number', match_cur_round_number)
+                print('next_matches_predicates', next_matches_predicates)
+                print('next_matches', next_matches)
 
-            if match_cur_round_number != round_cnt - 4:
+                match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
+                match_participant_info_r = match_participant_info_l + advances_to_next
+
+                print('match_participant_info_l', match_participant_info_l)
+                print('match_participant_info_r', match_participant_info_r)
+
+                reset_match_participant_info(next_matches, match_participant_info_l, match_participant_info_r)
+
+            # обновляем результаты текущего матча
+            update_match_participant_info(match_results, match.info.all())
+            if match_cur_round_number+2 != round_cnt:
+                # обновляем результаты следующего матча верхней сетки
+                sorted_participant_ids = sort_participant_by_score(match_results)
+
+                print('next_match serial_number', get_next_math_serial_number(match.serial_number, bracket.participant_in_match, advances_to_next))
+                print('next_match round__serial_number', match.round.serial_number+2)
+
+                next_match = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by(order_by_param))
+                ).get(serial_number=get_next_math_serial_number(match.serial_number, bracket.participant_in_match, advances_to_next), 
+                                            round__bracket=bracket, round__serial_number=match.round.serial_number+2)
+                
+                print('match.serial_number-1', match.serial_number-advances_to_next)
+                match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
+                match_participant_info_r = match_participant_info_l + advances_to_next
+
                 next_match_info_ids = [f"{id}" for id in next_match.info.values_list('id', flat=True)]
-            else:
-                next_match_info_ids = [f"{id}" for id in sorted(next_match.info.values_list('id', flat=True))]
 
-            print('match_participant_info_l', match_participant_info_l)
-            print('match_participant_info_r', match_participant_info_r)
+                # if match_cur_round_number != round_cnt - 4:
+                #     next_match_info_ids = [f"{id}" for id in next_match.info.values_list('id', flat=True)]
+                # else:
+                #     next_match_info_ids = [f"{id}" for id in sorted(next_match.info.values_list('id', flat=True))]
 
-            next_match_results = dict(
-                zip(
-                    next_match_info_ids[match_participant_info_l:match_participant_info_r][::-1], 
-                    [{
-                        'participant': match_results.get(sorted_participant_ids[i]).get('participant'),
-                        'score': 0
-                    } for i in range(advances_to_next)]
+                print('match_participant_info_l', match_participant_info_l)
+                print('match_participant_info_r', match_participant_info_r)
+
+                next_match_results = dict(
+                    zip(
+                        next_match_info_ids[match_participant_info_l:match_participant_info_r][::-1], 
+                        [{
+                            'participant': match_results.get(sorted_participant_ids[i]).get('participant'),
+                            'score': 0
+                        } for i in range(advances_to_next)]
+                    )
                 )
-            )
 
-            print('next_match_results', next_match_results)
-            print('next_match_info_ids', next_match_info_ids)
+                print('next_match_results', next_match_results)
+                print('next_match_info_ids', next_match_info_ids)
 
-            update_match_participant_info(next_match_results, next_match.info.all())
+                update_match_participant_info(next_match_results, next_match.info.all())
 
-            print('next_match', next_match)
-            print('sorted_participant_ids', sorted_participant_ids)
+                print('next_match', next_match)
+                print('sorted_participant_ids', sorted_participant_ids)
 
-            # обновляем результаты следующего матча нижней сетки
-            sorted_participant_ids = sort_participant_by_score(match_results, False)
+                # обновляем результаты следующего матча нижней сетки
+                sorted_participant_ids = sort_participant_by_score(match_results, False)
 
-            print('next_match serial_number', get_low_bracket_math_serial_number(match_cur_round_number, round_cnt, match.serial_number, bracket.participant_in_match))
-            print('next_match round__serial_number', match.round.serial_number + (1 if match_cur_round_number != round_cnt - 4 else 3))
+                print('next_match serial_number', get_low_bracket_math_serial_number_for_high(match_cur_round_number, round_cnt, match.serial_number, bracket.participant_in_match))
+                print('next_match round__serial_number', match.round.serial_number + (1 if match_cur_round_number != round_cnt - 4 else 3))
 
-            next_match = Match.objects.prefetch_related(
-                Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
-            ).get(
-                serial_number=get_low_bracket_math_serial_number(match_cur_round_number, round_cnt, match.serial_number, bracket.participant_in_match), 
-                round__bracket=bracket,
-                # check for prelast match in top bracket
-                round__serial_number=match.round.serial_number + (1 if match_cur_round_number != round_cnt - 4 else 3)
-            )
-            
-            print('match.serial_number-1', match.serial_number-advances_to_next)
-            match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
-            match_participant_info_r = match_participant_info_l + advances_to_next
-
-            next_match_info_ids = [f"{id}" for id in next_match.info.values_list('id', flat=True)]
-
-            print('match_participant_info_l', match_participant_info_l)
-            print('match_participant_info_r', match_participant_info_r)
-
-            next_match_results = dict(
-                zip(
-                    next_match_info_ids[match_participant_info_l:match_participant_info_r][::-1], 
-                    [{
-                        'participant': match_results.get(sorted_participant_ids[i]).get('participant'),
-                        'score': 0
-                    } for i in range(advances_to_next)]
+                next_match = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
+                ).get(
+                    serial_number=get_low_bracket_math_serial_number_for_high(match_cur_round_number, round_cnt, match.serial_number, bracket.participant_in_match), 
+                    round__bracket=bracket,
+                    # check for prelast match in top bracket
+                    round__serial_number=match.round.serial_number + (1 if match_cur_round_number != round_cnt - 4 else 3)
                 )
-            )
+                
+                print('match.serial_number-1', match.serial_number-advances_to_next)
+                match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
+                match_participant_info_r = match_participant_info_l + advances_to_next
 
-            print('next_match_results', next_match_results)
-            print('next_match_info_ids', next_match_info_ids)
+                next_match_info_ids = [f"{id}" for id in next_match.info.values_list('id', flat=True)]
 
-            update_match_participant_info(next_match_results, next_match.info.all())
+                print('match_participant_info_l', match_participant_info_l)
+                print('match_participant_info_r', match_participant_info_r)
 
-            print('next_match', next_match)
-            print('sorted_participant_ids', sorted_participant_ids)
+                next_match_results = dict(
+                    zip(
+                        next_match_info_ids[match_participant_info_l:match_participant_info_r][::-1], 
+                        [{
+                            'participant': match_results.get(sorted_participant_ids[i]).get('participant'),
+                            'score': 0
+                        } for i in range(advances_to_next)]
+                    )
+                )
 
-        match.state_id=2
-        match.save()
-    # S -> S
+                print('next_match_results', next_match_results)
+                print('next_match_info_ids', next_match_info_ids)
+
+                update_match_participant_info(next_match_results, next_match.info.all())
+
+                print('next_match', next_match)
+                print('sorted_participant_ids', sorted_participant_ids)
+
+            match.state_id=2
+            match.save()
+        # S -> P
+        elif match_prev_state == "SCHEDULED" and cur_match_state == "PLAYED":
+            # обновляем результаты текущего матча
+            update_match_participant_info(match_results, match.info.all())
+
+            round_cnt = bracket.rounds.count()
+            match_cur_round_number = match.round.serial_number
+
+            order_by_param = '-id'
+            if match_cur_round_number == round_cnt - 4:
+                order_by_param = 'id'
+
+            if match_cur_round_number+2 != round_cnt:
+                # обновляем результаты следующего матча верхней сетки
+                sorted_participant_ids = sort_participant_by_score(match_results)
+
+                print('next_match serial_number', get_next_math_serial_number(match.serial_number, bracket.participant_in_match, advances_to_next))
+                print('next_match round__serial_number', match.round.serial_number+2)
+
+                next_match = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by(order_by_param))
+                ).get(serial_number=get_next_math_serial_number(match.serial_number, bracket.participant_in_match, advances_to_next), 
+                                            round__bracket=bracket, round__serial_number=match.round.serial_number+2)
+                
+                print('match.serial_number-1', match.serial_number-advances_to_next)    
+                match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
+                match_participant_info_r = match_participant_info_l + advances_to_next
+
+                # if match_cur_round_number != round_cnt - 4:
+                #     next_match_info_ids = [f"{id}" for id in next_match.info.values_list('id', flat=True)]
+                # else:
+                next_match_info_ids = [f"{id}" for id in next_match.info.values_list('id', flat=True)]
+
+                print('match_participant_info_l', match_participant_info_l)
+                print('match_participant_info_r', match_participant_info_r)
+
+                next_match_results = dict(
+                    zip(
+                        next_match_info_ids[match_participant_info_l:match_participant_info_r][::-1], 
+                        [{
+                            'participant': match_results.get(sorted_participant_ids[i]).get('participant'),
+                            'score': 0
+                        } for i in range(advances_to_next)]
+                    )
+                )
+
+                print('next_match_results', next_match_results)
+                print('next_match_info_ids', next_match_info_ids)
+
+                update_match_participant_info(next_match_results, next_match.info.all())
+
+                print('next_match', next_match)
+                print('sorted_participant_ids', sorted_participant_ids)
+
+                # обновляем результаты следующего матча нижней сетки
+                sorted_participant_ids = sort_participant_by_score(match_results, False)
+
+                print('next_match serial_number', get_low_bracket_math_serial_number_for_high(match_cur_round_number, round_cnt, match.serial_number, bracket.participant_in_match))
+                print('next_match round__serial_number', match.round.serial_number + (1 if match_cur_round_number != round_cnt - 4 else 3))
+
+                next_match = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by(order_by_param))
+                ).get(
+                    serial_number=get_low_bracket_math_serial_number_for_high(match_cur_round_number, round_cnt, match.serial_number, bracket.participant_in_match), 
+                    round__bracket=bracket,
+                    # check for prelast match in top bracket
+                    round__serial_number=match.round.serial_number + (1 if match_cur_round_number != round_cnt - 4 else 3)
+                )
+                
+                print('match.serial_number-1', match.serial_number-advances_to_next)
+                match_participant_info_l = ((match.serial_number-1)*advances_to_next) % (bracket.participant_in_match)
+                match_participant_info_r = match_participant_info_l + advances_to_next
+
+                next_match_info_ids = [f"{id}" for id in next_match.info.values_list('id', flat=True)]
+
+                print('match_participant_info_l', match_participant_info_l)
+                print('match_participant_info_r', match_participant_info_r)
+
+                next_match_results = dict(
+                    zip(
+                        next_match_info_ids[match_participant_info_l:match_participant_info_r][::-1], 
+                        [{
+                            'participant': match_results.get(sorted_participant_ids[i]).get('participant'),
+                            'score': 0
+                        } for i in range(advances_to_next)]
+                    )
+                )
+
+                print('next_match_results', next_match_results)
+                print('next_match_info_ids', next_match_info_ids)
+
+                update_match_participant_info(next_match_results, next_match.info.all())
+
+                print('next_match', next_match)
+                print('sorted_participant_ids', sorted_participant_ids)
+
+            match.state_id=2
+            match.save()
+        # S -> S
+        else:
+            match.state_id=1
+            match.save()
+        # elif match_prev_state == "SCHEDULED" and cur_match_state == "SCHEDULED":
+            update_match_participant_info(match_results, match.info.all())
     else:
-        match.state_id=1
-        match.save()
-    # elif match_prev_state == "SCHEDULED" and cur_match_state == "SCHEDULED":
-        update_match_participant_info(match_results, match.info.all())
+        # P -> S
+        if match_prev_state == "PLAYED" and cur_match_state == "SCHEDULED":
+            print('P -> S')
+        
+            round_cnt = bracket.rounds.count()
+            match_cur_round_number = match.round.serial_number
+
+            if match_cur_round_number+1 != round_cnt:
+                next_matches_predicates = [Q()]
+                cur_serial_number = match.serial_number
+                for round_number in range(match_cur_round_number+2, round_cnt, 2):
+                    next_serial_number = get_low_bracket_math_serial_number(match_cur_round_number, round_cnt, match.serial_number, bracket.participant_in_match)
+                    next_matches_predicates.append(Q(Q(round__serial_number=round_number) & Q(serial_number=next_serial_number)))
+                    cur_serial_number = next_serial_number
+
+                next_matches = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
+                ).filter(reduce(operator.or_, next_matches_predicates), round__bracket=bracket)
+
+                match_participant_info_l = 0
+                match_participant_info_r = 1
+
+                reset_match_participant_info(next_matches, match_participant_info_l, match_participant_info_r)
+
+            # обновляем результаты текущего матча
+            update_match_participant_info(match_results, match.info.all())
+            match.state_id=1
+            match.save()
+
+        # P -> P
+        elif match_prev_state == "PLAYED" and cur_match_state == "PLAYED":
+            print('P -> P')
+            match_prev_res = match.info.order_by('-participant_score').values_list('id', flat=True)
+            match_cur_res = sort_participant_by_score(match_results)
+
+            round_cnt = bracket.rounds.count()
+            match_cur_round_number = match.round.serial_number
+
+            if not check_results(match_prev_res, list(map(int, match_cur_res))) and round_cnt != match_cur_round_number+2 and match_cur_round_number+1 != round_cnt:
+                
+                next_matches_predicates = [Q()]
+                cur_serial_number = get_next_math_serial_number(match.serial_number, bracket.participant_in_match, advances_to_next)
+                for round_number in range(match_cur_round_number+2, round_cnt):
+                    next_serial_number = get_low_bracket_math_serial_number(match_cur_round_number, round_cnt, match.serial_number, bracket.participant_in_match)
+                    next_matches_predicates.append(Q(Q(round__serial_number=round_number) & Q(serial_number=next_serial_number)))
+                    cur_serial_number = next_serial_number
+
+                next_matches = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
+                ).filter(reduce(operator.or_, next_matches_predicates), round__bracket=bracket)
+
+                match_participant_info_l = 0
+                match_participant_info_r = 1
+                reset_match_participant_info(next_matches, match_participant_info_l, match_participant_info_r)
+
+            # обновляем результаты текущего матча
+            update_match_participant_info(match_results, match.info.all())
+            if match_cur_round_number+1 != round_cnt:
+                # обновляем результаты следующего матча
+                sorted_participant_ids = sort_participant_by_score(match_results)
+                next_match = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
+                ).get(serial_number=get_low_bracket_math_serial_number(match_cur_round_number, round_cnt, match.serial_number, bracket.participant_in_match), 
+                                            round__bracket=bracket, round__serial_number=match.round.serial_number+2)
+                
+                match_participant_info_l = 0
+                match_participant_info_r = 1
+
+                next_match_info_ids = [f"{id}" for id in next_match.info.values_list('id', flat=True)]
+
+                next_match_results = dict(
+                    zip(
+                        next_match_info_ids[match_participant_info_l:match_participant_info_r][::-1], 
+                        [{
+                            'participant': match_results.get(sorted_participant_ids[i]).get('participant'),
+                            'score': 0
+                        } for i in range(advances_to_next)]
+                    )
+                )
+
+                update_match_participant_info(next_match_results, next_match.info.all())
+
+            match.state_id=2
+            match.save()
+        # S -> P
+        elif match_prev_state == "SCHEDULED" and cur_match_state == "PLAYED":
+            # обновляем результаты текущего матча
+            update_match_participant_info(match_results, match.info.all())
+
+            round_cnt = bracket.rounds.count()
+            match_cur_round_number = match.round.serial_number
+
+            if match_cur_round_number+1 != round_cnt:
+                # обновляем результаты следующего матча
+                sorted_participant_ids = sort_participant_by_score(match_results)
+                print('match number', get_low_bracket_math_serial_number(match_cur_round_number, round_cnt, match.serial_number, bracket.participant_in_match))
+                next_match = Match.objects.prefetch_related(
+                    Prefetch('info', queryset=MatchParticipantInfo.objects.all().order_by('-id'))
+                ).get(serial_number=get_low_bracket_math_serial_number(match_cur_round_number, round_cnt, match.serial_number, bracket.participant_in_match), 
+                                            round__bracket=bracket, round__serial_number=match.round.serial_number+2)
+                
+                match_participant_info_l = 0
+                match_participant_info_r = 1
+
+                next_match_info_ids = [f"{id}" for id in next_match.info.values_list('id', flat=True)]
+
+                next_match_results = dict(
+                    zip(
+                        next_match_info_ids[match_participant_info_l:match_participant_info_r][::-1], 
+                        [{
+                            'participant': match_results.get(sorted_participant_ids[i]).get('participant'),
+                            'score': 0
+                        } for i in range(advances_to_next)]
+                    )
+                )
+
+                update_match_participant_info(next_match_results, next_match.info.all())
+
+
+            match.state_id=2
+            match.save()
+        # S -> S
+        else:
+            match.state_id=1
+            match.save()
+            update_match_participant_info(match_results, match.info.all())
 
 
 def check_for_draw(match_results: dict) -> bool:
