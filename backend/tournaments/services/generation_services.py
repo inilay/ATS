@@ -284,13 +284,13 @@ def create_de_bracket(bracket: Bracket, participants: list):
     _number_of_rounds_l = number_of_rounds_l
     l_start = 1
     while _number_of_rounds_l != 1:
-        l_start += p_in_m
+        l_start += 2
         _number_of_rounds_l -= 1
 
     _number_of_rounds_w = number_of_rounds_w
     w_start = 0
     while _number_of_rounds_w != 1:
-        w_start += p_in_m
+        w_start += 2
         _number_of_rounds_w -= 1
 
     unsaved_matches = []
@@ -299,13 +299,16 @@ def create_de_bracket(bracket: Bracket, participants: list):
     rounds_l = []
     rounds_w = []
 
+
     # Создаем раунды  для нижней сетки, номера нечетные
-    for number in range(l_start, -1, -p_in_m):
+    for number in range(l_start, -1, -2):
         rounds_l.append(Round(bracket=bracket, serial_number=number))
+     
 
     # Создаем раунды для верхней сетки, номера четные
-    for number in range(w_start, -1, -p_in_m):
+    for number in range(w_start, -1, -2):
         rounds_w.append(Round(bracket=bracket, serial_number=number))
+
 
     Round.objects.bulk_create(rounds_l + rounds_w)
 
