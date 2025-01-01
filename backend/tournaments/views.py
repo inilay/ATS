@@ -75,7 +75,6 @@ class TournamentCreateView(APIView):
         participants = serializers.CharField()
         poster = serializers.ImageField(use_url=True, default=None)
         game = serializers.CharField()
-        prize = serializers.FloatField(default=0)
         start_time = serializers.DateTimeField()
         # bracket 
         advances_to_next = serializers.IntegerField()
@@ -124,7 +123,6 @@ class TournamentUpdateApiView(APIView):
         content = serializers.CharField()
         poster = serializers.ImageField(use_url=True, default=None)
         game = serializers.CharField()
-        prize = serializers.FloatField()
         start_time = serializers.DateTimeField()
         creater_email = serializers.EmailField()
 

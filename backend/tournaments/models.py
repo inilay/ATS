@@ -57,7 +57,6 @@ class Tournament(models.Model):
     link = models.SlugField(max_length=255, unique=True)
     poster = models.ImageField(upload_to="photos/media/%Y/%m/%d/", blank=True)
     game = models.CharField(max_length=255)
-    prize = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     start_time = models.DateTimeField()
     owner = models.ForeignKey(

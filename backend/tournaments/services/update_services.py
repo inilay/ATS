@@ -20,7 +20,7 @@ import math
 from functools import reduce
 
 def update_tournament(*, tournament: Tournament, data) -> Tournament:
-    non_side_effect_fields = ["content", "poster", "game", "prize", "start_time"]
+    non_side_effect_fields = ["content", "poster", "game", "start_time"]
     tournament, has_update = model_update(
         instance=tournament, fields=non_side_effect_fields, data=data
     )

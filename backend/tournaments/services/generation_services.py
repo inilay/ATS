@@ -447,7 +447,6 @@ def create_tournament(
     content: str,
     poster,
     game: str,
-    prize: float,
     start_time,
     bracket_type: int,
     user: CustomUser,
@@ -470,7 +469,6 @@ def create_tournament(
         poster=poster,
         link=link,
         game=game,
-        prize=prize,
         start_time=start_time,
         owner=user.profile,
     )

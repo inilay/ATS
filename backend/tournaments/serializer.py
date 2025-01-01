@@ -20,7 +20,6 @@ class TournamentSerializer(serializers.ModelSerializer):
             "content",
             "poster",
             "game",
-            "prize",
             "created_at",
             "start_time",
             "owner",
