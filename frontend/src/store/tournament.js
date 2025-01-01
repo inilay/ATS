@@ -11,7 +11,6 @@ const tournamentSlice = createSlice({
         startTime: '',
         poster: '', 
         game: '',
-        prize: '',
     },
     reducers: {
         setTournament(state, action) {
@@ -23,7 +22,6 @@ const tournamentSlice = createSlice({
             state.startTime = action.payload.startTime
             state.poster = action.payload.poster
             state.game = action.payload.game
-            state.prize = action.payload.prize
         },
        
         clearTournament(state) {
@@ -35,7 +33,6 @@ const tournamentSlice = createSlice({
             state.startTime = ''
             state.poster = ''
             state.game = ''
-            state.prize = ''
         },
     }
 })

@@ -40,19 +40,6 @@ const TournamentInfoInput = ({errors, register, inputChangeHandler, setInputFile
         onChange={inputChangeHandler}
       ></MyFormGroupInput>
       <MyFormGroupInput
-        label="Prize fund"
-        name="prize"
-        errors={errors}
-        register={register}
-        validationSchema={{
-          pattern: {
-            value: /^[+-]?\d+(\.\d+)?$/,
-            message: "⚠ Invalid data.",
-          },
-        }}
-        onChange={inputChangeHandler}
-      ></MyFormGroupInput>
-      <MyFormGroupInput
         label="Game"
         name="game"
         errors={errors}

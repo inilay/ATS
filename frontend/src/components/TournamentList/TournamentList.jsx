@@ -27,7 +27,6 @@ const TournamentList = ({ tournaments }) => {
               <div className="card-body tournaments_card_body">
                 <h4 className="card-title">{post.title}</h4>
                 <p className="card-text">Game: {post.game}</p>
-                <p className="card-text">Prize: {post.prize}</p>
               </div>
             </div>
           </a>

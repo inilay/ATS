@@ -29,7 +29,6 @@ const EditTournament = () => {
       content: response.data.content,
       // participants: response.data.participants,
       game: response.data.game,
-      prize: response.data.prize,
       start_time: response.data.start_time,
       // type: response.data.type,
       creater_email: user.email,
@@ -43,7 +42,6 @@ const EditTournament = () => {
     start_time: "",
     // participants: "",
     game: "",
-    prize: "",
     // type: "",
     creater_email: user.email,
   });
@@ -111,20 +109,7 @@ const EditTournament = () => {
                 }}
                 onChange={inputChangeHandler}
               ></MyFormGroupInput>
-              <MyFormGroupInput
-                label="Prize fund"
-                name="prize"
-                errors={errors}
-                register={register}
-                validationSchema={{
-                  required: "⚠ This input is required.",
-                  pattern: {
-                    value: /^[+-]?\d+(\.\d+)?$/,
-                    message: "⚠ Invalid data.",
-                  },
-                }}
-                onChange={inputChangeHandler}
-              ></MyFormGroupInput>
+              
               <MyFormGroupInput
                 label="Game"
                 name="game"

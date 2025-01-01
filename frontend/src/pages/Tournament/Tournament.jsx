@@ -104,10 +104,6 @@ const Tournament = () => {
                     </p>
                     <p>Game</p>
                     <p className="tournament_text">{tournament.game}</p>
-                    <p>Prize fund</p>
-                    <p className="tournament_text">
-                      {tournament.prize} <span>&#8381;</span>
-                    </p>
                     <div className={`${classes.tournament_block}`}>
                       <p>Organizer</p>
                       <p className="tournament_text ">{tournament.owner}</p>
