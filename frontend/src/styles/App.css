@@ -128,7 +128,8 @@ a:hover {
 
 .table {
     color: inherit;
-    width: 75rem;
+    margin-top: 50px;
+    /* width: 75rem; */
 }
 
 .tournaments_card_body {
