@@ -35,15 +35,53 @@ const RoundRobin = ({bracket, bracketId}) => {
     let table = []
     console.log('bracket', bracket);
     bracket[0]?.matches.map((match) => {
+      let draw = false
+      let max_score = Math.max(...match.info.map(participant => participant.participant_score))
+      if (match.info.filter((participant) => participant.participant_score == max_score).length > 1) {
+          draw = true
+      }
+      
       match.info.map((i) => {
-        if (match.state == "PLAYED") {
+          let win_cnt = 0
+          let loose_cnt = 0
           
-        }
-        table.push({participant: i.participant, win: 0, loose: 0, draw: 0, scores: 0})
-        console.log(i.participant);
-        
+          if (match.state == "PLAYED" && draw == false) {
+              if (i.participant_score == max_score) {
+                  win_cnt = 1
+              }
+              else {
+                  loose_cnt = 1
+              }
+          } 
+            table.push({participant: i.participant, win: win_cnt, loose: loose_cnt, draw:  draw ? 1  : 0, scores: 0})
+            console.log(i.participant);
       })
     })
+
+    bracket?.matches.map((match) => {
+      let draw = false
+      let max_score = Math.max(...match.info.map(participant => participant.participant_score))
+      if (match.info.filter((participant) => participant.participant_score == max_score).length > 1) {
+          draw = true
+      }
+      
+      match.info.map((i) => {
+          let win_cnt = 0
+          let loose_cnt = 0
+          
+          if (match.state == "PLAYED" && draw == false) {
+              if (i.participant_score == max_score) {
+                  win_cnt = 1
+              }
+              else {
+                  loose_cnt = 1
+              }
+          } 
+            table.push({participant: i.participant, win: win_cnt, loose: loose_cnt, draw:  draw ? 1  : 0, scores: 0})
+            console.log(i.participant);
+      })
+    })
+
     return table
   }
 
