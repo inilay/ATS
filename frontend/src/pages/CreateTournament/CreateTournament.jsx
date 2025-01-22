@@ -21,6 +21,14 @@ const CreateTournament = () => {
   const SWParticipantOptions = ['2', '3', '4', '5', '6']
   const DeParticipantOptions = ['2', '4', '6']
 
+  const SeAdvanceOptions = {
+    2: ['1'],
+    3: ['1'],
+    4: ['1', '2'],
+    5: ['1', '2'],
+    6: ['1', '2', '3']
+  }
+
   const [responseBody, setResponseBody] = useState({
 
     bracket_type: 1,
@@ -191,16 +199,27 @@ const CreateTournament = () => {
                                 )}
                               </Form.Select>
                             </div>
-                            {responseBody.bracket_type == 1 && <div className="col">
-                              <MyFormGroupInput
-                                label="Advances to next match"
-                                name="advances_to_next"
-                                defaultValue={1}
-                                errors={errors}
-                                register={register}
-                                onChange={inputChangeHandler}
-                              >
-                              </MyFormGroupInput>
+                            {responseBody.bracket_type == 1 && 
+                              <div className="col">
+                                <Form.Label>Advances to next match</Form.Label>
+                                <Form.Select
+                                  className="shadow-none select-input"
+                                  name="advances_to_next"
+                                  onChange={(e) => inputSelectChangeHandler(e)}
+                                >
+                                  {responseBody.bracket_type == 1 && SeAdvanceOptions[responseBody?.participant_in_match].map((value) => 
+                                    <option value={value}>{value}</option>
+                                  )}
+                                </Form.Select>
+                                {/* <MyFormGroupInput
+                                  label="Advances to next match"
+                                  name="advances_to_next"
+                                  defaultValue={1}
+                                  errors={errors}
+                                  register={register}
+                                  onChange={inputChangeHandler}
+                                >
+                                </MyFormGroupInput> */}
                               </div>
                             }
                           </div>

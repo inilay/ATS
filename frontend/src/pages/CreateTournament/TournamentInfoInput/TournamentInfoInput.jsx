@@ -64,7 +64,7 @@ const TournamentInfoInput = ({errors, register, inputChangeHandler, setInputFile
         <Form.Label>Poster</Form.Label>
         <UploadButton setInputFileValue={setInputFile} />
       </Form.Group>
-      <p>Tournament type</p>
+      {/* <p>Tournament type</p>
       <div className="mb-3">
         <Form.Check
           inline
@@ -88,7 +88,7 @@ const TournamentInfoInput = ({errors, register, inputChangeHandler, setInputFile
             inputRadioChangeHandler(event);
           }}
         ></Form.Check>
-      </div>
+      </div> */}
     </Card.Body>
   </MyCard>
   );
