@@ -15,8 +15,8 @@ const InfoModal = ({modalShow, setMatchCardModalShow}) => {
             >
             <Modal.Header closeButton className={classes.myModalHeader}>
             <div className={classes.matchTitle}>
-                {match?.startTime && 
-                  <span>{moment.parseZone(match?.startTime).format("DD.MM h:mm a") || ""}</span>
+                {match?.start_time && 
+                  <span>{moment.parseZone(match?.start_time).format("DD.MM.YY h:mm a") || ""}</span>
                 }   
             </div>
             </Modal.Header>

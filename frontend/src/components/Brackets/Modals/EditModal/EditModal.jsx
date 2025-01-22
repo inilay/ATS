@@ -16,7 +16,7 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     const participantCount = match?.info.length
 
     const [matchState, setMatchState] = useState(match?.state);
-    const [matchTime, setMatchTime] = useState(match?.startTime);
+    const [matchTime, setMatchTime] = useState(match?.start_time);
     const [matchResults, setMatchResults] = useState([]);
     const dispatch = useDispatch()
 
@@ -70,6 +70,9 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
         
     };
 
+    console.log('match?.start_time', match?.start_time?.slice(0, -4));
+    
+
     return (
         <MyModal
             show={modalEditShow}
@@ -81,7 +84,7 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
                     className={classes.dateInput}
                       onChange={(e) => matchTimeHandler(e)}
                     type="datetime-local"
-                    defaultValue={match?.startTime}
+                    defaultValue={match?.start_time?.slice(0, -4)}
                 />
             </div>
             </Modal.Header>
