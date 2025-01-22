@@ -179,6 +179,8 @@ def update_se_bracket(data):
     print('match.state', match.state)
     print(match_prev_state, cur_match_state, match.state.id)
 
+    match.start_time = data.get("start_time")
+
     # P -> S
     if match_prev_state == "PLAYED" and cur_match_state == "SCHEDULED":
         print('P -> S')

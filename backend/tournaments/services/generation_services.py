@@ -184,7 +184,9 @@ def create_se_bracket(
     # number_of_match_in_round = bracket.participant_in_match**(number_of_rounds-1)
 
     number_of_match_in_round = 1
-
+    
+    print("p_in_m", p_in_m)
+    print("next_round_p", next_round_p)
     print("participants", participants)
     print("number_of_rounds", number_of_rounds)
     print("number_of_match_in_round", number_of_match_in_round)

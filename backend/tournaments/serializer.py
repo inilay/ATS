@@ -301,6 +301,7 @@ class GetAllBracketsMSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     state = serializers.CharField(source="state.name")
     info = GetAllBracketsMPISerializer(many=True)
+    start_time = serializers.DateTimeField()
 
 
 class GetAllBracketsRSerializer(serializers.Serializer):
