@@ -46,7 +46,7 @@
   order: 999;
 
   margin-left: auto;
-  width: 28px;
+  width: 27px;
   text-align: center;
 }
 
@@ -60,6 +60,7 @@
   display: flex;
   flex-flow: row wrap;
   height: 30px;
+  width: 161px;
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
   border-left: 2px solid var(--border-color);

@@ -58,7 +58,7 @@ const RoundRobin = ({bracket, bracketId}) => {
       })
     })
 
-    bracket?.matches.map((match) => {
+    bracket?.matches?.map((match) => {
       let draw = false
       let max_score = Math.max(...match.info.map(participant => participant.participant_score))
       if (match.info.filter((participant) => participant.participant_score == max_score).length > 1) {

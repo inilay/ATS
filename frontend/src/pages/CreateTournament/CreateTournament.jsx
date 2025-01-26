@@ -25,7 +25,7 @@ const CreateTournament = () => {
     2: ['1'],
     3: ['1'],
     4: ['1', '2'],
-    5: ['1', '2'],
+    5: ['1'],
     6: ['1', '2', '3']
   }
 
@@ -53,7 +53,13 @@ const CreateTournament = () => {
 
   const inputSelectChangeHandler = (event) => {
     const { name, value } = event.target;
-    setResponseBody({ ...responseBody, [name]: parseInt(value) });
+
+    if (((name == 'participant_in_match') && !SeAdvanceOptions[value].includes(parseInt(responseBody.advances_to_next))) ||  (name == 'bracket_type')) {
+      setResponseBody({...responseBody, advances_to_next: 1, [name]: parseInt(value)});
+    }
+    else {
+      setResponseBody({ ...responseBody,  [name]: parseInt(value)});
+    }
   };
 
   const inputRadioChangeHandler = (event) => {
@@ -199,8 +205,9 @@ const CreateTournament = () => {
                                 )}
                               </Form.Select>
                             </div>
+                            <div className="col">
                             {responseBody.bracket_type == 1 && 
-                              <div className="col">
+                              <Fragment>
                                 <Form.Label>Advances to next match</Form.Label>
                                 <Form.Select
                                   className="shadow-none select-input"
@@ -220,8 +227,9 @@ const CreateTournament = () => {
                                   onChange={inputChangeHandler}
                                 >
                                 </MyFormGroupInput> */}
-                              </div>
+                              </Fragment>
                             }
+                            </div>
                           </div>
                           : 
                           // For SW and RR brackets
