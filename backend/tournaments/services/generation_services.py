@@ -168,8 +168,10 @@ def create_se_bracket(
     remaining_p_cnt = p_cnt
     # O(log(n))
     while remaining_p_cnt > p_in_m:
+        print('remaining_p_cnt', remaining_p_cnt)
         number_of_rounds = number_of_rounds + 1
         remaining_p_cnt = remaining_p_cnt / multiplicity_factor
+        
 
     # if next_round_p != 1:
     #     number_of_rounds = 1
@@ -196,7 +198,9 @@ def create_se_bracket(
     matches_info = []
 
     # Не правильно работает дополнение для next_round_p > 1
-    missing_p_cnt = ((p_in_m // next_round_p) ** number_of_rounds)  - p_cnt
+    # print('participant count', (p_in_m**number_of_rounds) // next_round_p)
+    missing_p_cnt = ((p_in_m**number_of_rounds) // next_round_p)  - p_cnt
+    # missing_p_cnt = ((p_in_m // next_round_p) ** (number_of_rounds ))  - p_cnt
 
     print("missing_participant_cnt", missing_p_cnt)
 
@@ -266,10 +270,13 @@ def create_de_bracket(bracket: Bracket, participants: list):
     p_in_m = bracket.participant_in_match
     participants_cnt = len(participants)
 
-    number_of_rounds_w = math.ceil(math.log(len(participants), p_in_m)) + 1
+    next_round_p = p_in_m // 2
+    print()
+
+    number_of_rounds_w = math.ceil(math.log(len(participants), p_in_m)) + next_round_p
     number_of_rounds_l = (math.ceil(math.log(len(participants), p_in_m)) - 1) * 2
 
-    print("participants", participants)
+    print("participants", participants, len(participants))
     print("number_of_rounds_w", number_of_rounds_w)
     print("number_of_rounds_l", number_of_rounds_l)
 
@@ -282,6 +289,8 @@ def create_de_bracket(bracket: Bracket, participants: list):
     if missing_participant_cnt > 0:
         for _ in range(missing_participant_cnt):
             participants.append("---")
+
+    print("participants", participants)
 
     _number_of_rounds_l = number_of_rounds_l
     l_start = 1
