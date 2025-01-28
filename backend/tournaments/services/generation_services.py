@@ -273,8 +273,8 @@ def create_de_bracket(bracket: Bracket, participants: list):
     next_round_p = p_in_m // 2
     print()
 
-    number_of_rounds_w = math.ceil(math.log(len(participants), p_in_m)) + next_round_p
-    number_of_rounds_l = (math.ceil(math.log(len(participants), p_in_m)) - 1) * 2
+    number_of_rounds_w = math.ceil(math.log(len(participants) // next_round_p, 2)) + 1
+    number_of_rounds_l = (math.ceil(math.log(len(participants) // next_round_p, 2)) - 1) * 2
 
     print("participants", participants, len(participants))
     print("number_of_rounds_w", number_of_rounds_w)
