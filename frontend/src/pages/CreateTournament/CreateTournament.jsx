@@ -1,4 +1,4 @@
-import React, { useState, useContext, Fragment } from "react";
+import React, { useState, useContext, Fragment, useEffect } from "react";
 import "../../styles/App.css";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
@@ -100,6 +100,10 @@ const CreateTournament = () => {
     });
 
   };
+
+  useEffect(() => {
+    setResponseBody({...responseBody, participant_in_match: 2})
+  }, [responseBody.bracket_type])
 
   return (
     <section>
