@@ -16,8 +16,6 @@ const RoundRobin = ({bracket, bracketId}) => {
   const [modalEditShow, setEditMatchCardModalShow] = useState(false);
   const [table, setTable] = useState([]);
 
-  console.log('bracket rr', bracket);
-
   const openInfoModal = (match) => {  
     setMatchCardModalShow(true)
     dispatch(setCurrentMatch({currentMatch: match}))
@@ -31,13 +29,13 @@ const RoundRobin = ({bracket, bracketId}) => {
 
   }
 
-  const creeateTable = (bracket) => {
+  const createTable = (bracket) => {
     let table = []
     console.log('bracket', bracket);
     bracket[0]?.matches.map((match) => {
       let draw = false
       let max_score = Math.max(...match.info.map(participant => participant.participant_score))
-      if (match.info.filter((participant) => participant.participant_score == max_score).length > 1) {
+      if (match.info.filter((participant) => participant.participant_score == max_score).length > 1 && match.state == "PLAYED") {
           draw = true
       }
       
@@ -54,33 +52,43 @@ const RoundRobin = ({bracket, bracketId}) => {
               }
           } 
             table.push({participant: i.participant, win: win_cnt, loose: loose_cnt, draw:  draw ? 1  : 0, scores: 0})
-            console.log(i.participant);
       })
     })
 
-    bracket?.matches?.map((match) => {
-      let draw = false
-      let max_score = Math.max(...match.info.map(participant => participant.participant_score))
-      if (match.info.filter((participant) => participant.participant_score == max_score).length > 1) {
-          draw = true
-      }
-      
-      match.info.map((i) => {
-          let win_cnt = 0
-          let loose_cnt = 0
-          
-          if (match.state == "PLAYED" && draw == false) {
-              if (i.participant_score == max_score) {
-                  win_cnt = 1
-              }
-              else {
-                  loose_cnt = 1
-              }
-          } 
-            table.push({participant: i.participant, win: win_cnt, loose: loose_cnt, draw:  draw ? 1  : 0, scores: 0})
-            console.log(i.participant);
+    for (let round of bracket.slice(1)) {
+      round?.matches?.map((match) => {
+        let draw = false
+        let max_score = Math.max(...match.info.map(participant => participant.participant_score))
+        if (match.info.filter((participant) => participant.participant_score == max_score).length > 1 && match.state == "PLAYED") {
+            draw = true
+        }
+        console.log('heeree');
+        
+        match.info.map((i) => {
+            let win_cnt = 0
+            let loose_cnt = 0
+            
+            if (match.state == "PLAYED" && draw == false) {
+                if (i.participant_score == max_score) {
+                    win_cnt = 1
+                }
+                else {
+                    loose_cnt = 1
+                }
+            } 
+            let row = table.filter((row) => row.participant == i.participant)[0]
+            
+            if (row !== undefined) {
+              row.win += win_cnt
+              row.loose += loose_cnt
+              row.draw += draw ? 1  : 0
+              row.scores += 0 * win_cnt + 0 * loose_cnt + 0 * draw ? 1  : 0
+              console.log(i.participant);
+            }
+        })
       })
-    })
+    }
+    
 
     return table
   }
@@ -101,7 +109,7 @@ const RoundRobin = ({bracket, bracketId}) => {
   ];
 
   useEffect(() => {
-    setTable(creeateTable(bracket))
+    setTable(createTable(bracket))
   }, [bracket])
 
   return (
