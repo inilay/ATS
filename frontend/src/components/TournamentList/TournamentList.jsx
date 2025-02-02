@@ -14,6 +14,9 @@ const TournamentList = ({ tournaments }) => {
         <div className="col-lg-3 col-md-6 mt-4" key={post.link}>
           <a href={`/tournament/${post.link}`}>
             <div className="card tournament_card">
+              {/* <div className=" tournaments_card_body_top ">
+                <h5 className="card-title">{post.title}</h5>
+              </div> */}
               {post.poster == null ? 
                 <div className={`${classes.poster}`}>
                   <DefaultTournamentIcon />
@@ -24,7 +27,7 @@ const TournamentList = ({ tournaments }) => {
                   alt="card text"
                 />
               }
-              <div className="card-body tournaments_card_body">
+              <div className="tournaments_card_body_bottom">
                 <h4 className="card-title">{post.title}</h4>
                 <p className="card-text">Game: {post.game}</p>
               </div>

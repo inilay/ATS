@@ -136,9 +136,21 @@ table > :not(caption) > * > * {
     background: var(--opposite) !important;
 }
 
-.tournaments_card_body {
+.tournaments_card_body_top {
+    padding-left: 0.5rem;
+    padding-top: 0.5rem;
+    background-color: var(--bs-card-cap-bg);
+    /* border-top: 1px solid var(--border-color); */
+    border-bottom: 1px solid var(--border-color);
+}
 
+.tournaments_card_body_bottom {
+    padding-left: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: var(--bs-card-cap-bg);
     border-top: 1px solid var(--border-color);
+    /* border-bottom: 1px solid var(--border-color); */
 }
 
 .form_button_div {
@@ -157,7 +169,7 @@ table > :not(caption) > * > * {
 .tournament_card {
     background: inherit;    
     border: none;
-    border: 1px solid var(--opposite);
+    border: 1px solid var(--dark-ligth);
    
 }
 
@@ -309,7 +321,7 @@ table > :not(caption) > * > * {
 }
 
 .card-title {
-    color: var(--dark-ligth);
+    color: var(--bright-color);
 }
 
 .card-text {
