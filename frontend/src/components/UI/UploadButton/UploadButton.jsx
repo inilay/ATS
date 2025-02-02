@@ -22,7 +22,7 @@ function UploadButton(props) {
 
   return (
     <div>
-      <label className="me-3">Choose file: </label>
+      <label className={`${classes.myFormLabel} me-3`}>Choose file: </label>
       <input
         id="input-file"
         onChange={handleDisplayFileDetails}

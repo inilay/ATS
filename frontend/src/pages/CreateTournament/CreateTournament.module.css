@@ -15,6 +15,7 @@
     margin-bottom: 15px;
 }
 
-.warning {
-    color: rgb(180, 118, 118);
+
+.myFormLabel {
+    color: var(--dark-ligth);
 }

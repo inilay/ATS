@@ -63,7 +63,7 @@ const FeedBack = () => {
               <Card.Header className="card-header-text">Feedback</Card.Header>
               <Card.Body>
                 <Form.Group className="mb-3">
-                  <Form.Label>Type</Form.Label>
+                  <Form.Label className={`${classes.myFormLabel}`}>Type</Form.Label>
                   <Form.Select
                     className="shadow-none select-input"
                     name="type"

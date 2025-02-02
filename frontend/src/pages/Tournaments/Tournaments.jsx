@@ -39,7 +39,7 @@ function Tournaments() {
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
-      if (filter.title !== null || filter.game !== null) {
+      if (filter.title !== '' || filter.game !== '') {
         setSearchParams({ "title": filter.title, "game": filter.game });
         fetchPosts(limit, page, filter.title, filter.game);
       }

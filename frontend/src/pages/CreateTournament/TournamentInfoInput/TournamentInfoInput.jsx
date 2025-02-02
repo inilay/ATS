@@ -61,7 +61,7 @@ const TournamentInfoInput = ({errors, register, inputChangeHandler, setInputFile
         onChange={inputChangeHandler}
       ></MyFormGroupInput>
       <Form.Group className="mb-3">
-        <Form.Label>Poster</Form.Label>
+        <Form.Label className={`${classes.myFormLabel}`}>Poster</Form.Label>
         <UploadButton setInputFileValue={setInputFile} />
       </Form.Group>
       {/* <p>Tournament type</p>

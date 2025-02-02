@@ -107,7 +107,7 @@ a:hover {
 }   
 
 .select-input {
-    color: var(--ligth-dark);
+    color: var(--dark-ligth);
 }
 
 .home-div {
@@ -127,9 +127,13 @@ a:hover {
 /* not sorted */
 
 .table {
-    color: inherit;
     margin-top: 50px;
     /* width: 75rem; */
+}
+
+table > :not(caption) > * > * {
+    color: var(--dark-ligth) !important;
+    background: var(--opposite) !important;
 }
 
 .tournaments_card_body {
@@ -205,6 +209,7 @@ a:hover {
 }
 
 .my_accordion_body {
+    color: var(--dark-ligth);
     background: inherit !important;
 }
 
@@ -354,4 +359,12 @@ input[type="number"]:hover,
 input[type="number"]:focus {
     appearance: none;
     -moz-appearance: textfield;
+}
+
+.accordion {
+    border: none !important;
+}
+
+.accordion-item {
+    border: none !important;
 }

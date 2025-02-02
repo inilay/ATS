@@ -15,3 +15,7 @@
 .outLineMyBtn:hover {
     color: var(--highlight-color);
 }
+
+.myFormLabel {
+    color: var(--dark-ligth);
+}

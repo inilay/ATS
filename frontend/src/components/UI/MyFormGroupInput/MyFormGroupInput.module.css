@@ -4,7 +4,7 @@
 
 .myInput {
     background: var(--opposite);
-    color: var(--dark-font-color);
+    color: var(--dark-ligth);
     border-color: var(--dark-green);
     outline: var(--green);
 }
@@ -12,7 +12,11 @@
 
 .myInput:focus {
     background: var(--opposite);
-    color: var(--dark-font-color);
+    color: var(--dark-ligth);
     border-color: var(--green);
     outline:var(--green);
+}
+
+.myFormLabel {
+    color: var(--dark-ligth);
 }

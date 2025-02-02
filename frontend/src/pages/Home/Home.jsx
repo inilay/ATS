@@ -49,7 +49,7 @@ const Home = () => {
           <div className="col-lg-4 col-md-6">
             <div className="card">
               <div className="card-body">
-                <h5>Export to image</h5>
+                <h5 className="card-title">Export to image</h5>
                 <ExpImageIcon />
               </div>
             </div>
@@ -57,7 +57,7 @@ const Home = () => {
           <div className="col-lg-4 col-md-6">
             <div className="card">
               <div className="card-body">
-                <h5>Time managment</h5>
+                <h5 className="card-title">Time managment</h5>
                 <TimeManagmentIcon />
               </div>
             </div>
@@ -72,7 +72,7 @@ const Home = () => {
           <div className="col-lg-3 col-md-6">
             <div className="card">
               <div className="card-body">
-                <h5>Single Elimination</h5>
+                <h5 className="card-title">Single Elimination</h5>
                 <SEIcon />
               </div>
             </div>
@@ -80,7 +80,7 @@ const Home = () => {
           <div className="col-lg-3 col-md-6">
             <div className="card">
               <div className="card-body">
-                <h5>Round Robin</h5>
+                <h5 className="card-title">Round Robin</h5>
                 <RRIcon />
               </div>
             </div>

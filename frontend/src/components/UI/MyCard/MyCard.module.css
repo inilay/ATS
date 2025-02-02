@@ -5,14 +5,12 @@
 
 .cardForm input {
     border: 1.5px solid var(--border-color);
-    color: inherit !important;
     background: inherit;
 }
 
 .cardForm textarea {
     height: 9rem;
     border: 1.5px solid var(--border-color);
-    color: inherit !important;
     background: inherit;
 }
 

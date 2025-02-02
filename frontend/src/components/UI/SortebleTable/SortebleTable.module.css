@@ -1,16 +1,20 @@
 .tableHeader {
-
+    color: var(--dark-ligth);
+    background: var(--dark-ligth);
 }
 
 
 
 span:hover {
     cursor: pointer;
-    color: var(--dark-ligth-green);
+    color: var(--dark-ligth);
+    background: var(--opposite);
 }
 
 
 .tableBody {
-    
+    color: var(--dark-ligth) !important;
+    background: var(--oppositeh) !important;
     border-color: var(--border-color);
 }
+

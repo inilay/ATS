@@ -12,7 +12,7 @@ const TableBody = ({ tableData, columns }) => {
         <tr  key={data.participant}>
          {columns.map(({ accessor }) => {
           const tData = data[accessor] ? data[accessor] : "0";
-          return <td style={{paddingLeft: '2rem'}} key={accessor}>{Array.isArray(tData) ? tData.join('/') : tData}</td>;
+          return <td style={{paddingLeft: '2rem',}} key={accessor}>{Array.isArray(tData) ? tData.join('/') : tData}</td>;
          })}
         </tr>
        );

@@ -11,3 +11,7 @@
         width: 90%;
     }
 }
+
+.myFormLabel {
+    color: var(--dark-ligth);
+}

@@ -195,7 +195,7 @@ const CreateTournament = () => {
                 )}
                 {/* One stage */}
                 <Form.Group className="mb-3">
-                  <Form.Label>Bracket type</Form.Label>
+                  <Form.Label className={`${classes.myFormLabel}`}>Bracket type</Form.Label>
                   <Form.Select
                     className="shadow-none select-input"
                     name="bracket_type"
@@ -209,7 +209,7 @@ const CreateTournament = () => {
                 </Form.Group>
                 {/* Additional settings */}
                 {tournamentType === '0' &&
-                  <div class="accordion" id="accordionExtend">
+                  <div class="accordion mb-3" id="accordionExtend">
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <MyButton additionalCl={classes.editional_settings_btn} type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -221,7 +221,7 @@ const CreateTournament = () => {
                         {responseBody.bracket_type == 1 || responseBody.bracket_type == 2 ?
                           <div className="row">
                             <div className="col">
-                              <Form.Label>Participant in match</Form.Label>
+                              <Form.Label className={`${classes.myFormLabel}`}>Participant in match</Form.Label>
                               <Form.Select
                                 className="shadow-none select-input"
                                 name="participant_in_match"
@@ -238,7 +238,7 @@ const CreateTournament = () => {
                             <div className="col">
                             {responseBody.bracket_type == 1 && 
                               <Fragment>
-                                <Form.Label>Advances to next match</Form.Label>
+                                <Form.Label className={`${classes.myFormLabel}`}>Advances to next match</Form.Label>
                                 <Form.Select
                                   className="shadow-none select-input"
                                   name="advances_to_next"
@@ -268,7 +268,7 @@ const CreateTournament = () => {
                             {responseBody.bracket_type == 4 &&
                               <div className="row">
                                 <div className="col">
-                                  <Form.Label>Participant in match</Form.Label>
+                                  <Form.Label className={`${classes.myFormLabel}`}>Participant in match</Form.Label>
                                   <Form.Select
                                     className="shadow-none select-input"
                                     name="participant_in_match"

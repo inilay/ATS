@@ -11,7 +11,7 @@ const MyFormGroupInput = ({ label, defaultValue, name, as, type, onChange, regis
 
     return (
         <Form.Group className="mb-3">
-            <Form.Label>{label}</Form.Label>
+            <Form.Label className={`${classes.myFormLabel}`}>{label}</Form.Label>
             <Form.Control
                 {...register(name, validationSchema)}
                 type={type}
