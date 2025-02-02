@@ -17,6 +17,10 @@ const CreateTournament = () => {
   const [inputFile, setInputFile] = useState(null);
   const [tournamentType, setTournamentType] = useState("0");
 
+  const [participants, setParticipants] = useState("");
+  // const [advancesNext, setAdvancesNext] = useState(1);
+  // const [participantInMatch, setParticipantInMatch] = useState("");
+
   const SeParticipantOptions = ['2', '3', '4', '5', '6']
   const SWParticipantOptions = ['2', '3', '4', '5', '6']
   const DeParticipantOptions = ['2', '4', '6']
@@ -32,13 +36,14 @@ const CreateTournament = () => {
   const [responseBody, setResponseBody] = useState({
 
     bracket_type: 1,
+    advances_to_next: 1,
+    participant_in_match: 2,
+    number_of_rounds: null,
+
     points_loss: 0,
     points_draw: 0,
     points_victory: 1,
 
-    advances_to_next: 1,
-    participant_in_match: 2,
-    number_of_rounds: null,
     tournament_type: tournamentType,
 
     group_type: 5,
@@ -76,18 +81,39 @@ const CreateTournament = () => {
     setResponseBody({ ...responseBody, [name]: value });
   };
 
+  const countNonEmptyRows = () => {
+    const text = participants;
+    const lines = text.split('\n');
+    const nonEmptyLines = lines.filter(line => line.trim() !== '');
+    const count = nonEmptyLines.length;
+
+    let maxNumber = (responseBody?.bracket_type == 3 ? 20 : 256) || 256
+    let minNumber = (responseBody?.participant_in_match * 2) || 2
+    console.log('responseBody?.participant_in_match', responseBody?.participant_in_match);
+    console.log('(responseBody?.participant_in_match * responseBody?.bracket_type == 2 ? 2 : 1)', (responseBody?.participant_in_match * responseBody?.bracket_type == 2 ? 2 : 1));
+    
+    
+    if (count < minNumber ) {
+      return  `⚠ Minimum number of participants ${minNumber}.`
+    }
+    else if (count > maxNumber) {
+      return  `⚠ Maximum number of participants ${maxNumber}.`
+    }
+      
+  }
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "onBlur" });
+  } = useForm({ mode: "onChange" });
 
   const onSubmitHandler = () => {
     setResponseBody({ ...responseBody, poster: inputFile });
     console.log({ ...responseBody, poster: inputFile });
     const response = api.post(
       `/create_tournament/`,
-      { ...responseBody, poster: inputFile },
+      { ...responseBody, poster: inputFile, participants: participants },
       {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -255,7 +281,7 @@ const CreateTournament = () => {
                                 </div>
                                 <div className="col">
                                   <MyFormGroupInput
-                                    label="Number of rounds"
+                                    label="Number of rounds, blank will be calculated automatically"
                                     name="number_of_rounds"
                                     defaultValue={null}
                                     errors={errors}
@@ -316,18 +342,20 @@ const CreateTournament = () => {
                 <MyFormGroupInput
                   label="Participants"
                   name="participants"
+                  defaultValue={participants}
                   as="textarea"
                   errors={errors}
                   register={register}
                   validationSchema={{
-                    required: "⚠ This input is required.",
-                    pattern: {
-                      value: /^.+\s+./i,
-                      message: "⚠ Minimum two participants.",
+                    validate: {
+                      checkAvailability: () => {
+                        return countNonEmptyRows()
+                      },
                     },
                   }}
-                  onChange={inputChangeHandler}
+                  onChange={(e) => {setParticipants(e.value)}}
                 ></MyFormGroupInput>
+            
               </Card.Body>
             </MyCard>
           </div>

@@ -48,6 +48,7 @@
 .myModalBody{
     color: var(--dark-ligth);
     background: var(--opposite);
+    padding-bottom: 35px;
 }
 
 .divVS {
