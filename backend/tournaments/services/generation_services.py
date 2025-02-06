@@ -472,6 +472,7 @@ def create_tournament(
     participant_in_group: int,
     advance_from_group: int,
     group_type: int,
+    private: bool
 ) -> Tournament:
     link = slugify(title)
     tournament = Tournament.objects.create(

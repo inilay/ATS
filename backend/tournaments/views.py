@@ -76,6 +76,7 @@ class TournamentCreateView(APIView):
         poster = serializers.ImageField(use_url=True, default=None)
         game = serializers.CharField()
         start_time = serializers.DateTimeField()
+        private = serializers.BooleanField()
         # bracket 
         advances_to_next = serializers.IntegerField()
         participant_in_match = serializers.IntegerField()
