@@ -16,6 +16,7 @@ const CreateTournament = () => {
   const api = useAxios();
   const [inputFile, setInputFile] = useState(null);
   const [tournamentType, setTournamentType] = useState("0");
+  const [privateTournament, setPrivateTournamnet] = useState(false)
 
   const [participants, setParticipants] = useState("");
   // const [advancesNext, setAdvancesNext] = useState(1);
@@ -113,7 +114,7 @@ const CreateTournament = () => {
     console.log({ ...responseBody, poster: inputFile });
     const response = api.post(
       `/create_tournament/`,
-      { ...responseBody, poster: inputFile, participants: participants },
+      { ...responseBody, poster: inputFile, participants: participants, private: privateTournament },
       {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -137,6 +138,7 @@ const CreateTournament = () => {
         <Form onSubmit={handleSubmit(onSubmitHandler)}>
           <TournamentInfoInput errors={errors} register={register} inputChangeHandler={inputChangeHandler}
             setInputFile={setInputFile} inputRadioChangeHandler={inputRadioChangeHandler} tournamentType={tournamentType}
+            privateTournament={privateTournament} setPrivateTournamnet={setPrivateTournamnet}
           />
           <div className="my-4">
             <MyCard>

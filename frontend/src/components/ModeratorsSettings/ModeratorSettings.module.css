@@ -1,0 +1,91 @@
+.modaretor_container {
+    max-width: 600px;
+}
+
+.close {
+  display:block;
+  width:17px;
+  height:17px;
+  border-color:inherit;
+  background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, var(--highlight-color) 46%,  var(--highlight-color) 56%,transparent 56%, transparent 100%), -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, var(--highlight-color) 46%,  var(--highlight-color) 56%,transparent 56%, transparent 100%);
+  background-color:inherit;
+}
+
+.add_moderator_container {
+    display: flex;
+    align-items: stretch;
+    flex-direction: row;
+    width: 100%;
+}
+
+.moderators_container {
+    background: inherit;
+    color: var(--dark-ligth);
+    border-color: var(--bright-color);
+}
+
+.add_moderator_input {
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+
+    appearance: none;
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+    background: var(--opposite);
+    color: var(--highlight-color) !important;
+    border-color: var(--highlight-color);
+    outline: var(--green);
+    border-right: none;
+}
+
+
+.add_moderator_input:focus {
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+
+    appearance: none;
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+    background: var(--opposite);
+    color: var(--highlight-color) !important;
+    border-color: var(--highlight-color);
+    outline: var(--green);
+    border-right: none;
+}
+
+.add_moderator_button {
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--highlight-color) !important;
+    border: 1px solid var(--highlight-color) !important;
+    text-decoration: none !important;
+    outline: none !important;
+    border-radius: 0.375rem;
+}
+
+.add_moderator_button:hover {
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--highlight-color) !important;
+    border: 1px solid var(--highlight-color) !important;
+    text-decoration: none !important;
+    outline: none !important;
+    border-radius: 0.375rem;
+}
+

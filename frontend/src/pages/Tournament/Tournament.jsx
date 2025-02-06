@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import MyButton from "../../components/UI/MyButton/MyButton";
 import Accordion from "react-bootstrap/Accordion";
 import moment from "moment";
-
+import ModeratorSettings from "../../components/ModeratorsSettings/ModeratorSettings.jsx";
 import classes from "./Tournament.module.css";
 import DefaultTournamnetPoster from "../../assets/svg/DefaultTournamnetPoster";
 import BracketController from "../../components/BracketController/BracketController.jsx";
@@ -113,7 +113,17 @@ const Tournament = () => {
               </div>
               <div className="row my-3">
                 <div className="col">
-                  <Accordion flush defaultActiveKey={["1", "2"]} alwaysOpen>
+                  <Accordion flush defaultActiveKey={["1",]} alwaysOpen>
+                    {user.username == tournament.owner &&
+                      <Accordion.Item eventKey="2">
+                        <Accordion.Header className="my_accordion_body">
+                          <h4>Settings</h4>
+                        </Accordion.Header>
+                        <Accordion.Body className="my_accordion_body">
+                          <ModeratorSettings />
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    }
                     <Accordion.Item eventKey="0">
                       <Accordion.Header className="my_accordion_body">
                         <h4>Description</h4>
@@ -122,20 +132,20 @@ const Tournament = () => {
                         <p>{tournament.content}</p>
                       </Accordion.Body>
                     </Accordion.Item>
-                      <Accordion.Item eventKey="1">
-                        <Accordion.Header className="my_accordion_body">
-                          <h4>Bracket</h4>
-                        </Accordion.Header>
-                        <Accordion.Body className="my_accordion_body">
-                          {isBraLoadind ? 
-                            <div className="loader">
-                              <Loader />
-                            </div>
-                          : 
-                          <BracketController/>
-                          }
-                        </Accordion.Body>
-                      </Accordion.Item>
+                    <Accordion.Item eventKey="1">
+                      <Accordion.Header className="my_accordion_body">
+                        <h4>Bracket</h4>
+                      </Accordion.Header>
+                      <Accordion.Body className="my_accordion_body">
+                        {isBraLoadind ? 
+                          <div className="loader">
+                            <Loader />
+                          </div>
+                        : 
+                        <BracketController/>
+                        }
+                      </Accordion.Body>
+                    </Accordion.Item>
                   </Accordion>
                 </div>
               </div>
@@ -153,7 +163,7 @@ const Tournament = () => {
                   type="submit"
                   onClick={onDelete}
                 >
-                  Delete
+                  Delete Tournament
                 </MyButton>
               </>
               {/* // ) : (

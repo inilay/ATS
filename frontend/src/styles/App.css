@@ -148,7 +148,7 @@ table > :not(caption) > * > * {
     padding-left: 0.5rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    background-color: var(--bs-card-cap-bg);
+    /* background-color: var(--bs-card-cap-bg); */
     border-top: 1px solid var(--border-color);
     /* border-bottom: 1px solid var(--border-color); */
 }
@@ -226,11 +226,10 @@ table > :not(caption) > * > * {
 }
 
 .my_accordion_body button {
-    color: inherit !important;
+
     background: inherit !important;
     box-shadow: none !important;
-    border-color:var(--green) !important;
-}
+ }
 
 .accordion-button:not(.collapsed)::after {
     background-image: none;

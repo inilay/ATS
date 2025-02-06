@@ -10,7 +10,7 @@ import MyCard from "../../../components/UI/MyCard/MyCard";
 import classes from "./TournamentInfoInput.module.css";
 
 
-const TournamentInfoInput = ({errors, register, inputChangeHandler, setInputFile, inputRadioChangeHandler, tournamentType}) => {
+const TournamentInfoInput = ({errors, register, inputChangeHandler, setInputFile, inputRadioChangeHandler, tournamentType, privateTournament, setPrivateTournamnet}) => {
 
 
   return (
@@ -64,6 +64,29 @@ const TournamentInfoInput = ({errors, register, inputChangeHandler, setInputFile
         <Form.Label className={`${classes.myFormLabel}`}>Poster</Form.Label>
         <UploadButton setInputFileValue={setInputFile} />
       </Form.Group>
+      <p>Tournament type (private tournaments are not visible in the general list and can be accessed via a link)</p>
+      <div className="mb-3">
+        <Form.Check
+          inline
+          label="public"
+          type="radio"
+          value="0"
+          checked={privateTournament === false}
+          onChange={() => {
+            setPrivateTournamnet(false);
+          }}
+        ></Form.Check>
+        <Form.Check
+          inline
+          label="private"
+          type="radio"
+          value="1"
+          checked={privateTournament === true}
+          onChange={() => {
+            setPrivateTournamnet(true);
+          }}
+        ></Form.Check>
+      </div>
       {/* <p>Tournament type</p>
       <div className="mb-3">
         <Form.Check
