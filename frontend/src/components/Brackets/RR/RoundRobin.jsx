@@ -1,4 +1,5 @@
 import { useState, useContext, Fragment, useEffect } from "react";
+import { AuthContext } from "../../../context/index.js";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import MatchInfoIcon from "../../../assets/svg/MatchInfoIcon";
@@ -15,6 +16,9 @@ const RoundRobin = ({bracket, bracketId}) => {
   const [modalShow, setMatchCardModalShow] = useState(false);
   const [modalEditShow, setEditMatchCardModalShow] = useState(false);
   const [table, setTable] = useState([]);
+
+  const { user } = useContext(AuthContext);
+  const tournament = useSelector(state => state.tournament)
 
   const openInfoModal = (match) => {  
     setMatchCardModalShow(true)
@@ -129,18 +133,29 @@ const RoundRobin = ({bracket, bracketId}) => {
                     ))
                     }
                     <div className={classes.button_container}>
-                      <button
-                        className={classes.icon_button}
-                        onClick={() => openInfoModal(match)}
-                      >
-                        <MatchInfoIcon />
-                      </button>
-                      <button
-                        className={classes.icon_button}
-                        onClick={() => openEditModal(match)}
-                      >
-                        <MatchJudgeIcon />
-                      </button>
+                    {user !== null && (tournament.owner == user.username || tournament.moderators.includes(user.username))  ?
+                      <Fragment>
+                        <button
+                          className={classes.icon_button}
+                          onClick={() => openInfoModal(match)}
+                        >
+                          <MatchInfoIcon />
+                        </button>
+                        <button
+                          className={classes.icon_button}
+                          onClick={() => openEditModal(match)}
+                        >
+                          <MatchJudgeIcon />
+                        </button>
+                      </Fragment>
+                      :
+                        <button
+                          className={classes.icon_button}
+                          onClick={() => openInfoModal(match)}
+                        >
+                          <MatchInfoIcon />
+                        </button>
+                    }
                     </div>
                 </div>
                 

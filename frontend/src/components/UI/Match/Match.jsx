@@ -16,6 +16,8 @@ import MyRadioButton from "../MyRadioButton/MyRadioButton";
 import moment from "moment";
 import MatchInfoIcon from "../../../assets/svg/MatchInfoIcon";
 import MatchJudgeIcon from "../../../assets/svg/MatchJudgeIcon";
+import { useSelector, useDispatch } from "react-redux";
+
 
 const MyMatch = ({
   id,
@@ -34,8 +36,7 @@ const MyMatch = ({
   const [userTwoResult, setUserTwoResult] = useState(seed.teams[1].score);
   const { user } = useContext(AuthContext);
   const api = useAxios();
-
-
+  const tournament = useSelector(state => state.tournament)
 
   useEffect(() => {
     setMatchState(seed.state);
@@ -146,7 +147,7 @@ const MyMatch = ({
             </div>
           </SeedItem>
           <div className={`${classes.buttonDiv} p-1`}>
-            {user !== null && owner == user.username ? (
+            {user !== null && (owner == user.username || tournament.moderators.includes(user.username)) ? (
               <>
                 <button
                   onClick={() => setMatchCardModalShow(true)}
@@ -209,7 +210,7 @@ const MyMatch = ({
             </div>
           </SeedItem>
           <div className={`${classes.buttonDiv} p-1`}>
-            {user !== null && owner == user.username ? (
+            {user !== null && (owner == user.username || tournament.moderators.includes(user.username)) ? (
               <>
                 <button
                   onClick={() => setMatchCardModalShow(true)}

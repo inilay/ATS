@@ -9,6 +9,7 @@ import EditModal from "../Modals/EditModal/EditModal.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentMatch, setCurrentBracketId } from "../../../store/bracket.js";
 import MySortebleTable from "../../UI/SortebleTable/SortebleTable.jsx";
+import { AuthContext } from "../../../context/index.js";
 
 
 const Swiss = ({bracket, bracketId}) => {
@@ -16,6 +17,8 @@ const Swiss = ({bracket, bracketId}) => {
   const [modalShow, setMatchCardModalShow] = useState(false);
   const [modalEditShow, setEditMatchCardModalShow] = useState(false);
   const [table, setTable] = useState([]);
+  const { user } = useContext(AuthContext);
+  const tournament = useSelector(state => state.tournament)
 
   const openInfoModal = (match) => {  
     setMatchCardModalShow(true)
@@ -130,6 +133,8 @@ const Swiss = ({bracket, bracketId}) => {
                     ))
                     }
                     <div className={classes.button_container}>
+                    {user !== null && (tournament.owner == user.username || tournament.moderators.includes(user.username))  ?
+                    <Fragment>
                       <button
                         className={classes.icon_button}
                         onClick={() => openInfoModal(match)}
@@ -142,7 +147,16 @@ const Swiss = ({bracket, bracketId}) => {
                       >
                         <MatchJudgeIcon />
                       </button>
-                    </div>
+                    </Fragment>
+                    :
+                      <button
+                        className={classes.icon_button}
+                        onClick={() => openInfoModal(match)}
+                      >
+                        <MatchInfoIcon />
+                      </button>
+                  }
+                  </div>
                 </div>
                 
             )

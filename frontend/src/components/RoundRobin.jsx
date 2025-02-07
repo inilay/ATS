@@ -27,7 +27,7 @@ const RoundRobin = ({ id, bracket, owner }) => {
       sortbyOrder: "desc",
     },
   ];
-
+  
   return (
     <BracketWrapper>
       <div style={{ minWidth: "80rem" }}>

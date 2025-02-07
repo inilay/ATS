@@ -10,8 +10,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "../../styles/App.css";
 import tournamentApi from "../../services/api/tournamentApi.js";
-import useAxios from "../../API/useAxios.js";
 import axios from "axios";
+
 
 function Tournaments() {
   const [tournaments, setTournaments] = useState([]);
@@ -20,9 +20,8 @@ function Tournaments() {
   const [limit, setLimit] = useState(12);
   const [page, setPage] = useState(1);
   const lastElement = useRef();
-  const api = useAxios()
-  const public_api = axios
   const [searchParams, setSearchParams] = useSearchParams();
+  const public_api = axios
 
   const [fetchPosts, isPostLoadind, postError] = useFetching(async (limit, page, title = "", game = "") => {
     const response = await tournamentApi.getAllTournaments(public_api, limit, page, title, game);

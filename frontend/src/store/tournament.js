@@ -11,6 +11,7 @@ const tournamentSlice = createSlice({
         startTime: '',
         poster: '', 
         game: '',
+        moderators: []
     },
     reducers: {
         setTournament(state, action) {
@@ -22,6 +23,15 @@ const tournamentSlice = createSlice({
             state.startTime = action.payload.startTime
             state.poster = action.payload.poster
             state.game = action.payload.game
+            state.moderators = action.payload.moderators
+        },
+
+        addModerator(state, action) {
+            state.moderators = [...state.moderators, action.payload.moderator]
+        },
+
+        deleteModerator(state, action) {
+            state.moderators = state.moderators.filter((username) => username != action.payload.moderator)
         },
        
         clearTournament(state) {
@@ -33,10 +43,11 @@ const tournamentSlice = createSlice({
             state.startTime = ''
             state.poster = ''
             state.game = ''
+            state.moderators = []
         },
     }
 })
 
-export const { setTournament, clearTournament } = tournamentSlice.actions;
+export const { setTournament, addModerator, deleteModerator, clearTournament } = tournamentSlice.actions;
 
 export default tournamentSlice.reducer;

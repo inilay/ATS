@@ -10,6 +10,8 @@ import { AuthContext } from "../../../context";
 import moment from "moment";
 import MatchInfoIcon from "../../../assets/svg/MatchInfoIcon";
 import MatchJudgeIcon from "../../../assets/svg/MatchJudgeIcon";
+import { useSelector, useDispatch } from "react-redux";
+
 
 const MyRoundRobinMatch = ({
   id,
@@ -25,6 +27,7 @@ const MyRoundRobinMatch = ({
   const [matchTime, setMatchTime] = useState(match.startTime);
   const [userOne, setUserOne] = useState(match.participants[0].participant);
   const [userTwo, setuserTwo] = useState(match.participants[1].participant);
+  const tournament = useSelector(state => state.tournament)
   const [userOneResult, setUserOneResult] = useState(
     match.participants[0].score
   );
@@ -188,7 +191,7 @@ const MyRoundRobinMatch = ({
         </div>
       </div>
       <div className={`${classes.buttonDiv} p-1`}>
-        {user !== null && owner == user.username ? (
+        {user !== null && (owner == user.username || tournament.moderators.includes(user.username))  ? (
           <>
             <button
               onClick={() => setMatchCardModalShow(true)}
