@@ -1,3 +1,4 @@
+import uuid
 from ..models import (
     Bracket,
     Tournament,
@@ -18,6 +19,7 @@ from django.db.models.query import QuerySet
 from django.db.models import Prefetch, Q
 import operator
 from functools import reduce
+import hashlib
 
 
 def create_sw_bracket(
@@ -474,7 +476,13 @@ def create_tournament(
     group_type: int,
     private: bool
 ) -> Tournament:
-    link = slugify(title)
+    
+    if private:
+        unique_id = uuid.uuid4()
+        link = unique_id
+    else:
+        link = slugify(title)
+    
     tournament = Tournament.objects.create(
         title=title,
         content=content,
@@ -483,6 +491,7 @@ def create_tournament(
         game=game,
         start_time=start_time,
         owner=user.profile,
+        type_id = 2 if private else 1
     )
     participants = clear_participants(participants)
     if tournament_type == 1:

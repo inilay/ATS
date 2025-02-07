@@ -212,3 +212,13 @@ class AllBracketAPIView(APIView):
         serializer = GetAllBracketsSerializer(brackets, many=True)
 
         return Response(status=status.HTTP_200_OK, data=serializer.data)
+    
+class CreateModeratorAPIView(APIView):
+
+    def post(self, request):
+        pass
+
+class DeleteModeratorAPIView(APIView):
+
+    def delete(self, request):
+        pass
