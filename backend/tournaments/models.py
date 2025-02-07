@@ -63,7 +63,7 @@ class Tournament(models.Model):
         Profile, related_name="tournaments", on_delete=models.CASCADE
     )
     type = models.ForeignKey("TournamentType", on_delete=models.CASCADE)
-    admins = models.ManyToManyField(Profile, related_name="administrated_tournaments")
+    moderators = models.ManyToManyField(Profile, related_name="administrated_tournaments")
 
 class TournamentType(models.Model):
     name = models.CharField(max_length=255)

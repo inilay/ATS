@@ -1,3 +1,4 @@
+from profiles.models import Profile
 from tournaments.orm_functions import JsonGroupArray
 from ..models import (
     Bracket,
@@ -18,6 +19,29 @@ from django.db.models import Prefetch, Q, Count, F, OuterRef, Subquery, Max, Min
 import operator
 import math
 from functools import reduce
+
+
+def create_moderator(validated_data: dict) -> Profile:
+    username = validated_data.get("username")
+    tournament_id = validated_data.get("tournament_id")
+
+    profile = get_object_or_404(Profile.objects.select_related('user'), user__username=username)
+    tournament = get_object_or_404(Tournament, id=tournament_id)
+    tournament.moderators.add(profile)
+
+    return profile
+
+
+def delete_moderator(validated_data: dict) -> None:
+    username = validated_data.get("username")
+    tournament_id = validated_data.get("tournament_id")
+
+    profile = get_object_or_404(Profile.objects.select_related('user'), user__username=username)
+    tournament = get_object_or_404(Tournament, id=tournament_id)
+    tournament.moderators.remove(profile)
+
+    return None
+
 
 def update_tournament(*, tournament: Tournament, data) -> Tournament:
     non_side_effect_fields = ["content", "poster", "game", "start_time"]

@@ -11,7 +11,7 @@ from .utils import inline_serializer, get_object
 from .serializer import TournamentSerializer, BracketSerializer, AllBracketSerealizer, GetAllBracketsSerializer
 from .selectors import tournaments_list, get_brackets_for_tournamnet, game_list
 from .services.generation_services import create_tournament, create_bracket
-from .services.update_services import update_bracket, update_tournament
+from .services.update_services import create_moderator, delete_moderator, update_bracket, update_tournament
 from .permissions import IsTournamenOwnerOrReadOnly, IsBracketOwnerOrReadOnly, AuthMixin
 from .pagination import get_paginated_response, LimitOffsetPagination
 
@@ -52,10 +52,12 @@ class GamesApiView(APIView):
         return Response(games)
 
 class TournamentAPIView(APIView): 
-    
+  
     class OutputSerializer(serializers.ModelSerializer):
         owner = serializers.StringRelatedField(required=False)
         start_time = serializers.DateTimeField(format='%Y-%m-%dT%H:%M')
+        moderators = serializers.StringRelatedField(many=True)
+
         class Meta:
             model = Tournament
             fields = "__all__"  
@@ -215,10 +217,28 @@ class AllBracketAPIView(APIView):
     
 class CreateModeratorAPIView(APIView):
 
+    class InputSerializer(serializers.Serializer):
+        tournament_id = serializers.IntegerField()
+        username = serializers.CharField()
+
+    # class OutputSerializer(serializers.Serializer):
+    #     user
+
     def post(self, request):
-        pass
+        serializer = self.InputSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        moderator = create_moderator(serializer.validated_data)
+        return Response(status=status.HTTP_201_CREATED)
 
 class DeleteModeratorAPIView(APIView):
+    class InputSerializer(serializers.Serializer):
+        tournament_id = serializers.IntegerField()
+        username = serializers.CharField()
 
     def delete(self, request):
-        pass
+        serializer = self.InputSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        delete_moderator(serializer.validated_data)
+        return Response(status=status.HTTP_200_OK)
