@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext, Fragment } from "react";
 import { useParams } from "react-router-dom";
 import { useFetching } from "../../hooks/useFetching";
 import Loader from "../../components/UI/Loader/Loader";
-import PostService from "../../API/PostService";
 import useAxios from "../../API/useAxios";
 import { AuthContext } from "../../context";
 import { useNavigate } from "react-router-dom";
@@ -19,11 +18,14 @@ import { setBracket } from "../../store/bracket";
 import { useSelector, useDispatch } from "react-redux";
 
 import bracketApi from "../../services/api/bracketApi";
+import tournamentApi from "../../services/api/tournamentApi.js";
+import axios from "axios";
 
 const Tournament = () => {
   const dispatch = useDispatch()
   const params = useParams();
   const api = useAxios();
+  const public_api = axios
   const navigate = useNavigate();
 
   const [id, setId] = useState(0);
@@ -36,12 +38,12 @@ const Tournament = () => {
   const { user } = useContext(AuthContext);
 
   const [fetchTournament, isLoading, error] = useFetching(async (link) => {
-    const response = await PostService.getTournamentBySlug(link);
+    const response = await tournamentApi.getTournamentBySlug(public_api, link);
     dispatch(setTournament(response.data));
   });
 
   const [fetchBrackets, isBraLoadind, braError] = useFetching(async () => {
-    const response = await bracketApi.getBrackets(tournament.id)
+    const response = await bracketApi.getBrackets(public_api, tournament.id)
     dispatch(setBracket({brackets: response.data}))
   });
 

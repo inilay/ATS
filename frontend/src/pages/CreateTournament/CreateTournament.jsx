@@ -11,6 +11,8 @@ import MyButton from "../../components/UI/MyButton/MyButton";
 import MyCard from "../../components/UI/MyCard/MyCard";
 import classes from "./CreateTournament.module.css";
 import TournamentInfoInput from "./TournamentInfoInput/TournamentInfoInput.jsx";
+import tournamentApi from "../../services/api/tournamentApi.js";
+
 
 const CreateTournament = () => {
   const api = useAxios();
@@ -112,15 +114,8 @@ const CreateTournament = () => {
   const onSubmitHandler = () => {
     setResponseBody({ ...responseBody, poster: inputFile });
     console.log({ ...responseBody, poster: inputFile });
-    const response = api.post(
-      `/create_tournament/`,
-      { ...responseBody, poster: inputFile, participants: participants, private: privateTournament },
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      },
-    ).then(function (response) {
+    let data = { ...responseBody, poster: inputFile, participants: participants, private: privateTournament }
+    const response = tournamentApi.createTournament(api, data).then(function (response) {
       if (response.status == 201) {
         // navigate(`/tournament/${responseBody.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')}`)
       }

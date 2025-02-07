@@ -64,7 +64,7 @@ const TournamentInfoInput = ({errors, register, inputChangeHandler, setInputFile
         <Form.Label className={`${classes.myFormLabel}`}>Poster</Form.Label>
         <UploadButton setInputFileValue={setInputFile} />
       </Form.Group>
-      <p>Tournament type (private tournaments are not visible in the general list and can be accessed via a link)</p>
+      <p>Tournament type (private tournaments are not visible in the general list and can be accessed only via a link)</p>
       <div className="mb-3">
         <Form.Check
           inline

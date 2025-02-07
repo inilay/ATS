@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Form from "react-bootstrap/Form";
-import PostService from "../../API/PostService";
 import { useForm } from "react-hook-form";
 import MyButton from "../../components/UI/MyButton/MyButton";
+import axios from "axios";
+import profileApi from "../../services/api/profileApi";
 
 const PasswordResetConfirm = () => {
   const params = useParams();
+  const api = axios()
   const [new_password, setPassword] = useState("");
   const [re_new_password, setRePassword] = useState("");
 
@@ -18,7 +20,7 @@ const PasswordResetConfirm = () => {
       new_password: new_password,
       re_new_password: re_new_password,
     });
-    const response = PostService.resetPasswordConfirm({
+    const response = profileApi.resetPasswordConfirm(api, {
       uid: params.uid,
       token: params.token,
       new_password: new_password,

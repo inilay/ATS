@@ -3,14 +3,16 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import MyDataList from "../UI/MyDataList/MyDataList";
 import MyButton from "../UI/MyButton/MyButton";
-import PostService from "../../API/PostService";
 import classes from './TournamentFilter.module.css'
+import auxiliaryApi from "../../services/api/auxiliaryApi";
+import axios from "axios";
 
 const TournamentFilter = ({ filter, setFilter }) => {
   const [gamesFilter, setGamesFilter] = useState([]);
+  const api = axios()
 
   useEffect(() => {
-    const response = PostService.getAllGames().then(function (response) {
+    const response = auxiliaryApi.getAllGames(api).then(function (response) {
       if (response.status == 200) {
         setGamesFilter(response.data);
         console.log(response.data)

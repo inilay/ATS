@@ -1,9 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import MyDataList from "../UI/MyDataList/MyDataList";
-import MyButton from "../UI/MyButton/MyButton";
-import PostService from "../../API/PostService";
 import classes from './ModeratorSettings.module.css'
 
 

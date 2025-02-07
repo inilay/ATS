@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 
-import PostService from "../../API/PostService";
 import { useForm } from "react-hook-form";
 import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
 import MyButton from "../../components/UI/MyButton/MyButton";
 import MyCard from "../../components/UI/MyCard/MyCard";
 import classes from "./FeedBack.module.css";
+import auxiliaryApi from "../../services/api/auxiliaryApi";
+import axios from "axios";
 
 
 const FeedBack = () => {
@@ -22,6 +23,7 @@ const FeedBack = () => {
     points_victory: "1",
     secod_final: false,
   });
+  const api = axios()
 
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
@@ -47,7 +49,7 @@ const FeedBack = () => {
   } = useForm({ mode: "onBlur" });
 
   const onSubmitHandler = () => {
-    const response = PostService.sendFeedback(responseBody).then(function (response) {
+    const response = auxiliaryApi.sendFeedback(api, responseBody).then(function (response) {
       if (response.status == 201) {
         navigate(`/`);
       }

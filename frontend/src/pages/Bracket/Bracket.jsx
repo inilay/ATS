@@ -2,18 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetching } from "../../hooks/useFetching";
 import Loader from "../../components/UI/Loader/Loader";
-import PostService from "../../API/PostService";
 import RoundRobin from "../../components/RoundRobin";
 import SingleEl from "../../components/SingleEl";
 import DoubleEl from "../../components/DoubleEl";
 import Swiss from "../../components/Swiss";
+import bracketApi from "../../services/api/bracketApi";
+import axios from "axios";
+
 
 const Bracket = () => {
   const params = useParams();
+  const api = axios()
   const [bracket, setBracket] = useState([]);
   const [type, setTypes] = useState("");
   const [fetchBrackets, isBraLoadind, braError] = useFetching(async (id) => {
-    const response = await PostService.getBracketById(id);
+    const response = await bracketApi.getBracket(api, id);
     setBracket(response.data.bracket);
     setTypes(response.data.type);
     console.log(response.data);

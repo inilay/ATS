@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
-import PostService from "../../API/PostService";
 import { useForm } from "react-hook-form";
 import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
 import MyButton from "../../components/UI/MyButton/MyButton";
+import profileApi from "../../services/api/profileApi";
+import axios from "axios";
 
 const PasswordReset = () => {
+  const api = axios()
   const handleResetSubmit = () => {
-    const response = PostService.resetPassword(email);
+    const response = profileApi.resetPassword(api, email);
   };
 
   const [email, setEmail] = useState({ email: "" });

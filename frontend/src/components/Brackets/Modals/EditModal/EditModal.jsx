@@ -8,7 +8,7 @@ import React, { useState, Fragment } from "react";
 import moment from "moment";
 import bracketApi from "../../../../services/api/bracketApi";
 import { changeCurrentMatchInfo, changeBracket } from "../../../../store/bracket";
-
+import useAxios from "../../../../API/useAxios";
 
 const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     const bracket = useSelector(state => state.bracket)
@@ -19,6 +19,7 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     const [matchTime, setMatchTime] = useState(match?.start_time);
     const [matchResults, setMatchResults] = useState([]);
     const dispatch = useDispatch()
+    const api = useAxios()
 
     const matchStateHandler = (state) => {
         setMatchState(state);
@@ -63,7 +64,7 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
         console.log(data);
         
 
-        const response = bracketApi.updateBracket(data).then((response) => {
+        const response = bracketApi.updateBracket(api, data).then((response) => {
             dispatch(changeBracket({bracket: response.data}))
             setEditMatchCardModalShow(false);
         });

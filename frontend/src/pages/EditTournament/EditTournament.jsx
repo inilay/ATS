@@ -4,7 +4,6 @@ import { useFetching } from "../../hooks/useFetching";
 import "../../styles/App.css";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
-import PostService from "../../API/PostService";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context";
 import useAxios from "../../API/useAxios";
@@ -14,16 +13,17 @@ import { useForm } from "react-hook-form";
 import MyButton from "../../components/UI/MyButton/MyButton";
 import MyCard from "../../components/UI/MyCard/MyCard";
 import classes from "./EditTournament.module.css";
-
-
+import tournamentApi from "../../services/api/tournamentApi";
+import axios from "axios";
 
 const EditTournament = () => {
   const api = useAxios();
+  const public_api = axios
   const navigate = useNavigate();
   const params = useParams();
   const { user } = useContext(AuthContext);
   const [fetchTournament, isLoading, error] = useFetching(async (link) => {
-    const response = await PostService.getTournamentBySlug(link);
+    const response = await tournamentApi.getTournamentBySlug(public_api, link);
     setResponseBody({
       title: response.data.title,
       content: response.data.content,

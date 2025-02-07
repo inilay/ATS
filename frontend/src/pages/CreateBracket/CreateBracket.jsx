@@ -3,17 +3,18 @@ import { useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 
-import PostService from "../../API/PostService";
 import { useForm } from "react-hook-form";
 import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
 import MyButton from "../../components/UI/MyButton/MyButton";
 import MyCard from "../../components/UI/MyCard/MyCard";
 import classes from "./CreateBracket.module.css";
+import bracketApi from "../../services/api/bracketApi";
+import useAxios from "../../API/useAxios";
 
 
 const CreateBracket = () => {
   const navigate = useNavigate();
-
+  const api = useAxios()
   const [responseBody, setResponseBody] = useState({
     participants: "",
     type: "SE",
@@ -47,7 +48,7 @@ const CreateBracket = () => {
   } = useForm({ mode: "onBlur" });
 
   const onSubmitHandler = () => {
-    const response = PostService.createBracket(responseBody).then(function (response) {
+    const response = bracketApi.createBracket(api, responseBody).then(function (response) {
       if (response.status == 201) {
         navigate(`/bracket/${response.data.id}`);
       }

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PostService from "../../API/PostService";
 import { useParams } from "react-router-dom";
 import { useFetching } from "../../hooks/useFetching";
 import { useTournaments } from "../../hooks/useTournaments";
@@ -16,9 +15,13 @@ import MyButton from "../../components/UI/MyButton/MyButton";
 import moment from "moment";
 import MyCard from "../../components/UI/MyCard/MyCard";
 import classes from "./Profile.module.css";
+import profileApi from "../../services/api/profileApi.js";
+import axios from "axios";
+
 
 const Profile = () => {
   const api = useAxios();
+  const public_api = axios
   const params = useParams();
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [profile, setProfile] = useState({ user: {}, tournaments: [] });
@@ -45,7 +48,7 @@ const Profile = () => {
 
   const handlePasswordChangeSubmit = (e) => {
     e.preventDefault();
-    const response = api.post("/password_change/", state);
+    const response = profileApi.changePassword(api, state)
   };
 
   const inputChangeHandler = (inputValue) => {
@@ -56,26 +59,21 @@ const Profile = () => {
   const handleImageChangeSubmit = (e) => {
     e.preventDefault();
     console.log(inputFile);
-    const response = api.patch(
-      `/img_change/${params.slug}/`,
-      { slug: params.slug, user_icon: inputFile },
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    let data = { slug: params.slug, user_icon: inputFile }
+    const response = profileApi.updateProfiIcon(api, params.slug, data)
   };
 
   const [fetchPostById, isLoadind, error] = useFetching(async (slug) => {
-    const response = await PostService.getProfileBySlug(slug);
+    const response = await profileApi.getProfileBySlug(public_api, slug);
     setProfile(response.data);
   });
 
   useEffect(() => {
     fetchPostById(params.slug);
   }, []);
+
   console.log(profile.user_icon)
+
   return (
     <section className="container">
       <div className="row align-items-center">
