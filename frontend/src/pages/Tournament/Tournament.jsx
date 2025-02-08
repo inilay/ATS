@@ -123,6 +123,22 @@ const Tournament = () => {
                         </Accordion.Header>
                         <Accordion.Body className="my_accordion_body">
                           <ModeratorSettings />
+                          <>
+                            <MyButton
+                              additionalCl={"btn-md btn my-3 me-3"}
+                              type="submit"
+                              onClick={onEdit}
+                            >
+                              Edit Tournament
+                            </MyButton>
+                            <MyButton
+                              additionalCl={"btn-md btn my-3 me-3"}
+                              type="submit"
+                              onClick={onDelete}
+                            >
+                              Delete Tournament
+                            </MyButton>
+                          </>
                         </Accordion.Body>
                       </Accordion.Item>
                     }
@@ -151,26 +167,6 @@ const Tournament = () => {
                   </Accordion>
                 </div>
               </div>
-
-              <>
-                <MyButton
-                  additionalCl={"btn-md btn my-3 me-3"}
-                  type="submit"
-                  onClick={onEdit}
-                >
-                  Edit Tournament
-                </MyButton>
-                <MyButton
-                  additionalCl={"btn-md btn my-3 me-3"}
-                  type="submit"
-                  onClick={onDelete}
-                >
-                  Delete Tournament
-                </MyButton>
-              </>
-              {/* // ) : (
-              //   <></>
-              // )} */}
             </div>
           </div>
         </div>
