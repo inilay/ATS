@@ -10,6 +10,23 @@
     fill: var(--fill-color)
 }
 
+.tournament_default_svg{
+    fill: var(--fill-color);
+    width: 560px;
+    height: 325px;
+
+    @media (max-width: 992px){
+        width: 420px;
+        height: 320px;
+    }
+
+    @media (max-width: 576px){
+        width: 320px;
+        height: 180px;
+    }
+}
+
+
 .tournament_svg {
     width: 280px;
     height: 250px;

@@ -7,7 +7,7 @@ function DefaultTournamnetPoster() {
     <svg
         xmlns="http://www.w3.org/2000/svg"
         version="1"
-        className={classes.my_svg} 
+        className={classes.tournament_default_svg} 
         viewBox="-5 10 300 300"
         >
         <path

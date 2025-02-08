@@ -9,6 +9,13 @@ const profileApi = {
 
     },
 
+    getSubscriptionsBySlug: async (api, slug) => {
+
+        const response = await api.get(`${API_SERVER}/get_subscriptions/${slug}/`)
+        return  response
+
+    },
+
     updateProfiIcon: async (api, slug, data) => {
         const response = api.patch(
             `/img_change/${slug}/`,

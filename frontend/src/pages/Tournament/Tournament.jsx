@@ -16,9 +16,11 @@ import BracketController from "../../components/BracketController/BracketControl
 import { setTournament } from "../../store/tournament";
 import { setBracket } from "../../store/bracket";
 import { useSelector, useDispatch } from "react-redux";
+import { followTournament, setTournamnetSubscriptions } from "../../store/user.js";
 
 import bracketApi from "../../services/api/bracketApi";
 import tournamentApi from "../../services/api/tournamentApi.js";
+import profileApi from "../../services/api/profileApi.js";
 import axios from "axios";
 
 const Tournament = () => {
@@ -59,7 +61,21 @@ const Tournament = () => {
     navigate(`/edit_tournament/${params.link}/`);
   };
 
+  function slugify(str) {
+    str = str.replace(/^\s+|\s+$/g, ''); // trim leading/trailing white space
+    str = str.toLowerCase(); // convert string to lowercase
+    str = str.replace(/[^a-z0-9 -]/g, '') // remove any non-alphanumeric characters
+             .replace(/\s+/g, '-') // replace spaces with hyphens
+             .replace(/-+/g, '-'); // remove consecutive hyphens
+    return str;
+  }
+
   useEffect(() => {
+    if (user) {
+      profileApi.getSubscriptionsBySlug(api, slugify(user.username)).then((response) => {
+        dispatch(setTournamnetSubscriptions({subscriptions: response.data}))
+      })
+    }
     fetchTournament(params.link);
   }, []);
 
@@ -70,6 +86,39 @@ const Tournament = () => {
   }, [tournament.id])
 
   useEffect(() => { }, [bracket]);
+
+  const copyToClipboard = () => {
+    const currentUrl = window.location.href;
+  
+    if (navigator.clipboard) {
+      navigator.clipboard
+        .writeText(currentUrl)
+        .then(() => {
+        })
+        .catch((err) => {
+         
+        });
+    } else {
+      // Fallback для старых браузеров
+      const textArea = document.createElement("textarea");
+      textArea.value = currentUrl;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {
+      }
+      document.body.removeChild(textArea);
+    }
+  };
+
+  const followHandler = () => {
+
+  }
+
+  const unFollowHandler = () => {
+    
+  }
 
   return (
     <section>
@@ -82,7 +131,7 @@ const Tournament = () => {
           <div className="row">
             <div className="col-lg-12 col-md-12">
               <div className="row">
-                <div className="col-sm-8">
+                <div className={`${classes.tournament_img_container} col-sm-8 mb-3`}>
                   {tournament.poster == null ? (
                     <div className={`${classes.tournament_default}`}>
                       <DefaultTournamnetPoster />
@@ -95,8 +144,8 @@ const Tournament = () => {
                     />
                   )}
                 </div>
-                <div className="col-sm-4">
-                  <div className="d-flex flex-column pt-1">
+                <div className={`${classes.tournament_info_container} col-sm-4`}>
+                  <div className={`${classes.tournament_info_container}`}>
                     <h3 className="tournament_text">{tournament.title}</h3>
                     <p>Start of the tournament</p>
                     <p className="tournament_text">
@@ -109,6 +158,10 @@ const Tournament = () => {
                     <div className={`${classes.tournament_block}`}>
                       <p>Organizer</p>
                       <p className="tournament_text ">{tournament.owner}</p>
+                    </div>
+                    <div className={`${classes.tournament_button_block}`}>
+                      <MyButton onClick={() => {followHandler()}} additionalCl={`me-3`}>Follow</MyButton>
+                      <MyButton onClick={() => {copyToClipboard()}}>Copy link</MyButton>
                     </div>
                   </div>
                 </div>

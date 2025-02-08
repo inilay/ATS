@@ -236,6 +236,14 @@ table > :not(caption) > * > * {
     border-color:var(--green) !important;
 }
 
+.accordion-button::after {
+    /* background-color: var(--bright-color);
+    align-items: center;
+    content: ".";
+    background-image: none; */
+    /* background-blend-mode: multiply */
+}
+
 .accordion-item {
     background: inherit;
     border: 1px solid var(--ligth);
