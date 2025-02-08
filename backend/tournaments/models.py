@@ -64,10 +64,10 @@ class Tournament(models.Model):
     )
     type = models.ForeignKey("TournamentType", on_delete=models.CASCADE)
     moderators = models.ManyToManyField(Profile, related_name="administrated_tournaments")
+    followers = models.ManyToManyField(Profile, related_name="subscriptions")
 
 class TournamentType(models.Model):
     name = models.CharField(max_length=255)
-
 
 class Bracket(models.Model):
     tournament = models.ForeignKey(

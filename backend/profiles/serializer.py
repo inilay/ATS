@@ -96,3 +96,9 @@ class ImageChangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('user_icon',)
+
+
+class GetSubscriptionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('subscriptions',)

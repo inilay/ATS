@@ -221,9 +221,6 @@ class CreateModeratorAPIView(APIView):
         tournament_id = serializers.IntegerField()
         username = serializers.CharField()
 
-    # class OutputSerializer(serializers.Serializer):
-    #     user
-
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
         if not serializer.is_valid():

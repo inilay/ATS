@@ -2,14 +2,14 @@ from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import UserModel
 from django.core.exceptions import ValidationError
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
 from django.utils.translation import gettext_lazy as _
 from .utils import send_email_for_reset
 from .models import CustomUser, Profile
 from rest_framework.response import Response
-from .serializer import MyTokenObtainPairSerializer, RegisterSerializer, ProfileSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer, PasswordChangeSerializer, ImageChangeSerializer
+from .serializer import GetSubscriptionsSerializer, MyTokenObtainPairSerializer, RegisterSerializer, ProfileSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer, PasswordChangeSerializer, ImageChangeSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
 from .models import CustomUser
@@ -139,3 +139,11 @@ class ReportAPIView(APIView):
 
     def post(self, request):
         return Response(status=status.HTTP_201_CREATED)
+    
+
+class GetSubscriptionsAPIView(APIView):
+
+    def get(self, request, slug):
+        profile = get_object_or_404(Profile.objects.prefetch_related('subscriptions'), slug=slug)
+        serializer = GetSubscriptionsSerializer(profile)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
