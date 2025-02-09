@@ -118,7 +118,10 @@ class RegisterAPIView(generics.CreateAPIView):
 
 
 class ProfileAPIView(generics.RetrieveAPIView):
-    queryset = Profile.objects.prefetch_related(Prefetch("tournaments", queryset=Tournament.objects.order_by("-id"))).all()
+    queryset = Profile.objects.prefetch_related(
+        Prefetch("tournaments", queryset=Tournament.objects.order_by("-id")),
+        Prefetch("subscriptions", queryset=Tournament.objects.order_by("-id"))
+    ).all()
     serializer_class = ProfileSerializer
     lookup_field = 'slug'
 

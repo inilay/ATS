@@ -56,6 +56,8 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     tournaments = TournamentSerializer(many=True)
+    subscriptions = TournamentSerializer(many=True)
+    
     class Meta:
         model = Profile
         fields = "__all__"
