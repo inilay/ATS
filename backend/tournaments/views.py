@@ -208,9 +208,7 @@ class BracketUpdateAPIView(APIView):
 class AllBracketAPIView(APIView): 
 
     def get(self, request, tournament_id):
-        print("work")
         brackets = get_brackets_for_tournamnet(tournament_id=tournament_id)
-        print('brackets', brackets)
         serializer = GetAllBracketsSerializer(brackets, many=True)
 
         return Response(status=status.HTTP_200_OK, data=serializer.data)
@@ -221,6 +219,7 @@ class CreateModeratorAPIView(APIView):
         tournament_id = serializers.IntegerField()
         username = serializers.CharField()
 
+    @transaction.atomic
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
         if not serializer.is_valid():
@@ -233,6 +232,7 @@ class DeleteModeratorAPIView(APIView):
         tournament_id = serializers.IntegerField()
         username = serializers.CharField()
 
+    @transaction.atomic
     def delete(self, request):
         serializer = self.InputSerializer(data=request.data)
         if not serializer.is_valid():

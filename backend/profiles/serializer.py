@@ -102,3 +102,9 @@ class GetSubscriptionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('subscriptions',)
+
+class CreateSubscriptionSerializer(serializers.Serializer):
+    tournament_id = serializers.IntegerField()
+
+class DeleteSubscriptionSerializer(serializers.Serializer):
+    tournament_id = serializers.IntegerField()

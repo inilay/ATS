@@ -6,10 +6,12 @@ from django.shortcuts import get_object_or_404, redirect
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
 from django.utils.translation import gettext_lazy as _
+from django.db import transaction
+from profiles.services import create_subscription, delete_subscription
 from .utils import send_email_for_reset
 from .models import CustomUser, Profile
 from rest_framework.response import Response
-from .serializer import GetSubscriptionsSerializer, MyTokenObtainPairSerializer, RegisterSerializer, ProfileSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer, PasswordChangeSerializer, ImageChangeSerializer
+from .serializer import CreateSubscriptionSerializer, DeleteSubscriptionSerializer, GetSubscriptionsSerializer, MyTokenObtainPairSerializer, RegisterSerializer, ProfileSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer, PasswordChangeSerializer, ImageChangeSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
 from .models import CustomUser
@@ -26,6 +28,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class UserPasswordReset(generics.GenericAPIView):
     serializer_class = PasswordResetSerializer
 
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -53,6 +56,7 @@ class PasswordResetConfirmAPIView(generics.GenericAPIView):
             user = None
         return user
 
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -77,6 +81,8 @@ class PasswordChangeAPIView(generics.GenericAPIView):
             "Your old password was entered incorrectly. Please enter it again."
         ),
     }
+
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -137,13 +143,41 @@ class EmailVerify(View):
 
 class ReportAPIView(APIView):
 
+    @transaction.atomic
     def post(self, request):
         return Response(status=status.HTTP_201_CREATED)
     
 
 class GetSubscriptionsAPIView(APIView):
+    permission_classes = (IsAuthenticated, )
 
-    def get(self, request, slug):
-        profile = get_object_or_404(Profile.objects.prefetch_related('subscriptions'), slug=slug)
+    def get(self, request):
+        profile = request.user.profile
         serializer = GetSubscriptionsSerializer(profile)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+
+class CreateSubscriptionAPIView(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    @transaction.atomic
+    def post(self, request):
+        input_serializer = CreateSubscriptionSerializer(data=request.data)
+        if not input_serializer.is_valid():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        create_subscription(input_serializer.validated_data, request.user)
+
+        return Response(status=status.HTTP_201_CREATED)
+
+
+class DeleteSubscriptionAPIView(APIView):
+    permission_classes = (IsAuthenticated, )
+    
+    @transaction.atomic
+    def delete(self, request):
+        input_serializer = DeleteSubscriptionSerializer(data=request.data)
+        if not input_serializer.is_valid():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        delete_subscription(input_serializer.validated_data, request.user)
+
+        return Response(status=status.HTTP_200_OK)

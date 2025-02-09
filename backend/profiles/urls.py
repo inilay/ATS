@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
-from .views import UserPasswordReset, EmailVerify, \
+from .views import CreateSubscriptionAPIView, DeleteSubscriptionAPIView, UserPasswordReset, EmailVerify, \
     ProfileAPIView, PasswordResetConfirmAPIView, GetSubscriptionsAPIView, PasswordChangeAPIView, MyTokenObtainPairView, RegisterAPIView, ImgChangeAPIView, ReportAPIView
 
 
@@ -18,7 +18,10 @@ urlpatterns = [
     path('api/v1/img_change/<str:slug>/', ImgChangeAPIView.as_view(), name="password_change"),
     path("api/v1/password_change/", PasswordChangeAPIView.as_view(), name="password_change"),
     path('api/v1/create_report/', ReportAPIView.as_view(), name='create_report'),
-    path('api/v1/get_subscriptions/<str:slug>/', GetSubscriptionsAPIView.as_view(), name='subscriptions'),
+    path('api/v1/get_subscriptions/', GetSubscriptionsAPIView.as_view(), name='subscriptions'),
+
+    path('api/v1/create_subscription/', CreateSubscriptionAPIView.as_view(), name='create_subscription'),
+    path('api/v1/delete_subscription/', DeleteSubscriptionAPIView.as_view(), name='delete_subscription'),
 
     path('confirm_email/<uidb64>/<token>/', EmailVerify.as_view(), name="verify_email"),
 
