@@ -15,7 +15,7 @@ export const useTournaments = (posts, sort, query) => {
     const sortedTournaments = useSortedTournaments(posts, sort);
 
     const sortedAndSearchedTournaments = useMemo(() => {
-        return sortedTournaments.filter(post => post.title.toLowerCase().includes(query.toLowerCase()))
+        return sortedTournaments?.filter(post => post.title.toLowerCase().includes(query.toLowerCase()))
     }, [query, sortedTournaments])
 
     return sortedAndSearchedTournaments;

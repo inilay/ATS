@@ -30,7 +30,13 @@ const Profile = () => {
     filter.sort,
     filter.query
   );
+  const sortedAndSearchedFollowedTournaments = useTournaments(
+    profile.subscriptions,
+    filter.sort,
+    filter.query
+  );
   const [openTournaments, setOpenTournaments] = useState(false);
+  const [openFollowedTournaments, setOpenFollowedTournaments] = useState(false);
   const [openPasswordChange, setOpenPasswordChange] = useState(false);
   const [openProfileChange, setOpenProfileChange] = useState(false);
   const [state, setState] = useState({
@@ -115,6 +121,33 @@ const Profile = () => {
               <div id="example-collapse-text">
                 <TournamentList
                   tournaments={sortedAndSearchedTournaments}
+                  title="Список"
+                />
+              </div>
+            </Collapse>
+          </div>
+          <div className="mb-3">
+            <div className="d-grid">
+              <button
+                onClick={() => setOpenFollowedTournaments(!openFollowedTournaments)}
+                aria-controls="example-collapse-text"
+                aria-expanded={openFollowedTournaments}
+                style={{
+                  margin: "auto",
+                  fontSize: "1.5rem",
+                  cursor: "pointer",
+                  background: "inherit",
+                  color: "inherit",
+                  border: "0px",
+                }}
+              >
+                Followed Tournaments
+              </button>
+            </div>
+            <Collapse in={openFollowedTournaments}>
+              <div id="example-collapse-text">
+                <TournamentList
+                  tournaments={sortedAndSearchedFollowedTournaments}
                   title="Список"
                 />
               </div>

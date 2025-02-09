@@ -4,13 +4,13 @@ import classes from './TournamentList.module.css'
 
 
 const TournamentList = ({ tournaments }) => {
-  if (!tournaments.length) {
+  if (!tournaments?.length) {
     return <h1 style={{ textAlign: "center" }}>{/* Турниры не найдены! */}</h1>;
   }
 
   return (
     <div className="row">
-      {tournaments.map((post) => (
+      {tournaments?.map((post) => (
         <div className="col-lg-3 col-md-6 mt-4" key={post.link}>
           <a href={`/tournament/${post.link}`}>
             <div className="card tournament_card">
