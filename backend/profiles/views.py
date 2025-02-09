@@ -8,6 +8,7 @@ from django.views import View
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 from profiles.services import create_subscription, delete_subscription
+from tournaments.models import Tournament
 from .utils import send_email_for_reset
 from .models import CustomUser, Profile
 from rest_framework.response import Response
@@ -20,6 +21,8 @@ from .models import CustomUser
 from rest_framework import status
 from .permissions import IsProfileOwnerOrReadOnly
 from rest_framework.views import APIView
+from django.db.models import Prefetch
+
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -115,7 +118,7 @@ class RegisterAPIView(generics.CreateAPIView):
 
 
 class ProfileAPIView(generics.RetrieveAPIView):
-    queryset = Profile.objects.all()
+    queryset = Profile.objects.prefetch_related(Prefetch("tournaments", queryset=Tournament.objects.order_by("-id"))).all()
     serializer_class = ProfileSerializer
     lookup_field = 'slug'
 
@@ -142,6 +145,7 @@ class EmailVerify(View):
 
 
 class ReportAPIView(APIView):
+    permission_classes = (AllowAny, )
 
     @transaction.atomic
     def post(self, request):

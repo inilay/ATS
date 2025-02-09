@@ -31,7 +31,7 @@ def get_brackets_for_tournamnet(tournament_id: int, **kwargs) -> QuerySet[Bracke
 
 def tournaments_list(*, filters=None) -> QuerySet[Tournament]:
     filter = filters or {}
-    query_set = Tournament.objects.select_related("owner").all()
+    query_set = Tournament.objects.select_related("owner").filter(type_id=1).order_by("-id")
     return TournamentFilter(filter, query_set).qs
 
 
