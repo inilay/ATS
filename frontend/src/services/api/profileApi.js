@@ -9,12 +9,29 @@ const profileApi = {
 
     },
 
-    getSubscriptionsBySlug: async (api, slug) => {
+    getSubscriptionsBySlug: async (api) => {
 
-        const response = await api.get(`${API_SERVER}/get_subscriptions/${slug}/`)
+        const response = await api.get(`${API_SERVER}/get_subscriptions/`)
+        
+        return  response
+
+
+    },
+
+    createSubscription: async (api, data) => {
+
+        const response = await api.post(`${API_SERVER}/create_subscription/`, data)
         return  response
 
     },
+
+    deleteSubscription: async (api, data) => {
+
+        const response = await api.delete(`${API_SERVER}/delete_subscription/`, data)
+        return  response
+
+    },
+
 
     updateProfiIcon: async (api, slug, data) => {
         const response = api.patch(

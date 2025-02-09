@@ -16,7 +16,7 @@ import BracketController from "../../components/BracketController/BracketControl
 import { setTournament } from "../../store/tournament";
 import { setBracket } from "../../store/bracket";
 import { useSelector, useDispatch } from "react-redux";
-import { followTournament, setTournamnetSubscriptions } from "../../store/user.js";
+import { followTournament, unFollowTournament, setTournamnetSubscriptions } from "../../store/user.js";
 
 import bracketApi from "../../services/api/bracketApi";
 import tournamentApi from "../../services/api/tournamentApi.js";
@@ -38,6 +38,8 @@ const Tournament = () => {
   const bracket = useSelector(state => state.bracket)
 
   const { user } = useContext(AuthContext);
+
+  const userSlice = useSelector(state => state.user)
 
   const [fetchTournament, isLoading, error] = useFetching(async (link) => {
     const response = await tournamentApi.getTournamentBySlug(public_api, link);
@@ -61,19 +63,11 @@ const Tournament = () => {
     navigate(`/edit_tournament/${params.link}/`);
   };
 
-  function slugify(str) {
-    str = str.replace(/^\s+|\s+$/g, ''); // trim leading/trailing white space
-    str = str.toLowerCase(); // convert string to lowercase
-    str = str.replace(/[^a-z0-9 -]/g, '') // remove any non-alphanumeric characters
-             .replace(/\s+/g, '-') // replace spaces with hyphens
-             .replace(/-+/g, '-'); // remove consecutive hyphens
-    return str;
-  }
 
   useEffect(() => {
     if (user) {
-      profileApi.getSubscriptionsBySlug(api, slugify(user.username)).then((response) => {
-        dispatch(setTournamnetSubscriptions({subscriptions: response.data}))
+      profileApi.getSubscriptionsBySlug(api).then((response) => {
+        dispatch(setTournamnetSubscriptions({subscriptions: response.data.subscriptions}))
       })
     }
     fetchTournament(params.link);
@@ -113,11 +107,21 @@ const Tournament = () => {
   };
 
   const followHandler = () => {
-
+    let data = {
+      tournament_id: tournament.id
+    }
+      profileApi.createSubscription(api, data).then(() => {
+        dispatch(followTournament({subscriptions: tournament.id}))
+      })
   }
 
   const unFollowHandler = () => {
-    
+        let data = {
+      tournament_id: tournament.id
+    }
+      profileApi.deleteSubscription(api, {headers: {}, data: data}).then(() => {
+        dispatch(unFollowTournament({subscriptions: tournament.id}))
+      })
   }
 
   return (
@@ -160,8 +164,13 @@ const Tournament = () => {
                       <p className="tournament_text ">{tournament.owner}</p>
                     </div>
                     <div className={`${classes.tournament_button_block}`}>
-                      <MyButton onClick={() => {followHandler()}} additionalCl={`me-3`}>Follow</MyButton>
-                      <MyButton onClick={() => {copyToClipboard()}}>Copy link</MyButton>
+                    {userSlice.subscriptions?.includes(tournament.id) ?
+                      <MyButton onClick={() => {unFollowHandler()}} additionalCl={`${classes.follow_button} me-3`}>Unfollow</MyButton>
+                    :
+                      <MyButton onClick={() => {followHandler()}} additionalCl={`${classes.follow_button} me-3`}>Follow</MyButton>
+                    }
+                      
+                      <MyButton onClick={() => {copyToClipboard()}} additionalCl={`${classes.follow_button}`}>Copy link</MyButton>
                     </div>
                   </div>
                 </div>
