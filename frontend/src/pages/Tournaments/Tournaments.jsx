@@ -41,10 +41,14 @@ function Tournaments() {
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
-      if (filter.title !== '' || filter.game !== '') {
         setSearchParams({ "title": filter.title, "game": filter.game });
-        fetchPosts(limit, page, filter.title, filter.game);
-      }
+        console.log('filter', filter);
+        
+        if (filter.title !== '' || filter.game !== '') {
+          console.log('fetch');
+          
+          fetchPosts(limit, page, filter.title, filter.game);
+        }
     }, 600);
 
     return () => {

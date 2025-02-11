@@ -3,6 +3,31 @@
 }
 
 .filter_ul {
+    /* display: flex !important; */
+    height: 38px;
+    width: 250px;
     border: 1px solid var(--highlight-color);
     background-color: inherit;
+    margin: 0;
+    margin-right: 2px;
+    border-radius: 0.375rem;
+
+    @media (max-width: 992px){
+        width: 250px;
+    }
+
+    @media (max-width: 576px){
+        width: 165px;
+    }
+}
+
+.filter_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.game_filter_container {
+    display: flex;
+    flex-direction: row;
 }

@@ -14,6 +14,8 @@ const auxiliaryApi = {
     getAllGames: async (api) => {
       
         const response = await api.get(`${API_SERVER}/games/`)
+        console.log('response', response);
+        
         return  response
 
     }

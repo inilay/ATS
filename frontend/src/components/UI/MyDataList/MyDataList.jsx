@@ -16,7 +16,7 @@ const data = [
   
   const MyDataList = ({filter, setFilter, gamesFilter}) => {
     
-    console.log(gamesFilter)
+    console.log('gamesFilter', gamesFilter)
     
     const onChange = (event) => {
       setFilter({game: event.target.value, title: filter.title} );
@@ -30,7 +30,7 @@ const data = [
     return (
       <div className="d-flex">
         <div>
-          <input className={`${classes.myInput} shadow-none`} type="search" list="list" autoComplete="on"  value={filter.game} onChange={onChange} />
+          <input className={`${classes.myInput} shadow-none`} type="search" list="list" autoComplete="on"  value={filter.game} onChange={(e) => onChange(e)} />
           <datalist className={classes.myDL} id="list">
             {gamesFilter.map(game => <option className={classes.myDLOpt} key={game} value={game} />)}
           </datalist>
