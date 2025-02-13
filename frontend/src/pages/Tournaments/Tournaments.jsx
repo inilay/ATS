@@ -15,7 +15,7 @@ import axios from "axios";
 
 function Tournaments() {
   const [tournaments, setTournaments] = useState([]);
-  const [filter, setFilter] = useState({ game: '', title: '' });
+  const [filter, setFilter] = useState({ game: null, title: null });
   const [totalPages, setTotalPages] = useState(0);
   const [limit, setLimit] = useState(12);
   const [page, setPage] = useState(1);
@@ -38,16 +38,18 @@ function Tournaments() {
   useObserver(lastElement, page < totalPages, isPostLoadind, () => {
     setPage(page + 1);
   });
+  
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
-        setSearchParams({ "title": filter.title, "game": filter.game });
+        // setSearchParams({ "title": filter.title, "game": filter.game });
         console.log('filter', filter);
         
         if (filter.title !== null || filter.game !== null) {
-          // console.log('fetch');
-          // setTournaments([])
+          // setTournaments([]);
+          setPage(1)
           fetchPosts(limit, page, filter.title, filter.game);
+          setSearchParams({ "title": filter.title, "game": filter.game });
         }
     }, 600);
 
