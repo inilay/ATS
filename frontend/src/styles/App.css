@@ -252,7 +252,7 @@ table > :not(caption) > * > * {
 .loader {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 10rem;
 }
 
 

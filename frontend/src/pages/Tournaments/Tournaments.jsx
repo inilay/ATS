@@ -71,27 +71,24 @@ function Tournaments() {
   }, [page, limit]);
 
 
-  // console.log(tournaments)
   return (
     <section className="container tournaments_section pb-5">
-      {postError && <h1>Error ${postError}</h1>}
-
       <TournamentFilter filter={filter} setFilter={setFilter} />
 
-      {isPostLoadind ?
+      <Row>
+        <Col lg={12}>
+          <TournamentList
+            tournaments={tournaments}
+            title="title"
+          />
+        </Col>
+      </Row>
+
+      {isPostLoadind &&
         (<div className="loader">
           <Loader />
         </div>)
-        : (
-          <Row>
-            <Col lg={12}>
-              <TournamentList
-                tournaments={tournaments}
-                title="title"
-              />
-            </Col>
-          </Row>
-        )}
+      }
       <div ref={lastElement} className="invisible-div"></div>
     </section>
   );
