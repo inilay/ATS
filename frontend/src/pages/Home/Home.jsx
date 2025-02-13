@@ -41,7 +41,7 @@ const Home = () => {
           <div className="col-lg-4 col-md-6">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">Multi stage tournaments</h5>
+                <h5 className="card-title">Unique bracket constructor</h5>
                 <MLStageIcon />
               </div>
             </div>
@@ -49,7 +49,7 @@ const Home = () => {
           <div className="col-lg-4 col-md-6">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">Export to image</h5>
+                <h5 className="card-title">Private Tournament</h5>
                 <ExpImageIcon />
               </div>
             </div>
@@ -57,7 +57,7 @@ const Home = () => {
           <div className="col-lg-4 col-md-6">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">Time managment</h5>
+                <h5 className="card-title">Notification system</h5>
                 <TimeManagmentIcon />
               </div>
             </div>
