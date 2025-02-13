@@ -44,9 +44,9 @@ function Tournaments() {
         setSearchParams({ "title": filter.title, "game": filter.game });
         console.log('filter', filter);
         
-        if (filter.title !== '' || filter.game !== '') {
-          console.log('fetch');
-          
+        if (filter.title !== null || filter.game !== null) {
+          // console.log('fetch');
+          // setTournaments([])
           fetchPosts(limit, page, filter.title, filter.game);
         }
     }, 600);
