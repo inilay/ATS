@@ -1125,14 +1125,7 @@ def update_sw_bracket(data):
 
     
 
-def update_bracket(*, data: dict) -> Bracket:
-    bracket = get_object_or_404(Bracket.objects.prefetch_related(Prefetch(
-            "rounds",
-            queryset=Round.objects
-            .all()
-            .order_by("serial_number"),
-        )), id=data.get("bracket_id"))
-    
+def update_bracket(*, data: dict, bracket: Bracket) -> Bracket:
     print('find bracket')
 
     if bracket.bracket_type.name == "SE":

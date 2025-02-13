@@ -5,14 +5,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db import transaction
 from django.shortcuts import get_object_or_404
-
-from .models import Tournament, Bracket
+from django.db.models import Prefetch
+from .models import Round, Tournament, Bracket
 from .utils import inline_serializer, get_object
 from .serializer import TournamentSerializer, BracketSerializer, AllBracketSerealizer, GetAllBracketsSerializer
 from .selectors import tournaments_list, get_brackets_for_tournamnet, game_list
 from .services.generation_services import create_tournament, create_bracket
 from .services.update_services import create_moderator, delete_moderator, update_bracket, update_tournament
-from .permissions import IsTournamenOwnerOrReadOnly, IsBracketOwnerOrReadOnly, AuthMixin
+from .permissions import IsTournamenOwnerOrReadOnly, IsBracketOwnerOrReadOnly, IsTournamentModeratorOrOwner
 from .pagination import get_paginated_response, LimitOffsetPagination
 
 
@@ -97,12 +97,8 @@ class TournamentCreateView(APIView):
     def post(self, request):
         serializer = self.InputSerializer(data=request.data)
 
-        print('raw data', request.data)
         if not serializer.is_valid():
             print(serializer.errors)
-        
-        print('serializer.validated_data', serializer.validated_data)
-        
         tournament = create_tournament(**serializer.validated_data, user=request.user,)
 
         return Response(status=status.HTTP_201_CREATED)
@@ -171,7 +167,7 @@ class BracketCreateView(APIView):
         return Response(data={'id': bracket.id}, status=status.HTTP_201_CREATED)
 
 class BracketUpdateAPIView(APIView):
-    permission_classes = []
+    permission_classes = (IsTournamentModeratorOrOwner, )
 
     class InputSerializer(serializers.Serializer):
         bracket_id = serializers.IntegerField()
@@ -183,24 +179,23 @@ class BracketUpdateAPIView(APIView):
             'participant': serializers.CharField(),
             'score': serializers.IntegerField(),
         }))
-        # match_results = inline_serializer(many=True, fields={
-        #     'id' : serializers.IntegerField(),
-        #     'participant': serializers.CharField(),
-        #     'score': serializers.IntegerField(),
-        # })
 
     @transaction.atomic
     def put(self, request):
         serializer = self.InputSerializer(data=request.data)
-
-        print('data', request.data)
         if not serializer.is_valid():
-            print(serializer.errors)
-        print('serializer.validated_data', serializer.validated_data)
-        # bracket = get_object(Bracket, id=id)
-        # self.check_object_permissions(request, bracket)
-        bracket = update_bracket(data=serializer.validated_data)
-        print('bracket', bracket)
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        bracket = get_object_or_404(Bracket.objects.prefetch_related(Prefetch(
+            "rounds",
+            queryset=Round.objects
+            .all()
+            .order_by("serial_number"),
+        )).select_related('tournament'), id=serializer.validated_data.get("bracket_id"))
+
+        self.check_object_permissions(request, bracket)
+
+        bracket = update_bracket(data=serializer.validated_data, bracket=bracket)
         serializer = GetAllBracketsSerializer(bracket)
 
         return Response(status=status.HTTP_200_OK, data=serializer.data)
@@ -214,6 +209,7 @@ class AllBracketAPIView(APIView):
         return Response(status=status.HTTP_200_OK, data=serializer.data)
     
 class CreateModeratorAPIView(APIView):
+    permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
 
     class InputSerializer(serializers.Serializer):
         tournament_id = serializers.IntegerField()
@@ -228,6 +224,8 @@ class CreateModeratorAPIView(APIView):
         return Response(status=status.HTTP_201_CREATED)
 
 class DeleteModeratorAPIView(APIView):
+    permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
+
     class InputSerializer(serializers.Serializer):
         tournament_id = serializers.IntegerField()
         username = serializers.CharField()
