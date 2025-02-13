@@ -27,7 +27,9 @@ const tournamentSlice = createSlice({
         },
 
         addModerator(state, action) {
-            state.moderators = [...state.moderators, action.payload.moderator]
+            if (!state.moderators.includes(action.payload.moderator)) {
+                state.moderators = [...state.moderators, action.payload.moderator]
+            }
         },
 
         deleteModerator(state, action) {
