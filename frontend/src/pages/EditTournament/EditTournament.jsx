@@ -54,6 +54,7 @@ const EditTournament = () => {
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
     setResponseBody({ ...responseBody, [name]: value });
+    setValue(name, value)
   };
 
   const onSubmitHandler = () => {
@@ -76,6 +77,7 @@ const EditTournament = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
     reset,
   } = useForm({ mode: "onBlur" });

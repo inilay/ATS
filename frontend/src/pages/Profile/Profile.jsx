@@ -49,6 +49,7 @@ const Profile = () => {
   const {
     register,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 
@@ -60,6 +61,7 @@ const Profile = () => {
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
     setState({ ...state, [name]: value });
+    setValue(name, value)
   };
 
   const handleImageChangeSubmit = (e) => {

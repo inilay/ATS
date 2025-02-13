@@ -28,10 +28,21 @@ const PasswordResetConfirm = () => {
     });
   };
 
+  const newPasswordHandler = (e) => {
+    setPassword(e.target.value)
+    setValue("new_password", e.target.value)
+  }
+
+  const newRePasswordHandler = (e) => {
+    setRePassword(e.target.value)
+    setValue("re_new_password", e.target.value)
+  }
+
   const {
     register,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 
@@ -48,7 +59,7 @@ const PasswordResetConfirm = () => {
                   required: "⚠ This input is required.",
                 })}
                 className="shadow-none my_log_input"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => newPasswordHandler(e)}
               />
               {errors.new_password && (
                 <p role="alert">{errors.new_password?.message}</p>
@@ -68,7 +79,7 @@ const PasswordResetConfirm = () => {
                   },
                 })}
                 className="shadow-none my_log_input"
-                onChange={(e) => setRePassword(e.target.value)}
+                onChange={(e) => newRePasswordHandler(e)}
               />
               {errors.re_new_password && (
                 <p role="alert">{errors.re_new_password?.message}</p>

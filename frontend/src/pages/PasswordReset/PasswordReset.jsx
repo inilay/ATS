@@ -17,11 +17,13 @@ const PasswordReset = () => {
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
     setEmail({ [name]: value });
+    setValue(name, value)
   };
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 

@@ -57,6 +57,7 @@ const CreateTournament = () => {
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
     setResponseBody({ ...responseBody, [name]: value });
+    setValue(name, value)
   };
 
   const inputSelectChangeHandler = (event) => {
@@ -84,6 +85,11 @@ const CreateTournament = () => {
     setResponseBody({ ...responseBody, [name]: value });
   };
 
+  const participantsHandler = (e) => {
+    setParticipants(e.value)
+    setValue("participants", e.value)
+  }
+
   const countNonEmptyRows = () => {
     const text = participants;
     const lines = text.split('\n');
@@ -108,6 +114,7 @@ const CreateTournament = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
@@ -350,7 +357,7 @@ const CreateTournament = () => {
                       },
                     },
                   }}
-                  onChange={(e) => {setParticipants(e.value)}}
+                  onChange={(e) => {participantsHandler(e)}}
                 ></MyFormGroupInput>
             
               </Card.Body>

@@ -3,7 +3,7 @@ import { AuthContext } from "../../context";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import MyFormGroupInput from "../../components/UI/MyFormGroupInput/MyFormGroupInput";
-import { useForm } from "react-hook-form";
+import { useForm, set } from "react-hook-form";
 import MyButton from "../../components/UI/MyButton/MyButton";
 import MyCard from "../../components/UI/MyCard/MyCard";
 import Card from "react-bootstrap/Card";
@@ -21,11 +21,13 @@ const Login = () => {
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
     setState({ ...state, [name]: value });
+    setValue(name, value)
   };
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 
@@ -40,6 +42,7 @@ const Login = () => {
             <MyFormGroupInput
               label="Email"
               name="email"
+              defaultValue={state.email}
               errors={errors}
               register={register}
               validationSchema={{
@@ -56,6 +59,7 @@ const Login = () => {
               label="Password"
               type="password"
               name="password"
+              defaultValue={state.password}
               errors={errors}
               register={register}
               validationSchema={{

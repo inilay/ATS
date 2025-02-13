@@ -36,12 +36,14 @@ const Register = () => {
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
     setState({ ...state, [name]: value });
+    setValue(name, value)
   };
 
   const {
     register,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 

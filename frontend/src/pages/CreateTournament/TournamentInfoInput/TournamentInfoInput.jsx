@@ -3,9 +3,7 @@ import "../../../styles/App.css";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import UploadButton from "../../../components/UI/UploadButton/UploadButton";
-import { useForm } from "react-hook-form";
 import MyFormGroupInput from "../../../components/UI/MyFormGroupInput/MyFormGroupInput";
-import MyButton from "../../../components/UI/MyButton/MyButton";
 import MyCard from "../../../components/UI/MyCard/MyCard";
 import classes from "./TournamentInfoInput.module.css";
 

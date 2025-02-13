@@ -1,6 +1,4 @@
 import { useState, useContext, useEffect, Fragment } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import classes from "./Swiss.module.css";
 import MatchInfoIcon from "../../../assets/svg/MatchInfoIcon";
 import MatchJudgeIcon from "../../../assets/svg/MatchJudgeIcon";

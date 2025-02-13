@@ -28,6 +28,7 @@ const FeedBack = () => {
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
     setResponseBody({ ...responseBody, [name]: value });
+    setValue(name, value)
   };
 
   const inputSelectChangeHandler = (event) => {
@@ -45,6 +46,7 @@ const FeedBack = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 

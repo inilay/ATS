@@ -17,7 +17,6 @@ const MyFormGroupInput = ({ label, defaultValue, name, as, type, onChange, regis
                 type={type}
                 as={as}
                 onChange={inputChangeHandler}
-                defaultValue={defaultValue}
                 className={`${classes.myInput} ${className} shadow-none`}
             />
         {errors && errors[name] && <p className={classes.warningP} role="alert">{errors[name]?.message}</p>}

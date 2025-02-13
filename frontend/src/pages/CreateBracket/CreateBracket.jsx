@@ -27,6 +27,7 @@ const CreateBracket = () => {
   const inputChangeHandler = (inputValue) => {
     const { name, value } = inputValue;
     setResponseBody({ ...responseBody, [name]: value });
+    setValue(name, value)
   };
 
   const inputSelectChangeHandler = (event) => {
@@ -44,6 +45,7 @@ const CreateBracket = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({ mode: "onBlur" });
 
