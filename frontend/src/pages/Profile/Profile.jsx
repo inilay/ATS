@@ -78,7 +78,6 @@ const Profile = () => {
     fetchPostById(params.slug);
   }, []);
 
-  console.log(profile.user_icon)
 
   return (
     <section className="container">
