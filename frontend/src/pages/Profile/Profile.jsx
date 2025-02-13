@@ -86,11 +86,12 @@ const Profile = () => {
         <div className="col-lg-12 col-md-12">
           <div className="profile-container my-5">
             <div style={{ textAlign: "center" }}>
-              <img
+
+              {profile.user_icon && <img
                 src={profile.user_icon}
                 alt="user profile"
                 className="profile-icon mb-3"
-              />
+              />}
               <h4>{profile.user.username}</h4>
               <p></p>
               <p>

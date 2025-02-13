@@ -187,14 +187,14 @@ const Tournament = () => {
                           <ModeratorSettings />
                           <>
                             <MyButton
-                              additionalCl={"btn-md btn my-3 me-3"}
+                              additionalCl={`${classes.setting_button} btn-md btn my-3 me-3`}
                               type="submit"
                               onClick={onEdit}
                             >
                               Edit Tournament
                             </MyButton>
                             <MyButton
-                              additionalCl={"btn-md btn my-3 me-3"}
+                              additionalCl= {`${classes.setting_button} btn-md btn my-3 me-3`}
                               type="submit"
                               onClick={onDelete}
                             >

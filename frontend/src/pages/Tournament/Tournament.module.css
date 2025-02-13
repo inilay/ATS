@@ -67,3 +67,10 @@
 .follow_button {
     width: 95px;
 }
+
+.setting_button:hover {
+    color: inherit;
+    background:  var(--highlight-color) !important;
+    box-shadow: 0 .5rem 1rem  var(--highlight-color) !important;
+} 
+    

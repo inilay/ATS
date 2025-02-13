@@ -4,6 +4,7 @@ import tournamentApi from "../../services/api/tournamentApi";
 import useAxios from "../../API/useAxios";
 import { useSelector, useDispatch } from "react-redux";
 import { addModerator, deleteModerator } from "../../store/tournament";
+import MyButton from "../UI/MyButton/MyButton";
 
 const ModeratorSettings = () => {
   const api = useAxios()
@@ -61,7 +62,7 @@ const ModeratorSettings = () => {
           }}
         >
         </input>
-        <button onClick={(e)=> addModeratorHandler(e)} className={`${classes.add_moderator_button}`} type="button">Add</button>
+        <MyButton onClick={(e)=> addModeratorHandler(e)} additionalCl={`${classes.add_moderator_button}`} type="button">Add</MyButton>
       </div>
     </div>
   );
