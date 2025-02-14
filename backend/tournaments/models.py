@@ -71,14 +71,19 @@ class TournamentType(models.Model):
 
 class Bracket(models.Model):
     tournament = models.ForeignKey(
-        "Tournament", related_name="brackets", on_delete=models.CASCADE
+        "Tournament", related_name="brackets", on_delete=models.CASCADE, blank=True, null=True
     )
     bracket_type = models.ForeignKey(
         "BracketType", related_name="brackets", on_delete=models.CASCADE
     )
     participant_in_match = models.IntegerField(default=2)
 
-
+class AnonymousBracket(models.Model):
+    link = models.SlugField(max_length=255, unique=True)
+    bracket = models.OneToOneField(
+        "Bracket", related_name="anonymous_bracket", on_delete=models.CASCADE
+    )
+    
 class GroupBracketSettings(models.Model):
     participant_in_group = models.IntegerField()
     advance_from_group = models.IntegerField()

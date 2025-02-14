@@ -1,6 +1,6 @@
 from rest_framework import permissions
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-
+from .models import AnonymousBracket
 
 class IsTournamenOwnerOrReadOnly(permissions.BasePermission):
     """
@@ -41,5 +41,12 @@ class IsTournamentModeratorOrOwner(permissions.BasePermission):
     
     def has_object_permission(self, request, view, obj):
         if request.user.id == obj.tournament.owner_id or obj.tournament.moderators.filter(id=request.user.id).exists():
+            return True
+        return False
+    
+class IsAnonymousBracket(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        if AnonymousBracket.objects.filter(bracket=obj).exists():
             return True
         return False
