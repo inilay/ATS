@@ -17,23 +17,21 @@ const Swiss = ({bracket, bracketId}) => {
   const [table, setTable] = useState([]);
   const { user } = useContext(AuthContext);
   const tournament = useSelector(state => state.tournament)
+  const anonymous = useSelector(state => state.bracket.anonymous)
 
   const openInfoModal = (match) => {  
     setMatchCardModalShow(true)
     dispatch(setCurrentMatch({currentMatch: match}))
-
   }
   
   const openEditModal = (match) => {  
     setEditMatchCardModalShow(true)
     dispatch(setCurrentMatch({currentMatch: match}))
     dispatch(setCurrentBracketId({currentBracketId: bracketId}))
-
   }
 
   const createTable = (bracket) => {
     let table = []
-    console.log('bracket', bracket);
     bracket[0]?.matches.map((match) => {
       let draw = false
       let max_score = Math.max(...match.info.map(participant => participant.participant_score))
@@ -91,7 +89,6 @@ const Swiss = ({bracket, bracketId}) => {
       })
     }
     
-
     return table
   }
   
@@ -131,7 +128,7 @@ const Swiss = ({bracket, bracketId}) => {
                     ))
                     }
                     <div className={classes.button_container}>
-                    {user !== null && (tournament.owner == user.username || tournament.moderators.includes(user.username))  ?
+                    {user !== null && (tournament.owner == user.username || tournament.moderators.includes(user.username)) || anonymous ?
                     <Fragment>
                       <button
                         className={classes.icon_button}

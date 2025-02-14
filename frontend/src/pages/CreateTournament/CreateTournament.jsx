@@ -41,7 +41,6 @@ const CreateTournament = () => {
     bracket_type: 1,
     advances_to_next: 1,
     participant_in_match: 2,
-    number_of_rounds: null,
 
     points_loss: 0,
     points_draw: 0,

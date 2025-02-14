@@ -4,11 +4,11 @@ import MyModal from "../../../UI/MyModal/MyModal";
 import MyRadioButton from "../../../UI/MyRadioButton/MyRadioButton";
 import classes from "./EditModal.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import React, { useState, Fragment } from "react";
-import moment from "moment";
+import React, { useState } from "react";
 import bracketApi from "../../../../services/api/bracketApi";
 import { changeCurrentMatchInfo, changeBracket } from "../../../../store/bracket";
 import useAxios from "../../../../API/useAxios";
+import axios from "axios";
 
 const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     const bracket = useSelector(state => state.bracket)
@@ -20,6 +20,7 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     const [matchResults, setMatchResults] = useState([]);
     const dispatch = useDispatch()
     const api = useAxios()
+    const publick_api = axios
 
     const matchStateHandler = (state) => {
         setMatchState(state);
@@ -33,26 +34,10 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
     const matchResultsHandler = (e, id) => {
         e.preventDefault();
         let _matchResults = matchResults;
-        // if  (!_matchResults.some(o => o.participant === e.target.name)) {
-        //     setMatchResults([...matchResults, {'id': id, 'participant': e.target.name, 'score': e.target.value}]);
-        // }
-        // else {
-        //     _matchResults.find(item => {
-        //         if (item.id === id) {
-        //             item.score = e.target.value;
-        //             return true;
-        //         }
-        //     });
-        //     setMatchResults(_matchResults)
-        // }
         dispatch(changeCurrentMatchInfo({id: id, participant_score: e.target.value}))
     };
 
     const onSubmitHandler = () => {
-
-        console.log('match_results', matchResults);
-        console.log('matchState', matchState)
-
         let data = {
             bracket_id: bracket.currentBracketId,
             match_id: match.id,
@@ -60,19 +45,19 @@ const EditModal = ({modalEditShow, setEditMatchCardModalShow}) => {
             state: matchState || match?.state,
             match_results: match.info?.reduce((res, cur) => ({ ...res, [cur.id]: {score: cur.participant_score, participant: cur.participant}}), {})
         }
-
-        console.log(data);
-        
-
-        const response = bracketApi.updateBracket(api, data).then((response) => {
-            dispatch(changeBracket({bracket: response.data}))
-            setEditMatchCardModalShow(false);
-        });
-        
+        if (bracket.anonymous) {
+            const response = bracketApi.updateAnonymousBracket(publick_api, data).then((response) => {
+                dispatch(changeBracket({bracket: response.data}))
+                setEditMatchCardModalShow(false);
+            });
+        }
+        else {
+            const response = bracketApi.updateBracket(api, data).then((response) => {
+                dispatch(changeBracket({bracket: response.data}))
+                setEditMatchCardModalShow(false);
+            });
+        }
     };
-
-    console.log('match?.start_time', match?.start_time?.slice(0, -4));
-    
 
     return (
         <MyModal

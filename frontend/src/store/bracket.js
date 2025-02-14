@@ -4,12 +4,16 @@ const bracketSlice = createSlice({
     name: 'bracket',
     initialState: {
         brackets: [],
+        anonymous: false,
         currentMatch: null,
         currentBracketId: null
     },
     reducers: {
         setBracket(state, action) {
             state.brackets = action.payload.brackets
+        },
+        setAnonymous(state, action) {
+            state.anonymous = action.payload.anonymous
         },
         changeBracket(state, action) {
             state.brackets = state.brackets.map((bracket) => (
@@ -38,10 +42,11 @@ const bracketSlice = createSlice({
             state.brackets = []
             state.currentBracketId = null
             state.currentMatch = null
+            state.anonymous = false
         },
     }
 })
 
-export const { setBracket, clearBracket, setCurrentMatch, setCurrentBracketId, changeCurrentMatchInfo, changeBracket } = bracketSlice.actions;
+export const { setBracket, setAnonymous, clearBracket, setCurrentMatch, setCurrentBracketId, changeCurrentMatchInfo, changeBracket } = bracketSlice.actions;
 
 export default bracketSlice.reducer;

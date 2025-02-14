@@ -178,7 +178,7 @@ const Tournament = () => {
               <div className="row my-3">
                 <div className="col">
                   <Accordion flush defaultActiveKey={["1",]} alwaysOpen>
-                    {user.username == tournament.owner &&
+                    {user?.username == tournament.owner &&
                       <Accordion.Item eventKey="2">
                         <Accordion.Header className="my_accordion_body">
                           <h4>Settings</h4>

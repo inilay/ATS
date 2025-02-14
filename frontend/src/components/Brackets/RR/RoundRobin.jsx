@@ -17,6 +17,7 @@ const RoundRobin = ({bracket, bracketId}) => {
 
   const { user } = useContext(AuthContext);
   const tournament = useSelector(state => state.tournament)
+  const anonymous = useSelector(state => state.bracket.anonymous)
 
   const openInfoModal = (match) => {  
     setMatchCardModalShow(true)
@@ -131,7 +132,7 @@ const RoundRobin = ({bracket, bracketId}) => {
                     ))
                     }
                     <div className={classes.button_container}>
-                    {user !== null && (tournament.owner == user.username || tournament.moderators.includes(user.username))  ?
+                    {user !== null && (tournament.owner == user.username || tournament.moderators.includes(user.username)) || anonymous ?
                       <Fragment>
                         <button
                           className={classes.icon_button}

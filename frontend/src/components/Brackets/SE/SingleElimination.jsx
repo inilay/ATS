@@ -18,6 +18,7 @@ const SingleElimination = ({bracket, bracketId}) => {
   const participantsInMatch = bracket[0]?.matches[0]?.info.length
 
   const { user } = useContext(AuthContext);
+  const anonymous = useSelector(state => state.bracket.anonymous)
   const tournament = useSelector(state => state.tournament)
 
   const openInfoModal = (match) => {  
@@ -61,7 +62,7 @@ const SingleElimination = ({bracket, bracketId}) => {
                   <div className={`${classes.line} ${classes.one}`}></div>
                 </div>
                 <div className={classes.button_container}>
-                  {user !== null && (tournament.owner == user.username || tournament.moderators.includes(user.username))  ?
+                  {(user !== null && (tournament.owner == user.username || tournament.moderators.includes(user.username))) || anonymous ?
                     <Fragment>
                       <button
                         className={classes.icon_button}
