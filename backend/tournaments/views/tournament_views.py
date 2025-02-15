@@ -1,26 +1,23 @@
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.views import APIView
-from rest_framework import serializers
-from rest_framework.response import Response
-from rest_framework import status
 from django.db import transaction
-from django.shortcuts import get_object_or_404
-from django.db.models import Prefetch
-from ..models import Round, Tournament, Bracket
-from ..utils import inline_serializer, get_object
-from ..serializer import TournamentSerializer, BracketSerializer, AllBracketSerealizer, GetAllBracketsSerializer
-from ..selectors import tournaments_list, get_brackets_for_tournamnet, game_list
-from ..services.generation_services import create_tournament, create_bracket
-from ..services.update_services import create_moderator, delete_moderator, update_bracket, update_tournament
-from ..permissions import IsTournamenOwnerOrReadOnly, IsBracketOwnerOrReadOnly, IsTournamentModeratorOrOwner
-from ..pagination import get_paginated_response, LimitOffsetPagination
+from rest_framework import serializers, status
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from ..models import Tournament
+from ..pagination import LimitOffsetPagination, get_paginated_response
+from ..permissions import IsTournamenOwnerOrReadOnly
+from ..selectors import game_list, tournaments_list
+from ..services.generation_services import create_tournament
+from ..services.update_services import create_moderator, delete_moderator, update_tournament
+from ..utils import get_object
 
 
 class TournamentsAPIList(APIView):
     class Pagination(LimitOffsetPagination):
         default_limit = 12
         default_offset = 0
-        
+
     class FilterSerializer(serializers.Serializer):
         title = serializers.CharField(required=False)
         game = serializers.CharField(required=False)
@@ -29,9 +26,8 @@ class TournamentsAPIList(APIView):
         class Meta:
             model = Tournament
             fields = "__all__"
-    
-    def get(self, request):
 
+    def get(self, request):
         # Make sure the filters are valid, if passed
         filters_serializer = self.FilterSerializer(data=request.query_params)
         filters_serializer.is_valid(raise_exception=True)
@@ -42,27 +38,28 @@ class TournamentsAPIList(APIView):
             serializer_class=self.OutputSerializer,
             queryset=tournaments,
             request=request,
-            view=self
+            view=self,
         )
 
-class TournamentAPIView(APIView): 
-  
+
+class TournamentAPIView(APIView):
     class OutputSerializer(serializers.ModelSerializer):
         owner = serializers.StringRelatedField(required=False)
-        start_time = serializers.DateTimeField(format='%Y-%m-%dT%H:%M')
+        start_time = serializers.DateTimeField(format="%Y-%m-%dT%H:%M")
         moderators = serializers.StringRelatedField(many=True)
 
         class Meta:
             model = Tournament
-            fields = "__all__"  
-        
+            fields = "__all__"
+
     def get(self, request, link):
         tournament = get_object(Tournament, link=link)
-        serializer = self.OutputSerializer(tournament, context={'request': request})
+        serializer = self.OutputSerializer(tournament, context={"request": request})
         return Response(serializer.data)
 
+
 class TournamentCreateView(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     class InputSerializer(serializers.Serializer):
         # tournament
@@ -73,7 +70,7 @@ class TournamentCreateView(APIView):
         game = serializers.CharField()
         start_time = serializers.DateTimeField()
         private = serializers.BooleanField()
-        # bracket 
+        # bracket
         advances_to_next = serializers.IntegerField()
         participant_in_match = serializers.IntegerField()
         bracket_type = serializers.IntegerField()
@@ -92,11 +89,15 @@ class TournamentCreateView(APIView):
         serializer = self.InputSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        tournament = create_tournament(**serializer.validated_data, user=request.user,)
+        create_tournament(
+            **serializer.validated_data,
+            user=request.user,
+        )
         return Response(status=status.HTTP_201_CREATED)
 
+
 class TournamentDeleteAPIView(APIView):
-    permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
+    permission_classes = ((IsTournamenOwnerOrReadOnly | IsAdminUser),)
 
     @transaction.atomic
     def delete(self, request, link, *args, **kwargs):
@@ -106,8 +107,9 @@ class TournamentDeleteAPIView(APIView):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class TournamentUpdateApiView(APIView):
-    permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
+    permission_classes = ((IsTournamenOwnerOrReadOnly | IsAdminUser),)
 
     class InputSerializer(serializers.Serializer):
         title = serializers.CharField()
@@ -126,11 +128,11 @@ class TournamentUpdateApiView(APIView):
         self.check_object_permissions(request, tournament)
         tournament = update_tournament(tournament=tournament, data=serializer.validated_data)
 
-        return Response(data={'link': tournament.link}, status=status.HTTP_200_OK)
+        return Response(data={"link": tournament.link}, status=status.HTTP_200_OK)
 
 
 class CreateModeratorAPIView(APIView):
-    permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
+    permission_classes = ((IsTournamenOwnerOrReadOnly | IsAdminUser),)
 
     class InputSerializer(serializers.Serializer):
         tournament_id = serializers.IntegerField()
@@ -141,12 +143,12 @@ class CreateModeratorAPIView(APIView):
         serializer = self.InputSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        moderator = create_moderator(serializer.validated_data)
+        create_moderator(serializer.validated_data)
         return Response(status=status.HTTP_201_CREATED)
 
 
 class DeleteModeratorAPIView(APIView):
-    permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
+    permission_classes = ((IsTournamenOwnerOrReadOnly | IsAdminUser),)
 
     class InputSerializer(serializers.Serializer):
         tournament_id = serializers.IntegerField()
@@ -159,10 +161,9 @@ class DeleteModeratorAPIView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         delete_moderator(serializer.validated_data)
         return Response(status=status.HTTP_200_OK)
-    
-    
+
+
 class GamesApiView(APIView):
-    
     def get(self, requet):
         games = game_list()
         return Response(games)

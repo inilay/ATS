@@ -1,18 +1,15 @@
 import re
-import math
-import secrets
-import datetime
-from .models import Tournament, Bracket
-from rest_framework import serializers
-from django.shortcuts import get_object_or_404
-from django.http import Http404
 from typing import Any, Dict, List, Tuple
-from django.utils import timezone
+
 from django.db import models
+from django.http import Http404
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+from rest_framework import serializers
 
 
 def clear_participants(participants: list) -> list:
-    return [i.strip() for i in re.split(r'[\n\r]+', participants)]
+    return [i.strip() for i in re.split(r"[\n\r]+", participants)]
 
 
 def create_serializer_class(name, fields):
@@ -33,10 +30,9 @@ def get_object(model_or_queryset, **kwargs):
         return get_object_or_404(model_or_queryset, **kwargs)
     except Http404:
         return None
-    
+
 
 def model_update(*, instance, fields: List[str], data: Dict[str, Any], auto_updated_at=True) -> Tuple:
-
     has_updated = False
     m2m_data = {}
     update_fields = []

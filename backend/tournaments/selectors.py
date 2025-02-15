@@ -1,7 +1,8 @@
-from django.db.models.query import QuerySet
 from django.db.models import Prefetch
-from .models import Tournament, Bracket, Round, Match, MatchParticipantInfo
+from django.db.models.query import QuerySet
+
 from .filters import TournamentFilter
+from .models import Bracket, Match, MatchParticipantInfo, Round, Tournament
 
 
 def get_brackets_for_tournamnet(tournament_id: int, **kwargs) -> QuerySet[Bracket]:
@@ -14,9 +15,7 @@ def get_brackets_for_tournamnet(tournament_id: int, **kwargs) -> QuerySet[Bracke
                     queryset=Match.objects.prefetch_related(
                         Prefetch(
                             "info",
-                            queryset=MatchParticipantInfo.objects.only(
-                                "participant_score", "participant"
-                            ),
+                            queryset=MatchParticipantInfo.objects.only("participant_score", "participant"),
                         )
                     ).all(),
                 )

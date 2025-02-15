@@ -1,7 +1,3 @@
-from rest_framework import viewsets, generics
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
-from rest_framework import parsers
 
 
 # class LargeResultsSetPagination(PageNumberPagination):
@@ -15,12 +11,12 @@ from rest_framework import parsers
 #     serializer_class = TournamentSerializer
 #     pagination_class = LargeResultsSetPagination
 
-# class TournamentAPIView(generics.RetrieveAPIView): 
+# class TournamentAPIView(generics.RetrieveAPIView):
 #     class OutputSerializer(serializers.ModelSerializer):
 #         start_time = serializers.DateTimeField(format='%Y-%m-%dT%H:%M')
 #         class Meta:
 #             model = Tournament
-#             fields = "__all__" 
+#             fields = "__all__"
 #     queryset = Tournament.objects.all()
 #     serializer_class = OutputSerializer
 #     lookup_field = 'slug'
@@ -60,7 +56,7 @@ from rest_framework import parsers
 #     permission_classes = ((IsBracketOwnerOrReadOnly|IsAdminUser),)
 #     lookup_field = 'id'
 
-# class AllBracketAPIView(generics.RetrieveAPIView): 
+# class AllBracketAPIView(generics.RetrieveAPIView):
 #     queryset = Tournament.objects.all()
 #     serializer_class = AllBracketSerealizer
 #     lookup_field = 'slug'

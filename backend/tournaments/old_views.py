@@ -20,7 +20,7 @@
 #     class Pagination(LimitOffsetPagination):
 #         default_limit = 12
 #         default_offset = 0
-        
+
 #     class FilterSerializer(serializers.Serializer):
 #         title = serializers.CharField(required=False)
 #         game = serializers.CharField(required=False)
@@ -29,7 +29,7 @@
 #         class Meta:
 #             model = Tournament
 #             fields = "__all__"
-    
+
 #     def get(self, request):
 
 #         # Make sure the filters are valid, if passed
@@ -45,8 +45,8 @@
 #             view=self
 #         )
 
-# class TournamentAPIView(APIView): 
-  
+# class TournamentAPIView(APIView):
+
 #     class OutputSerializer(serializers.ModelSerializer):
 #         owner = serializers.StringRelatedField(required=False)
 #         start_time = serializers.DateTimeField(format='%Y-%m-%dT%H:%M')
@@ -54,8 +54,8 @@
 
 #         class Meta:
 #             model = Tournament
-#             fields = "__all__"  
-        
+#             fields = "__all__"
+
 #     def get(self, request, link):
 #         tournament = get_object(Tournament, link=link)
 #         serializer = self.OutputSerializer(tournament, context={'request': request})
@@ -73,7 +73,7 @@
 #         game = serializers.CharField()
 #         start_time = serializers.DateTimeField()
 #         private = serializers.BooleanField()
-#         # bracket 
+#         # bracket
 #         advances_to_next = serializers.IntegerField()
 #         participant_in_match = serializers.IntegerField()
 #         bracket_type = serializers.IntegerField()
@@ -129,7 +129,6 @@
 #         return Response(data={'link': tournament.link}, status=status.HTTP_200_OK)
 
 
-    
 # class CreateModeratorAPIView(APIView):
 #     permission_classes = ((IsTournamenOwnerOrReadOnly|IsAdminUser),)
 
@@ -159,13 +158,13 @@
 #             return Response(status=status.HTTP_400_BAD_REQUEST)
 #         delete_moderator(serializer.validated_data)
 #         return Response(status=status.HTTP_200_OK)
-    
+
 # class GamesApiView(APIView):
-    
+
 #     def get(self, requet):
 #         games = game_list()
 #         return Response(games)
-    
+
 
 # class AnonymousBracketCreateView(APIView):
 

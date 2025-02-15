@@ -1,48 +1,15 @@
-import uuid
+
+
 
 from tournaments.services.auxiliary_services import update_match_participant_info
+
 from ..models import (
     Bracket,
-    Tournament,
-    Round,
     Match,
     MatchParticipantInfo,
-    SEBracketSettings,
-    RRBracketSettings,
-    SWBracketSettings,
-    GroupBracketSettings,
-)
-from ..utils import clear_participants, model_update
-from profiles.models import CustomUser
-from django.utils.text import slugify
-import math
-from django.shortcuts import get_object_or_404
-from django.db.models.query import QuerySet
-from django.db.models import Prefetch, Q
-import operator
-from functools import reduce
-import hashlib
-from profiles.models import Profile
-from tournaments.orm_functions import JsonGroupArray
-from ..models import (
-    Bracket,
-    Tournament,
     Round,
-    Match,
-    MatchParticipantInfo,
-    SEBracketSettings,
-    RRBracketSettings,
-    SWBracketSettings,
-    GroupBracketSettings,
 )
-from ..utils import clear_participants, model_update
-from django.utils.text import slugify
-from django.shortcuts import get_object_or_404
-from django.db.models.query import QuerySet
-from django.db.models import Prefetch, Q, Count, F, OuterRef, Subquery, Max, Min
-import operator
-import math
-from functools import reduce
+
 
 def create_rr_bracket(bracket: Bracket, participants: list):
     participants_cnt = len(participants)
@@ -83,12 +50,8 @@ def create_rr_bracket(bracket: Bracket, participants: list):
             else:
                 t1 = participants[l1[j]]
                 t2 = participants[l2[j]]
-            matches_info.append(
-                MatchParticipantInfo(match=match, participant_score=0, participant=t1)
-            )
-            matches_info.append(
-                MatchParticipantInfo(match=match, participant_score=0, participant=t2)
-            )
+            matches_info.append(MatchParticipantInfo(match=match, participant_score=0, participant=t1))
+            matches_info.append(MatchParticipantInfo(match=match, participant_score=0, participant=t2))
             match_serial_number_cnt = match_serial_number_cnt + 1
 
         permutations = permutations[mid:-1] + permutations[:mid] + permutations[-1:]
@@ -96,25 +59,23 @@ def create_rr_bracket(bracket: Bracket, participants: list):
     Match.objects.bulk_create(unsaved_matches)
     MatchParticipantInfo.objects.bulk_create(matches_info)
 
-    
+
 def update_rr_bracket(data):
-    print('data', data)
-    match = (
-        Match.objects.prefetch_related("info").get(id=data.get("match_id"))
-    )
-    print('match id', match.id)
+    print("data", data)
+    match = Match.objects.prefetch_related("info").get(id=data.get("match_id"))
+    print("match id", match.id)
     match_prev_state = match.state.name
     cur_match_state = data.get("state")
     match_results = data.get("match_results")
 
-    print('match.state', match.state)
+    print("match.state", match.state)
     print(match_prev_state, cur_match_state, match.state.id)
 
     # S
     if cur_match_state == "SCHEDULED":
-        match.state_id=1
+        match.state_id = 1
     # P
     else:
-        match.state_id=2
+        match.state_id = 2
     match.save()
     update_match_participant_info(match_results, match.info.all())

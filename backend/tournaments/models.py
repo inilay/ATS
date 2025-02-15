@@ -2,7 +2,6 @@ from django.db import models
 
 from profiles.models import Profile
 
-
 # class Tournament(models.Model):
 #     title = models.CharField(max_length=255)
 #     content = models.TextField()
@@ -59,60 +58,50 @@ class Tournament(models.Model):
     game = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     start_time = models.DateTimeField()
-    owner = models.ForeignKey(
-        Profile, related_name="tournaments", on_delete=models.CASCADE
-    )
+    owner = models.ForeignKey(Profile, related_name="tournaments", on_delete=models.CASCADE)
     type = models.ForeignKey("TournamentType", on_delete=models.CASCADE)
     moderators = models.ManyToManyField(Profile, related_name="administrated_tournaments")
     followers = models.ManyToManyField(Profile, related_name="subscriptions")
 
+
 class TournamentType(models.Model):
     name = models.CharField(max_length=255)
+
 
 class Bracket(models.Model):
     tournament = models.ForeignKey(
         "Tournament", related_name="brackets", on_delete=models.CASCADE, blank=True, null=True
     )
-    bracket_type = models.ForeignKey(
-        "BracketType", related_name="brackets", on_delete=models.CASCADE
-    )
+    bracket_type = models.ForeignKey("BracketType", related_name="brackets", on_delete=models.CASCADE)
     participant_in_match = models.IntegerField(default=2)
+
 
 class AnonymousBracket(models.Model):
     link = models.SlugField(max_length=255, unique=True)
-    bracket = models.OneToOneField(
-        "Bracket", related_name="anonymous_bracket", on_delete=models.CASCADE
-    )
-    
+    bracket = models.OneToOneField("Bracket", related_name="anonymous_bracket", on_delete=models.CASCADE)
+
+
 class GroupBracketSettings(models.Model):
     participant_in_group = models.IntegerField()
     advance_from_group = models.IntegerField()
-    final_bracket = models.ForeignKey(
-        "Bracket", related_name="final_brackets", on_delete=models.CASCADE
-    )
+    final_bracket = models.ForeignKey("Bracket", related_name="final_brackets", on_delete=models.CASCADE)
     group_brackets = models.ManyToManyField("Bracket", related_name="group_brackets")
 
 
 class SEBracketSettings(models.Model):
-    bracket = models.ForeignKey(
-        "Bracket", related_name="se_settings", on_delete=models.CASCADE
-    )
+    bracket = models.ForeignKey("Bracket", related_name="se_settings", on_delete=models.CASCADE)
     advances_to_next = models.IntegerField(default=1)
 
 
 class RRBracketSettings(models.Model):
-    bracket = models.ForeignKey(
-        "Bracket", related_name="rr_settings", on_delete=models.CASCADE
-    )
+    bracket = models.ForeignKey("Bracket", related_name="rr_settings", on_delete=models.CASCADE)
     points_per_loss = models.IntegerField(default=0)
     points_per_draw = models.IntegerField(default=0)
     points_per_victory = models.IntegerField(default=1)
 
 
 class SWBracketSettings(models.Model):
-    bracket = models.ForeignKey(
-        "Bracket", related_name="sw_settings", on_delete=models.CASCADE
-    )
+    bracket = models.ForeignKey("Bracket", related_name="sw_settings", on_delete=models.CASCADE)
     points_per_loss = models.IntegerField(default=0)
     points_per_draw = models.IntegerField(default=0)
     points_per_victory = models.IntegerField(default=1)
@@ -123,9 +112,7 @@ class BracketType(models.Model):
 
 
 class Round(models.Model):
-    bracket = models.ForeignKey(
-        "Bracket", related_name="rounds", on_delete=models.CASCADE
-    )
+    bracket = models.ForeignKey("Bracket", related_name="rounds", on_delete=models.CASCADE)
     serial_number = models.IntegerField()
 
 
