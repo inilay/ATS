@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: center; /* Горизонтальное центрирование */
     align-items: center; /* Вертикальное центрирование */
-   
 }
 
 .bracket_warning {
@@ -22,5 +21,4 @@
     margin-right: auto;
     margin-top: 10px;
     margin-bottom: 15px;
-
 }

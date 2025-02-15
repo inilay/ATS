@@ -3,12 +3,30 @@
 }
 
 .close {
-  display:block;
-  width:17px;
-  height:17px;
-  border-color:inherit;
-  background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, var(--highlight-color) 46%,  var(--highlight-color) 56%,transparent 56%, transparent 100%), -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, var(--highlight-color) 46%,  var(--highlight-color) 56%,transparent 56%, transparent 100%);
-  background-color:inherit;
+    display: block;
+    width: 17px;
+    height: 17px;
+    border-color: inherit;
+    background:
+        -webkit-linear-gradient(
+            -45deg,
+            transparent 0%,
+            transparent 46%,
+            var(--highlight-color) 46%,
+            var(--highlight-color) 56%,
+            transparent 56%,
+            transparent 100%
+        ),
+        -webkit-linear-gradient(
+                45deg,
+                transparent 0%,
+                transparent 46%,
+                var(--highlight-color) 46%,
+                var(--highlight-color) 56%,
+                transparent 56%,
+                transparent 100%
+            );
+    background-color: inherit;
 }
 
 .add_moderator_container {
@@ -26,7 +44,7 @@
 
 .add_moderator_input {
     width: 100%;
-    padding: .375rem .75rem;
+    padding: 0.375rem 0.75rem;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -35,7 +53,9 @@
     background-clip: padding-box;
     border: var(--bs-border-width) solid var(--bs-border-color);
     border-radius: var(--bs-border-radius);
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition:
+        border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out;
 
     background: var(--opposite);
     color: var(--highlight-color) !important;
@@ -43,11 +63,10 @@
     outline: var(--green);
     border-right: none;
 }
-
 
 .add_moderator_input:focus {
     width: 100%;
-    padding: .375rem .75rem;
+    padding: 0.375rem 0.75rem;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -56,7 +75,9 @@
     background-clip: padding-box;
     border: var(--bs-border-width) solid var(--bs-border-color);
     border-radius: var(--bs-border-radius);
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition:
+        border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out;
 
     background: var(--opposite);
     color: var(--highlight-color) !important;
@@ -65,11 +86,8 @@
     border-right: none;
 }
 
-
-
 .add_moderator_button:hover {
     color: inherit;
-    background:  var(--highlight-color) !important;
-    box-shadow: 0 .5rem 1rem  var(--highlight-color) !important;
+    background: var(--highlight-color) !important;
+    box-shadow: 0 0.5rem 1rem var(--highlight-color) !important;
 }
-

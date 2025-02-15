@@ -1,31 +1,30 @@
-.svg_logo{
+.svg_logo {
     fill: var(--dark-ligth);
 }
 
-.svg_logo:hover{
-    fill: var(--highlight-color)
+.svg_logo:hover {
+    fill: var(--highlight-color);
 }
 
-.my_svg{
-    fill: var(--fill-color)
+.my_svg {
+    fill: var(--fill-color);
 }
 
-.tournament_default_svg{
+.tournament_default_svg {
     fill: var(--fill-color);
     width: 560px;
     height: 325px;
 
-    @media (max-width: 992px){
+    @media (max-width: 992px) {
         width: 420px;
         height: 320px;
     }
 
-    @media (max-width: 576px){
+    @media (max-width: 576px) {
         width: 320px;
         height: 180px;
     }
 }
-
 
 .tournament_svg {
     width: 280px;
@@ -37,10 +36,10 @@
     fill: var(--dark-ligth);
     background: var(--opposite);
     border: none;
-} 
+}
 
 .match_svg:hover {
-    fill: var(--highlight-color);  
+    fill: var(--highlight-color);
 }
 
 .tools_svg {
@@ -48,8 +47,8 @@
     fill: red;
     background: var(--opposite);
     border: none;
-} 
+}
 
 .tools_svg:hover {
-    fill: var(--dark-ligth-green);  
+    fill: var(--dark-ligth-green);
 }

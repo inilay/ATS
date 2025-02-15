@@ -1,6 +1,5 @@
 import React from "react";
-import classes from './Svg.module.css';
-
+import classes from "./Svg.module.css";
 
 function DownloadBracketIcon() {
     return (
@@ -15,8 +14,8 @@ function DownloadBracketIcon() {
             className={classes.tools_svg}
         >
             <path d="M24 24H0v-8h2v6h20v-6h2v8zm-12-5.6l-7.7-7.7 1.4-1.4 5.3 5.3V0h2v14.6l5.3-5.3 1.4 1.4-7.7 7.7z"></path>
-    </svg>
+        </svg>
     );
-  }
-  
-  export default DownloadBracketIcon;
+}
+
+export default DownloadBracketIcon;

@@ -1,13 +1,22 @@
-import React from 'react';
-import Form from 'react-bootstrap/Form';
+import React from "react";
+import Form from "react-bootstrap/Form";
 import classes from "./MyFormGroupInput.module.css";
 
-
-const MyFormGroupInput = ({ label, defaultValue, name, as, type, onChange, register = () => {}, validationSchema, errors, className}) => {
-
+const MyFormGroupInput = ({
+    label,
+    defaultValue,
+    name,
+    as,
+    type,
+    onChange,
+    register = () => {},
+    validationSchema,
+    errors,
+    className,
+}) => {
     const inputChangeHandler = (event) => {
-        onChange(event.target)
-    }
+        onChange(event.target);
+    };
 
     return (
         <Form.Group className="mb-3">
@@ -20,7 +29,11 @@ const MyFormGroupInput = ({ label, defaultValue, name, as, type, onChange, regis
                 defaultValue={defaultValue}
                 className={`${classes.myInput} ${className} shadow-none`}
             />
-        {errors && errors[name] && <p className={classes.warningP} role="alert">{errors[name]?.message}</p>}
+            {errors && errors[name] && (
+                <p className={classes.warningP} role="alert">
+                    {errors[name]?.message}
+                </p>
+            )}
         </Form.Group>
     );
 };

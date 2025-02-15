@@ -1,27 +1,24 @@
-import styled from 'styled-components';
-
+import styled from "styled-components";
 
 export const SeedItem = styled.div`
-  color: inherit;
-  width: 100%;
-  background: inherit;
-  padding: 0;
-  text-align: center;
-  position: relative;
+    color: inherit;
+    width: 100%;
+    background: inherit;
+    padding: 0;
+    text-align: center;
+    position: relative;
 `;
 
 export const SeedTeam = styled.div`
- 
-  padding: 0.2rem 0.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-items: center;
-
+    padding: 0.2rem 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-items: center;
 `;
 
 export const SeedTime = styled.div(
-  (props) => `
+    (props) => `
   margin-top: 2px;
   font-size: 12px;
   color: inherit;
@@ -29,7 +26,7 @@ export const SeedTime = styled.div(
   @media (max-width: ${props.mobileBreakpoint}px) {
     height:auto;
   }
-  `
+  `,
 );
 
 /*
@@ -40,7 +37,7 @@ export const SeedTime = styled.div(
  */
 
 export const SingleLineSeed = styled.div(
-  (props) => `
+    (props) => `
     padding: 1em 1.5em;
     min-width: 225px;
     width:100%;
@@ -77,11 +74,11 @@ export const SingleLineSeed = styled.div(
         top: calc(50% - 6px);
       }
   }
-`
+`,
 );
 
 export const Seed = styled.div(
-  (props) => `
+    (props) => `
   padding: 0.1em 1.5em;
   min-width: 225px;
   width:100%;
@@ -146,5 +143,5 @@ export const Seed = styled.div(
       }
     }
 }
-`
+`,
 );

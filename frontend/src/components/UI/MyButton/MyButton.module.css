@@ -1,12 +1,9 @@
-
-
 .myBtn {
     color: var(--highlight-color);
     border: 1px solid var(--highlight-color);
     text-decoration: none;
     outline: none;
 }
-
 
 .myBtn:focus {
     /* color: var(--highlight-color) !important;
@@ -17,6 +14,6 @@
 
 .myBtn:hover {
     color: inherit;
-    background:  var(--highlight-color);
-    box-shadow: 0 .5rem 1rem  var(--highlight-color);
+    background: var(--highlight-color);
+    box-shadow: 0 0.5rem 1rem var(--highlight-color);
 }

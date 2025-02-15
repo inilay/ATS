@@ -1,7 +1,7 @@
-import {configureStore} from '@reduxjs/toolkit'
-import bracketSlice from './bracket';
-import tournamentSlice from './tournament'
-import userSlice from './user'
+import { configureStore } from "@reduxjs/toolkit";
+import bracketSlice from "./bracket";
+import tournamentSlice from "./tournament";
+import userSlice from "./user";
 
 export default configureStore({
     reducer: {
@@ -9,5 +9,5 @@ export default configureStore({
         bracket: bracketSlice,
         user: userSlice,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware( {serializableCheck: false} )
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
 });

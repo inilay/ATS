@@ -11,15 +11,13 @@
     margin-left: 0.95em;
     margin-right: 0.5em;
 
-    @media (max-width: 992px){
+    @media (max-width: 992px) {
         margin-top: 1em;
         margin-bottom: 1em;
     }
-} 
+}
 
 .btn_circle:hover {
-   
     color: var(--highlight-color);
     border-color: var(--highlight-color);
- 
 }

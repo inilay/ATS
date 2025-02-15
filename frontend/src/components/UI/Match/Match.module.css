@@ -8,14 +8,14 @@
 .side:first-of-type {
     border-top: 2px solid var(--border-color);
     border-bottom: 2px solid var(--border-color);
-  }
+}
 
-.side:last-of-type{
+.side:last-of-type {
     border-top: 2px solid var(--border-color);
     border-bottom: 2px solid var(--border-color);
 }
 
-.hoverSide{
+.hoverSide {
     border-right: 2px solid;
     border-left: 2px solid;
     border-color: var(--border-highlight-color);
@@ -25,9 +25,9 @@
     border-top: 2px solid;
     border-bottom: 2px solid;
     border-color: var(--border-highlight-color);
-  }
+}
 
-.hoverSide:last-of-type{
+.hoverSide:last-of-type {
     border-top: 2px solid;
     border-bottom: 2px solid;
     border-color: var(--border-highlight-color);
@@ -38,14 +38,13 @@
     border: none;
 }
 
-
-.myModalHeader{
+.myModalHeader {
     color: var(--dark-ligth);
     background: var(--opposite);
     border-bottom: 1px solid var(--border-color);
 }
 
-.myModalBody{
+.myModalBody {
     color: var(--dark-ligth);
     background: var(--opposite);
 }
@@ -55,16 +54,13 @@
     font-size: 1.2em;
 }
 
-
-.score{
+.score {
     display: flex;
     padding: 0 1rem;
     align-items: center;
     width: 20%;
     justify-content: center;
-    
 }
-
 
 .matchTitle {
     margin-left: auto;
@@ -83,7 +79,7 @@
     background: inherit;
     color: inherit;
     border-color: var(--border-color) !important;
-    outline:var(--border-color) !important;
+    outline: var(--border-color) !important;
 }
 
 .myInput:focus {
@@ -91,5 +87,5 @@
     background: inherit;
     color: inherit;
     border-color: var(--border-color) !important;
-    outline:var(--border-color) !important;
-    }
+    outline: var(--border-color) !important;
+}

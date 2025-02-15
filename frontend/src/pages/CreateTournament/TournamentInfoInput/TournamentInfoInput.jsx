@@ -7,85 +7,92 @@ import MyFormGroupInput from "../../../components/UI/MyFormGroupInput/MyFormGrou
 import MyCard from "../../../components/UI/MyCard/MyCard";
 import classes from "./TournamentInfoInput.module.css";
 
-
-const TournamentInfoInput = ({errors, register, inputChangeHandler, setInputFile, inputRadioChangeHandler, tournamentType, privateTournament, setPrivateTournamnet}) => {
-
-
-  return (
-    <MyCard>
-    <Card.Header className="card-header-text">Basic Info</Card.Header>
-    <Card.Body>
-      <MyFormGroupInput
-        label="Title"
-        name="title"
-        type="text"
-        errors={errors}
-        register={register}
-        validationSchema={{
-          required: "⚠ This input is required.",
-        }}
-        onChange={inputChangeHandler}
-      ></MyFormGroupInput>
-      <MyFormGroupInput
-        label="Description"
-        name="content"
-        as="textarea"
-        errors={errors}
-        register={register}
-        validationSchema={{
-         
-        }}
-        onChange={inputChangeHandler}
-      ></MyFormGroupInput>
-      <MyFormGroupInput
-        label="Game"
-        name="game"
-        errors={errors}
-        register={register}
-        validationSchema={{
-          required: "⚠ This input is required.",
-        }}
-        onChange={inputChangeHandler}
-      ></MyFormGroupInput>
-      <MyFormGroupInput
-        label="Start of the tournament"
-        name="start_time"
-        type="datetime-local"
-        errors={errors}
-        register={register}
-        validationSchema={{
-          required: "⚠ This input is required.",
-        }}
-        onChange={inputChangeHandler}
-      ></MyFormGroupInput>
-      <Form.Group className="mb-3">
-        <Form.Label className={`${classes.myFormLabel}`}>Poster</Form.Label>
-        <UploadButton setInputFileValue={setInputFile} />
-      </Form.Group>
-      <p>Tournament type (private tournaments are not visible in the general list and can be accessed only via a link)</p>
-      <div className="mb-3">
-        <Form.Check
-          inline
-          label="public"
-          type="radio"
-          value="0"
-          checked={privateTournament === false}
-          onChange={() => {
-            setPrivateTournamnet(false);
-          }}
-        ></Form.Check>
-        <Form.Check
-          inline
-          label="private"
-          type="radio"
-          value="1"
-          checked={privateTournament === true}
-          onChange={() => {
-            setPrivateTournamnet(true);
-          }}
-        ></Form.Check>
-      </div>
-      {/* <p>Tournament type</p>
+const TournamentInfoInput = ({
+    errors,
+    register,
+    inputChangeHandler,
+    setInputFile,
+    inputRadioChangeHandler,
+    tournamentType,
+    privateTournament,
+    setPrivateTournamnet,
+}) => {
+    return (
+        <MyCard>
+            <Card.Header className="card-header-text">Basic Info</Card.Header>
+            <Card.Body>
+                <MyFormGroupInput
+                    label="Title"
+                    name="title"
+                    type="text"
+                    errors={errors}
+                    register={register}
+                    validationSchema={{
+                        required: "⚠ This input is required.",
+                    }}
+                    onChange={inputChangeHandler}
+                ></MyFormGroupInput>
+                <MyFormGroupInput
+                    label="Description"
+                    name="content"
+                    as="textarea"
+                    errors={errors}
+                    register={register}
+                    validationSchema={{}}
+                    onChange={inputChangeHandler}
+                ></MyFormGroupInput>
+                <MyFormGroupInput
+                    label="Game"
+                    name="game"
+                    errors={errors}
+                    register={register}
+                    validationSchema={{
+                        required: "⚠ This input is required.",
+                    }}
+                    onChange={inputChangeHandler}
+                ></MyFormGroupInput>
+                <MyFormGroupInput
+                    label="Start of the tournament"
+                    name="start_time"
+                    type="datetime-local"
+                    errors={errors}
+                    register={register}
+                    validationSchema={{
+                        required: "⚠ This input is required.",
+                    }}
+                    onChange={inputChangeHandler}
+                ></MyFormGroupInput>
+                <Form.Group className="mb-3">
+                    <Form.Label className={`${classes.myFormLabel}`}>Poster</Form.Label>
+                    <UploadButton setInputFileValue={setInputFile} />
+                </Form.Group>
+                <p>
+                    Tournament type (private tournaments are not visible in the general list and can be accessed only
+                    via a link)
+                </p>
+                <div className="mb-3">
+                    <Form.Check
+                        inline
+                        label="public"
+                        type="radio"
+                        value="0"
+                        checked={privateTournament === false}
+                        onChange={() => {
+                            setPrivateTournamnet(false);
+                        }}
+                    ></Form.Check>
+                    <Form.Check
+                        inline
+                        label="private"
+                        type="radio"
+                        value="1"
+                        checked={privateTournament === true}
+                        onChange={() => {
+                            setPrivateTournamnet(true);
+                        }}
+                    ></Form.Check>
+                </div>
+                {/* <p>Tournament type</p>
       <div className="mb-3">
         <Form.Check
           inline
@@ -110,9 +117,9 @@ const TournamentInfoInput = ({errors, register, inputChangeHandler, setInputFile
           }}
         ></Form.Check>
       </div> */}
-    </Card.Body>
-  </MyCard>
-  );
+            </Card.Body>
+        </MyCard>
+    );
 };
 
 export default TournamentInfoInput;

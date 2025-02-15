@@ -38,7 +38,6 @@
     /* @media (max-width: 576px){
         margin-left: 0.75rem;
     }  */
-    
 }
 
 .tournament_img {
@@ -47,19 +46,19 @@
     width: 800px;
     height: 450px;
 
-    @media (max-width: 992px){
+    @media (max-width: 992px) {
         max-width: 448px;
         max-height: 252px;
     }
 
-    @media (max-width: 576px){
+    @media (max-width: 576px) {
         max-width: 336px;
         max-height: 189px;
     }
 }
 
 .tournament_block {
-    @media (max-width: 576px){
+    @media (max-width: 576px) {
         display: none;
     }
 }
@@ -70,7 +69,6 @@
 
 .setting_button:hover {
     color: inherit;
-    background:  var(--highlight-color) !important;
-    box-shadow: 0 .5rem 1rem  var(--highlight-color) !important;
-} 
-    
+    background: var(--highlight-color) !important;
+    box-shadow: 0 0.5rem 1rem var(--highlight-color) !important;
+}

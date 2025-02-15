@@ -11,96 +11,95 @@ import classes from "./FeedBack.module.css";
 import auxiliaryApi from "../../services/api/auxiliaryApi";
 import axios from "axios";
 
-
 const FeedBack = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [responseBody, setResponseBody] = useState({
-    participants: "",
-    type: "SE",
-    points_loss: "0",
-    points_draw: "0",
-    points_victory: "1",
-    secod_final: false,
-  });
-  const api = axios()
-
-  const inputChangeHandler = (inputValue) => {
-    const { name, value } = inputValue;
-    setResponseBody({ ...responseBody, [name]: value });
-    setValue(name, value)
-  };
-
-  const inputSelectChangeHandler = (event) => {
-    const { name, value } = event.target;
-    setResponseBody({ ...responseBody, [name]: value });
-  };
-
-  const inputCheckBoxChangeHandler = (e) => {
-    const { target } = e;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const { name } = target;
-    setResponseBody({ ...responseBody, [name]: value });
-  };
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm({ mode: "onBlur" });
-
-  const onSubmitHandler = () => {
-    const response = auxiliaryApi.sendFeedback(api, responseBody).then(function (response) {
-      if (response.status == 201) {
-        navigate(`/`);
-      }
+    const [responseBody, setResponseBody] = useState({
+        participants: "",
+        type: "SE",
+        points_loss: "0",
+        points_draw: "0",
+        points_victory: "1",
+        secod_final: false,
     });
-  };
+    const api = axios();
 
-  return (
-    <section>
-      <div className={`${classes.feedback_form}`}>
-        <Form onSubmit={handleSubmit(onSubmitHandler)}>
-          <div className="my-4">
-            <MyCard border="success">
-              <Card.Header className="card-header-text">Feedback</Card.Header>
-              <Card.Body>
-                <Form.Group className="mb-3">
-                  <Form.Label className={`${classes.myFormLabel}`}>Type</Form.Label>
-                  <Form.Select
-                    className="shadow-none select-input"
-                    name="type"
-                    onChange={(e) => inputSelectChangeHandler(e)}
-                  >
-                    <option value="BUG">Bug</option>
-                    <option value="PROPOSAL">Proposal</option>
-                    <option value="OTHER">Other</option>
-                  </Form.Select>
-                </Form.Group>
-                <MyFormGroupInput
-                    label="Description"
-                    name="content"
-                    as="textarea"
-                    errors={errors}
-                    register={register}
-                    validationSchema={{
-                    required: "⚠ This input is required.",
-                    }}
-                    onChange={inputChangeHandler}
-                />
-              </Card.Body>
-            </MyCard>
-          </div>
-          <div className="mt-3">
-            <MyButton additionalCl={"btn-md"} type="submit">
-              Send Feedback
-            </MyButton>
-          </div>
-        </Form>
-      </div>
-    </section>
-  );
+    const inputChangeHandler = (inputValue) => {
+        const { name, value } = inputValue;
+        setResponseBody({ ...responseBody, [name]: value });
+        setValue(name, value);
+    };
+
+    const inputSelectChangeHandler = (event) => {
+        const { name, value } = event.target;
+        setResponseBody({ ...responseBody, [name]: value });
+    };
+
+    const inputCheckBoxChangeHandler = (e) => {
+        const { target } = e;
+        const value = target.type === "checkbox" ? target.checked : target.value;
+        const { name } = target;
+        setResponseBody({ ...responseBody, [name]: value });
+    };
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        formState: { errors },
+    } = useForm({ mode: "onBlur" });
+
+    const onSubmitHandler = () => {
+        const response = auxiliaryApi.sendFeedback(api, responseBody).then(function (response) {
+            if (response.status == 201) {
+                navigate(`/`);
+            }
+        });
+    };
+
+    return (
+        <section>
+            <div className={`${classes.feedback_form}`}>
+                <Form onSubmit={handleSubmit(onSubmitHandler)}>
+                    <div className="my-4">
+                        <MyCard border="success">
+                            <Card.Header className="card-header-text">Feedback</Card.Header>
+                            <Card.Body>
+                                <Form.Group className="mb-3">
+                                    <Form.Label className={`${classes.myFormLabel}`}>Type</Form.Label>
+                                    <Form.Select
+                                        className="shadow-none select-input"
+                                        name="type"
+                                        onChange={(e) => inputSelectChangeHandler(e)}
+                                    >
+                                        <option value="BUG">Bug</option>
+                                        <option value="PROPOSAL">Proposal</option>
+                                        <option value="OTHER">Other</option>
+                                    </Form.Select>
+                                </Form.Group>
+                                <MyFormGroupInput
+                                    label="Description"
+                                    name="content"
+                                    as="textarea"
+                                    errors={errors}
+                                    register={register}
+                                    validationSchema={{
+                                        required: "⚠ This input is required.",
+                                    }}
+                                    onChange={inputChangeHandler}
+                                />
+                            </Card.Body>
+                        </MyCard>
+                    </div>
+                    <div className="mt-3">
+                        <MyButton additionalCl={"btn-md"} type="submit">
+                            Send Feedback
+                        </MyButton>
+                    </div>
+                </Form>
+            </div>
+        </section>
+    );
 };
 
 export default FeedBack;

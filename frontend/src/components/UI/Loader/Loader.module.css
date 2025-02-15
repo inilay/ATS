@@ -4,9 +4,7 @@
     border-radius: 50%;
     border: 3px dashed var(--bright-color);
     animation: rotate 3s infinite linear;
-
 }
-
 
 @keyframes rotate {
     from {

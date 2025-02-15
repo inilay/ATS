@@ -2,11 +2,11 @@
     margin-left: auto !important;
     margin-right: auto !important;
     width: 70%;
-    @media (max-width: 992px){
+    @media (max-width: 992px) {
         width: 80%;
     }
 
-    @media (max-width: 576px){
+    @media (max-width: 576px) {
         width: 90%;
     }
 }
@@ -14,7 +14,6 @@
 .editional_settings_btn {
     margin-bottom: 15px;
 }
-
 
 .myFormLabel {
     color: var(--dark-ligth);

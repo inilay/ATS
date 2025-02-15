@@ -9,12 +9,11 @@
     outline: var(--green);
 }
 
-
 .myInput:focus {
     background: var(--opposite);
     color: var(--dark-ligth);
     border-color: var(--green);
-    outline:var(--green);
+    outline: var(--green);
 }
 
 .myFormLabel {

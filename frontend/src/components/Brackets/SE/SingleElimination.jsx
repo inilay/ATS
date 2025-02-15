@@ -10,110 +10,108 @@ import { setCurrentMatch, setCurrentBracketId } from "../../../store/bracket.js"
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 
+const SingleElimination = ({ bracket, bracketId }) => {
+    const dispatch = useDispatch();
+    const [modalShow, setMatchCardModalShow] = useState(false);
+    const [modalEditShow, setEditMatchCardModalShow] = useState(false);
+    const participantsInMatch = bracket[0]?.matches[0]?.info.length;
 
-const SingleElimination = ({bracket, bracketId}) => {
-  const dispatch = useDispatch()
-  const [modalShow, setMatchCardModalShow] = useState(false);
-  const [modalEditShow, setEditMatchCardModalShow] = useState(false);
-  const participantsInMatch = bracket[0]?.matches[0]?.info.length
+    const { user } = useContext(AuthContext);
+    const anonymous = useSelector((state) => state.bracket.anonymous);
+    const tournament = useSelector((state) => state.tournament);
 
-  const { user } = useContext(AuthContext);
-  const anonymous = useSelector(state => state.bracket.anonymous)
-  const tournament = useSelector(state => state.tournament)
+    const openInfoModal = (match) => {
+        setMatchCardModalShow(true);
+        dispatch(setCurrentMatch({ currentMatch: match }));
+    };
 
-  const openInfoModal = (match) => {  
-    setMatchCardModalShow(true)
-    dispatch(setCurrentMatch({currentMatch: match}))
+    const openEditModal = (match) => {
+        setEditMatchCardModalShow(true);
+        dispatch(setCurrentMatch({ currentMatch: match }));
+        dispatch(setCurrentBracketId({ currentBracketId: bracketId }));
+    };
 
-  }
-  
-  const openEditModal = (match) => {  
-    setEditMatchCardModalShow(true)
-    dispatch(setCurrentMatch({currentMatch: match}))
-    dispatch(setCurrentBracketId({currentBracketId: bracketId}))
-
-  }
-
-  return (
-    <div>
-      <div className={`${classes.bracket}`}>
-        {bracket.map((round) => (
-          <Fragment>
-          <div className={`${classes.column}`}>
-          { round.matches.map((match) => (
-              <div className={`${classes.match}`}>
-                <div className={classes.button_container}>
-                {match?.startTime && 
-                  <span>{moment.parseZone(match?.startTime).format("DD.MM h:mm a") || ""}</span>
-                }
-                </div>
-                {
-                  match.info.map((team) => (
-                    <div className={`${classes.team}`}>
-                      <div className={`${classes.name}`}>{team.participant}</div>
-                      <div className={`${classes.score}`}>{team.participant_score}</div>
-                    </div>
-                  ))
-                }
-                <div className={`${classes.match_lines}`}>
-                  <div className={`${classes.line} ${classes.one}`}></div>
-                </div>
-                <div className={`${classes.match_lines} ${classes.alt}`}>
-                  <div className={`${classes.line} ${classes.one}`}></div>
-                </div>
-                <div className={classes.button_container}>
-                  {(user !== null && (tournament.owner == user.username || tournament.moderators.includes(user.username))) || anonymous ?
+    return (
+        <div>
+            <div className={`${classes.bracket}`}>
+                {bracket.map((round) => (
                     <Fragment>
-                      <button
-                        className={classes.icon_button}
-                        onClick={() => openInfoModal(match)}
-                      >
-                        <MatchInfoIcon />
-                      </button>
-                      <button
-                        className={classes.icon_button}
-                        onClick={() => openEditModal(match)}
-                      >
-                        <MatchJudgeIcon />
-                      </button>
-                    </Fragment>
-                    :
-                      <button
-                        className={classes.icon_button}
-                        onClick={() => openInfoModal(match)}
-                      >
-                        <MatchInfoIcon />
-                      </button>
-                  }
-                </div>
-              </div>
-          )
-          )}
-          </div>
-          
-          {round.matches.length >= 2 &&
-            <div className={`${classes.column_lines_wrapper}`}>
-              {[...Array.from(Array(round.matches.length).keys())].map((num, i) => 
-                participantsInMatch % 2 === 1 ?
-                  <div 
-                    className={`${(round.matches.length > 2 && (i % participantsInMatch === 0 || i % participantsInMatch === participantsInMatch-1)) ? i % participantsInMatch === 0 ? classes.column_lines_first_odd : classes.column_lines_last_odd : classes.column_lines_odd}`}
-                    >
-                  </div>
-                : <div 
-                  className={`${(round.matches.length > 2 && (i % participantsInMatch === 0 || i % participantsInMatch === participantsInMatch-1)) ? i % participantsInMatch === 0 ? classes.column_lines_first : classes.column_lines_last : classes.column_lines}`}
-                  >
-                </div>)}
-            </div>
-          }
-        </Fragment>
-        )
+                        <div className={`${classes.column}`}>
+                            {round.matches.map((match) => (
+                                <div className={`${classes.match}`}>
+                                    <div className={classes.button_container}>
+                                        {match?.startTime && (
+                                            <span>
+                                                {moment.parseZone(match?.startTime).format("DD.MM h:mm a") || ""}
+                                            </span>
+                                        )}
+                                    </div>
+                                    {match.info.map((team) => (
+                                        <div className={`${classes.team}`}>
+                                            <div className={`${classes.name}`}>{team.participant}</div>
+                                            <div className={`${classes.score}`}>{team.participant_score}</div>
+                                        </div>
+                                    ))}
+                                    <div className={`${classes.match_lines}`}>
+                                        <div className={`${classes.line} ${classes.one}`}></div>
+                                    </div>
+                                    <div className={`${classes.match_lines} ${classes.alt}`}>
+                                        <div className={`${classes.line} ${classes.one}`}></div>
+                                    </div>
+                                    <div className={classes.button_container}>
+                                        {(user !== null &&
+                                            (tournament.owner == user.username ||
+                                                tournament.moderators.includes(user.username))) ||
+                                        anonymous ? (
+                                            <Fragment>
+                                                <button
+                                                    className={classes.icon_button}
+                                                    onClick={() => openInfoModal(match)}
+                                                >
+                                                    <MatchInfoIcon />
+                                                </button>
+                                                <button
+                                                    className={classes.icon_button}
+                                                    onClick={() => openEditModal(match)}
+                                                >
+                                                    <MatchJudgeIcon />
+                                                </button>
+                                            </Fragment>
+                                        ) : (
+                                            <button
+                                                className={classes.icon_button}
+                                                onClick={() => openInfoModal(match)}
+                                            >
+                                                <MatchInfoIcon />
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
 
-        )}
-      </div>
-        <EditModal modalEditShow={modalEditShow} setEditMatchCardModalShow={setEditMatchCardModalShow} match={{}}/>
-        <InfoModal modalShow={modalShow} setMatchCardModalShow={setMatchCardModalShow} match={{}}/>
-    </div>
-  );
+                        {round.matches.length >= 2 && (
+                            <div className={`${classes.column_lines_wrapper}`}>
+                                {[...Array.from(Array(round.matches.length).keys())].map((num, i) =>
+                                    participantsInMatch % 2 === 1 ? (
+                                        <div
+                                            className={`${round.matches.length > 2 && (i % participantsInMatch === 0 || i % participantsInMatch === participantsInMatch - 1) ? (i % participantsInMatch === 0 ? classes.column_lines_first_odd : classes.column_lines_last_odd) : classes.column_lines_odd}`}
+                                        ></div>
+                                    ) : (
+                                        <div
+                                            className={`${round.matches.length > 2 && (i % participantsInMatch === 0 || i % participantsInMatch === participantsInMatch - 1) ? (i % participantsInMatch === 0 ? classes.column_lines_first : classes.column_lines_last) : classes.column_lines}`}
+                                        ></div>
+                                    ),
+                                )}
+                            </div>
+                        )}
+                    </Fragment>
+                ))}
+            </div>
+            <EditModal modalEditShow={modalEditShow} setEditMatchCardModalShow={setEditMatchCardModalShow} match={{}} />
+            <InfoModal modalShow={modalShow} setMatchCardModalShow={setMatchCardModalShow} match={{}} />
+        </div>
+    );
 };
 
 export default SingleElimination;

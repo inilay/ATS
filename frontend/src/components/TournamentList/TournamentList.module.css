@@ -2,11 +2,11 @@
     height: 10rem;
     text-align: center;
 
-    @media (max-width: 992px){
+    @media (max-width: 992px) {
         height: 12rem;
     }
 
-    @media (max-width: 576px){
+    @media (max-width: 576px) {
         height: 12rem;
     }
 }
