@@ -19,6 +19,7 @@ const CreateTournament = () => {
   const [inputFile, setInputFile] = useState(null);
   const [tournamentType, setTournamentType] = useState("0");
   const [privateTournament, setPrivateTournamnet] = useState(false)
+  const [error, setError] = useState("")
 
   const [participants, setParticipants] = useState("");
   // const [advancesNext, setAdvancesNext] = useState(1);
@@ -97,9 +98,6 @@ const CreateTournament = () => {
 
     let maxNumber = (responseBody?.bracket_type == 3 ? 20 : 256) || 256
     let minNumber = (responseBody?.participant_in_match * 2) || 2
-    console.log('responseBody?.participant_in_match', responseBody?.participant_in_match);
-    console.log('(responseBody?.participant_in_match * responseBody?.bracket_type == 2 ? 2 : 1)', (responseBody?.participant_in_match * responseBody?.bracket_type == 2 ? 2 : 1));
-    
     
     if (count < minNumber ) {
       return  `⚠ Minimum number of participants ${minNumber}.`
@@ -115,9 +113,10 @@ const CreateTournament = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm({ mode: "onChange" });
+  } = useForm({ mode: "onBlur" });
 
   const onSubmitHandler = () => {
+    setError("")
     setResponseBody({ ...responseBody, poster: inputFile });
     console.log({ ...responseBody, poster: inputFile });
     let data = { ...responseBody, poster: inputFile, participants: participants, private: privateTournament }
@@ -125,6 +124,8 @@ const CreateTournament = () => {
       if (response.status == 201) {
         // navigate(`/tournament/${responseBody.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')}`)
       }
+    }).catch((error) => {
+      setError(error?.response?.data?.detail?.error)
     });
 
   };
@@ -361,6 +362,7 @@ const CreateTournament = () => {
             
               </Card.Body>
             </MyCard>
+            {error != "" && <div className={`${classes.error_container}`}>{`⚠ ${error}`}</div>}
           </div>
           <div className="pb-4">
             <MyButton additionalCl={"btn-md"} type="submit">

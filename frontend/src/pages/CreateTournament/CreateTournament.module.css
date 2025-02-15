@@ -19,3 +19,8 @@
 .myFormLabel {
     color: var(--dark-ligth);
 }
+
+.error_container {
+    margin-top: 10px;
+    color: rgb(180, 118, 118);
+}

@@ -19,12 +19,20 @@ const Register = () => {
     password: "",
     password2: "",
   });
+  const [error, setError] = useState("")
   const { registerUser } = useContext(AuthContext);
   const [modalShow, setModalShow] = useState(false);
-  // const [modalEditShow, setmodalEditShow] = useState(false);
+
   const handleRegisterSubmit = async () => {
-    registerUser(state.username, state.email, state.password, state.password2);
-    setModalShow(true);
+    setError("")
+    registerUser(state.username, state.email, state.password, state.password2).then((response) => {
+        setModalShow(true);
+    }).catch((error) => {
+      console.log("cath", error);
+      setError(error?.response?.data?.detail?.error)
+      
+    });
+    
 
   };
 
@@ -58,6 +66,7 @@ const Register = () => {
         <Modal.Body>
           <div className="center-block">
             <p>We have sent you an email to confirm your registration.</p>
+            <p>You will automatically log into your account after 3 seconds.</p>
           </div>
         </Modal.Body>
       </MyModal>
@@ -99,6 +108,10 @@ const Register = () => {
                 register={register}
                 validationSchema={{
                   required: "⚠ This input is required.",
+                  minLength: {
+                    value: 8,
+                    message: "Must be at least 8 characters",
+                  },
                 }}
                 onChange={inputChangeHandler}
               ></MyFormGroupInput>
@@ -109,6 +122,10 @@ const Register = () => {
                 errors={errors}
                 register={register}
                 validationSchema={{
+                  // minLength: {
+                  //   value: 8,
+                  //   message: "Must be at least 8 characters",
+                  // },
                   required: "⚠ This input is required.",
                   validate: (value) => {
                     const { password } = getValues();
@@ -119,6 +136,7 @@ const Register = () => {
               ></MyFormGroupInput>
             </Card.Body>
           </MyCard>
+          {error != "" && <div className={`${classes.error_container}`}>{`⚠ ${error}`}</div>}
         <div className='mt-3'>
           <MyButton additionalCl={"btn-md"} type="submit">
             Sign up

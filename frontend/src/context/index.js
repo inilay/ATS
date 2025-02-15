@@ -1,12 +1,14 @@
 import { createContext, useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const AuthContext = createContext(null)
 
 export const ThemeContext = createContext(null);
 
 const baseURL = "http://127.0.0.1:8000/api/v1";
+const api = axios
 
 export const AuthProvider = ({ children }) => {
     const [authTokens, setAuthTokens] = useState(() =>
@@ -48,23 +50,25 @@ export const AuthProvider = ({ children }) => {
     };
     
     const registerUser = async (username, email, password, password2) => {
-      const response = await fetch(`${baseURL}/register/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-          password2
-        })
-      });
-      if (response.status === 201) {
-        loginUser(email, password)
-      } else {
-        alert("Something went wrong!");
+      let body = {
+        username: username,
+        email: email,
+        password: password,
+        password2: password2
       }
+      console.log("body", body);
+      
+      const response = await axios.post(`${baseURL}/register/`, body, {
+        validateStatus: function (status) {
+                return status == 201;
+            },
+        })
+        .then((response) => {
+          setTimeout(() => {loginUser(email, password)}, 3000);
+          // loginUser(email, password)
+        });
+
+        return response
     };
   
     const logoutUser = () => {
