@@ -20,12 +20,7 @@ from ..utils import clear_participants, model_update
 from profiles.models import CustomUser
 from django.utils.text import slugify
 import math
-from django.shortcuts import get_object_or_404
-from django.db.models.query import QuerySet
-from django.db.models import Prefetch, Q
-import operator
-from functools import reduce
-import hashlib
+from rest_framework.exceptions import ValidationError as RestValidationError
 
 
 def create_bracket(
@@ -109,6 +104,9 @@ def create_tournament(
         link = unique_id
     else:
         link = slugify(title)
+        
+    if Tournament.objects.filter(link=link).exists():
+        raise RestValidationError(detail={"error": "Tournament with the same title already exists"})
     
     tournament = Tournament.objects.create(
         title=title,

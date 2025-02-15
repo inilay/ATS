@@ -7,7 +7,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.views import View
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
-from profiles.services import create_subscription, delete_subscription
+from profiles.services import create_subscription, create_user, delete_subscription
 from tournaments.models import Tournament
 from .utils import send_email_for_reset
 from .models import CustomUser, Profile
@@ -111,11 +111,19 @@ class ImgChangeAPIView(generics.UpdateAPIView):
     lookup_field = 'slug'
 
 
-class RegisterAPIView(generics.CreateAPIView):
-    queryset = CustomUser.objects.all()
+class RegisterAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
+    @transaction.atomic
+    def post(self, request):
+        input_serializer = self.serializer_class(data=request.data)
+        if not input_serializer.is_valid():
+            return Response(data=input_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        print('call create')
+        user = create_user(input_serializer.validated_data)
+        output_serializer = self.serializer_class(user)
+        return Response(data=output_serializer.data, status=status.HTTP_201_CREATED)
 
 class ProfileAPIView(generics.RetrieveAPIView):
     queryset = Profile.objects.prefetch_related(
@@ -125,7 +133,7 @@ class ProfileAPIView(generics.RetrieveAPIView):
     serializer_class = ProfileSerializer
     lookup_field = 'slug'
 
-class EmailVerify(View):
+class EmailVerify(APIView):
 
     def get(self, request, uidb64, token):
         user = self.get_user(uidb64)
