@@ -145,7 +145,7 @@ const Tournament = () => {
                                 </div>
                                 <div className={`${classes.tournament_info_container} col-sm-4`}>
                                     <div className={`${classes.tournament_info_container}`}>
-                                        <h3 className="tournament_text">{tournament.title}</h3>
+                                        <h2 className="tournament_text">{tournament.title}</h2>
                                         <p>Start of the tournament</p>
                                         <p className="tournament_text">
                                             {moment(tournament.start_time).format(" Do MMMM  YYYY, hh:mm") || ""}

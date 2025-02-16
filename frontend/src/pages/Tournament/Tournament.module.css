@@ -34,6 +34,7 @@
     justify-content: space-around;
     margin-left: auto;
     margin-right: auto;
+    font-size: 18px;
 
     /* @media (max-width: 576px){
         margin-left: 0.75rem;
