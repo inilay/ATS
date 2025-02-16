@@ -1,4 +1,4 @@
-const API_SERVER = "http://127.0.0.1:8000/api/v1";
+import { API_SERVER } from "../../Variables";
 
 const tournamentApi = {
     getAllTournaments: async (api, limit = 12, page = 1, title = "", game = "") => {
