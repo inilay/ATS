@@ -131,7 +131,7 @@ const Tournament = () => {
                         <div className="col-lg-12 col-md-12">
                             <div className="row">
                                 <div className={`${classes.tournament_img_container} col-sm-8 mb-3`}>
-                                    {tournament.poster == null ? (
+                                    {tournament.poster ? (
                                         <div className={`${classes.tournament_default}`}>
                                             <DefaultTournamnetPoster />
                                         </div>
