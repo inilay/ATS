@@ -1,0 +1,149 @@
+.bracket {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    justify-content: space-around;
+    align-content: center;
+}
+.match {
+    position: relative;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.button_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 160px;
+    height: 20px;
+}
+
+.button_container:nth-child(1) {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.button_container:nth-last-child(1) {
+    border-top: 1px solid var(--border-color);
+}
+
+.icon_button {
+    background: var(--opposite);
+    border: none;
+}
+
+.score {
+    color: var(--dark-ligth);
+    order: 999;
+
+    margin-left: auto;
+    width: 27px;
+    text-align: center;
+}
+
+.name {
+    padding-left: 10px;
+    color: var(--dark-ligth);
+    width: 130px;
+}
+
+.team {
+    display: flex;
+    flex-flow: row wrap;
+    height: 30px;
+    width: 161px;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    border-left: 2px solid var(--border-color);
+    border-right: 2px solid var(--border-color);
+}
+
+.match_lines {
+    display: block;
+    position: absolute;
+    top: 50%;
+    bottom: 0px;
+    right: 0px;
+    height: 20px;
+}
+
+.match_lines .line {
+    background: var(--border-color);
+    position: absolute;
+}
+
+.match_lines.alt {
+    left: -25px;
+}
+
+.match_lines .line.one {
+    height: 1px;
+    top: 0px;
+    width: 26px;
+}
+.column:last-child .match_lines {
+    display: none;
+}
+
+.column:first-child .match_lines.alt {
+    display: none;
+}
+
+.column:last-child .match_lines.alt {
+    display: block;
+}
+
+.column_lines_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.column_lines_wrapper:last-child {
+    display: none;
+}
+
+.column_lines {
+    height: 25%;
+    width: 1px;
+
+    background: var(--border-color);
+}
+
+.column_lines_last {
+    height: 25%;
+    width: 1px;
+    background: linear-gradient(var(--border-color) 50%, var(--opposite) 50%);
+}
+
+.column_lines_first {
+    height: 25%;
+    width: 1px;
+    background: linear-gradient(var(--opposite) 50%, var(--border-color) 50%);
+}
+
+.column_lines_odd {
+    height: 100%;
+    width: 1px;
+    background: var(--border-color);
+}
+
+.column_lines_last_odd {
+    height: 25%;
+    width: 1px;
+    background: var(--opposite);
+}
+
+.column_lines_first_odd {
+    height: 25%;
+    width: 1px;
+    background: var(--opposite);
+}

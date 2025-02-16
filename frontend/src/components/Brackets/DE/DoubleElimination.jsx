@@ -9,6 +9,8 @@ import { setCurrentMatch, setCurrentBracketId } from "../../../store/bracket.js"
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import SingleElimination from "../SE/SingleElimination.jsx";
+import DoubleEliminationLow from "./DoubleEliminationLow/DoubleEliminationLow.jsx";
+
 
 const DoubleElimination = ({ bracket, bracketId }) => {
     const dispatch = useDispatch();
@@ -32,7 +34,7 @@ const DoubleElimination = ({ bracket, bracketId }) => {
     return (
         <div>
             <SingleElimination bracket={bracket.filter((obj) => obj.serial_number % 2 === 0)} bracketId={bracketId} />
-            <SingleElimination bracket={bracket.filter((obj) => obj.serial_number % 2 === 1)} bracketId={bracketId} />
+            <DoubleEliminationLow bracket={bracket.filter((obj) => obj.serial_number % 2 === 1)} bracketId={bracketId} />
             {/* <EditModal modalEditShow={modalEditShow} setEditMatchCardModalShow={setEditMatchCardModalShow} match={{}}/>
         <InfoModal modalShow={modalShow} setMatchCardModalShow={setMatchCardModalShow} match={{}}/> */}
         </div>
