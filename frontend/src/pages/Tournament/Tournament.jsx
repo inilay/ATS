@@ -131,7 +131,7 @@ const Tournament = () => {
                         <div className="col-lg-12 col-md-12">
                             <div className="row">
                                 <div className={`${classes.tournament_img_container} col-sm-8 mb-3`}>
-                                    {tournament.poster ? (
+                                    {tournament.poster == null ? (
                                         <div className={`${classes.tournament_default}`}>
                                             <DefaultTournamnetPoster />
                                         </div>
@@ -157,25 +157,28 @@ const Tournament = () => {
                                             <p className="tournament_text ">{tournament.owner}</p>
                                         </div>
                                         <div className={`${classes.tournament_button_block}`}>
-                                            {userSlice.subscriptions?.includes(tournament.id) ? (
-                                                <MyButton
-                                                    onClick={() => {
-                                                        unFollowHandler();
-                                                    }}
-                                                    additionalCl={`${classes.follow_button} me-3`}
-                                                >
-                                                    Unfollow
-                                                </MyButton>
-                                            ) : (
-                                                <MyButton
-                                                    onClick={() => {
-                                                        followHandler();
-                                                    }}
-                                                    additionalCl={`${classes.follow_button} me-3`}
-                                                >
-                                                    Follow
-                                                </MyButton>
-                                            )}
+                                        {user !== null && <Fragment>
+                                                {userSlice.subscriptions?.includes(tournament.id) ? (
+                                                    <MyButton
+                                                        onClick={() => {
+                                                            unFollowHandler();
+                                                        }}
+                                                        additionalCl={`${classes.follow_button} me-3`}
+                                                    >
+                                                        Unfollow
+                                                    </MyButton>
+                                                ) : (
+                                                    <MyButton
+                                                        onClick={() => {
+                                                            followHandler();
+                                                        }}
+                                                        additionalCl={`${classes.follow_button} me-3`}
+                                                    >
+                                                        Follow
+                                                    </MyButton>
+                                                )}
+                                            </Fragment>
+                                            }
 
                                             <MyButton
                                                 onClick={() => {

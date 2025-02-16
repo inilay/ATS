@@ -36,7 +36,7 @@ const MyNavbar = () => {
                                 >
                                     <h5>Profile</h5>
                                 </Link>
-                                <Link className={`${classes.nav_link} ${classes.inner_navbar_min}`} to="/">
+                                <Link className={`${classes.nav_link} ${classes.inner_navbar_min}`} onClick={logoutUser}>
                                     <h5>Log out</h5>
                                 </Link>
                             </Fragment>
