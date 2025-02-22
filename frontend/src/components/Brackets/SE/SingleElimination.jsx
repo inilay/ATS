@@ -14,9 +14,7 @@ const SingleElimination = ({ bracket, bracketId }) => {
     const dispatch = useDispatch();
     const [modalShow, setMatchCardModalShow] = useState(false);
     const [modalEditShow, setEditMatchCardModalShow] = useState(false);
-    const participantsInMatch = (bracket[0]?.matches[0]?.info.length) === 5 || (bracket[0]?.matches[0]?.info.length) === 4 ? (bracket[0]?.matches[0]?.info.length / 2) : (bracket[0]?.matches[0]?.info.length);
-    console.log("participantsInMatch", participantsInMatch);
-    console.log('bracket[0]?.matches[0]?.info.length', bracket[0]?.matches[0]?.info.length);
+    const participantsInMatch = (bracket[0]?.matches[0]?.info.length === 5 || (bracket[0]?.matches[0]?.info.length === 4 && ((bracket[0]?.matches?.length / bracket[1]?.matches?.length) !== bracket[0]?.matches[0]?.info.length))) ? (bracket[0]?.matches[0]?.info.length / 2) : (bracket[0]?.matches[0]?.info.length);    
     
     const { user } = useContext(AuthContext);
     const anonymous = useSelector((state) => state.bracket.anonymous);
