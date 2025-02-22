@@ -14,8 +14,10 @@ const SingleElimination = ({ bracket, bracketId }) => {
     const dispatch = useDispatch();
     const [modalShow, setMatchCardModalShow] = useState(false);
     const [modalEditShow, setEditMatchCardModalShow] = useState(false);
-    const participantsInMatch = bracket[0]?.matches[0]?.info.length;
-
+    const participantsInMatch = (bracket[0]?.matches[0]?.info.length) === 5 || (bracket[0]?.matches[0]?.info.length) === 4 ? (bracket[0]?.matches[0]?.info.length / 2) : (bracket[0]?.matches[0]?.info.length);
+    console.log("participantsInMatch", participantsInMatch);
+    console.log('bracket[0]?.matches[0]?.info.length', bracket[0]?.matches[0]?.info.length);
+    
     const { user } = useContext(AuthContext);
     const anonymous = useSelector((state) => state.bracket.anonymous);
     const tournament = useSelector((state) => state.tournament);
@@ -93,7 +95,7 @@ const SingleElimination = ({ bracket, bracketId }) => {
                         {round.matches.length >= 2 && (
                             <div className={`${classes.column_lines_wrapper}`}>
                                 {[...Array.from(Array(round.matches.length).keys())].map((num, i) =>
-                                    participantsInMatch % 2 === 1 ? (
+                                    participantsInMatch % 2 == 1 ? (
                                         <div
                                             className={`${round.matches.length > 2 && (i % participantsInMatch === 0 || i % participantsInMatch === participantsInMatch - 1) ? (i % participantsInMatch === 0 ? classes.column_lines_first_odd : classes.column_lines_last_odd) : classes.column_lines_odd}`}
                                         ></div>
