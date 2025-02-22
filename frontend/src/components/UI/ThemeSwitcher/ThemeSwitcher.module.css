@@ -17,7 +17,17 @@
     }
 }
 
-.btn_circle:hover {
+
+
+
+@media (hover: hover) and (pointer: fine) {
+    .btn_circle:hover {
+        color: var(--highlight-color);
+        border-color: var(--highlight-color);
+    }
+}
+
+.btn_circle:active {
     color: var(--highlight-color);
     border-color: var(--highlight-color);
 }

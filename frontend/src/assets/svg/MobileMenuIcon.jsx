@@ -4,7 +4,7 @@ import classes from "./Svg.module.css";
 function MobileMenuIcon() {
     return (
         <svg
-            className={classes.my_svg}
+            className={classes.svg_logo}
             xmlns="http://www.w3.org/2000/svg"
             width="35"
             height="35"

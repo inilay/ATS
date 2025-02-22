@@ -2,9 +2,16 @@
     fill: var(--dark-ligth);
 }
 
-.svg_logo:hover {
+@media (hover: hover) and (pointer: fine) {
+    .svg_logo:hover {
+        fill: var(--highlight-color);
+    }
+}
+
+.svg_logo:active {
     fill: var(--highlight-color);
 }
+
 
 .my_svg {
     fill: var(--fill-color);
