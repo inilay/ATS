@@ -368,3 +368,23 @@ input[type="number"]:focus {
 .accordion-item {
     border: none !important;
 }
+
+::-webkit-scrollbar {
+    width: 3px;
+    height: 5px !important;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+background: var(--opposite); 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: var(--highlight-color); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: var(--highlight-color); 
+}

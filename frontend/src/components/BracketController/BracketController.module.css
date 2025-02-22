@@ -3,3 +3,9 @@
     font-size: 18px;
     font-weight: 600;
 }
+
+.bracket_control_container {
+    overflow-x: scroll;
+}
+
+

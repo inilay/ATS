@@ -13,7 +13,7 @@ const BracketController = () => {
     );
 
     return (
-        <Fragment>
+        <div className={`${classes.bracket_control_container}`}> 
             {group_brackets.map((br, i) => {
                 if ((br.type === 1) | (br.type === 5)) {
                     return (
@@ -57,7 +57,7 @@ const BracketController = () => {
                     return <Swiss bracket={br.rounds} bracketId={br.id} />;
                 }
             })}
-        </Fragment>
+        </div>
     );
 };
 
