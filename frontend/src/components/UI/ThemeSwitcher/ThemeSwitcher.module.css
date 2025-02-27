@@ -7,9 +7,10 @@
     padding-right: 0;
     font-size: 11px;
     color: var(--fill-color);
-    border-color: var(--fill-color);
+    border-color: var(--fill-color) !important;;
     margin-left: 0.95em;
     margin-right: 0.5em;
+    background: var(--opposite);
 
     @media (max-width: 992px) {
         margin-top: 1em;
@@ -17,17 +18,14 @@
     }
 }
 
-
-
-
 @media (hover: hover) and (pointer: fine) {
     .btn_circle:hover {
         color: var(--highlight-color);
-        border-color: var(--highlight-color);
+        border-color: var(--highlight-color)!important;
     }
-}
+} 
 
 .btn_circle:active {
     color: var(--highlight-color);
-    border-color: var(--highlight-color);
+    border-color: var(--highlight-color) !important;
 }
