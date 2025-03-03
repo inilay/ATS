@@ -17,6 +17,8 @@ import MyCard from "../../components/UI/MyCard/MyCard";
 import classes from "./Profile.module.css";
 import profileApi from "../../services/api/profileApi.js";
 import axios from "axios";
+import PermissionButton from "../../components/UI/PermissionButton/PermissionButton.jsx";
+
 
 const Profile = () => {
     const api = useAxios();
@@ -71,6 +73,8 @@ const Profile = () => {
         fetchPostById(params.slug);
     }, []);
 
+
+
     return (
         <section className="container">
             <div className="row align-items-center">
@@ -85,6 +89,7 @@ const Profile = () => {
                             <p>With us since {moment(profile.user.date_joined).format("MMMM Do YYYY") || ""}</p>
                         </div>
                     </div>
+                    <PermissionButton/>
                     <div className="mb-3">
                         <div className="d-grid">
                             <button

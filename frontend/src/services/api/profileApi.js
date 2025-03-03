@@ -47,6 +47,12 @@ const profileApi = {
 
         return response;
     },
+    
+    createPushToken: async (api, responseBody) => {
+        const response = await api.post(`${API_SERVER}/create_push_token/`, responseBody);
+
+        return response;
+    },
 };
 
 export default profileApi;

@@ -3,14 +3,14 @@ import jwt_decode from "jwt-decode";
 import dayjs from "dayjs";
 import { useContext } from "react";
 import { AuthContext } from "../context";
+import { API_SERVER } from "../Variables";
 
-const baseURL = "http://127.0.0.1:8000/api/v1";
 
 const useAxios = () => {
     const { authTokens, setUser, setAuthTokens } = useContext(AuthContext);
 
     const axiosInstance = axios.create({
-        baseURL,
+        API_SERVER,
         headers: { Authorization: `Bearer ${authTokens?.access}` },
     });
 
@@ -20,7 +20,7 @@ const useAxios = () => {
 
         if (!isExpired) return req;
 
-        const response = await axios.post(`${baseURL}/token/refresh/`, {
+        const response = await axios.post(`${API_SERVER}/token/refresh/`, {
             refresh: authTokens.refresh,
         });
 
