@@ -56,7 +56,7 @@ firebase_admin.initialize_app(cred)
 
 def send_push_notification():
     message = messaging.Message(
-        notification=messaging.Notification(title="Test title", body="Some info"),
+        notification=messaging.Notification(title="IceCup#1", body="IceCup#1 tournament has started!"),
         token="eNALodY3FtcwPelPfGcEag:APA91bFh5xDEn03b9M0buZY8Jus2mAiwdWJtrkJBCW_--e1oe9ACQvmI-Xg93NlWexfW64wrJqQNumS61ZR-4FF6W0W0LXyyaE3g5Go-86XN-MICzDKi4kI",
     )
     result = messaging.send(message)
