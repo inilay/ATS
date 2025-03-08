@@ -18,6 +18,7 @@ from ..models import (
     SEBracketSettings,
     SWBracketSettings,
     Tournament,
+    TournamentNotification,
 )
 from ..utils import clear_participants
 
@@ -111,6 +112,9 @@ def create_tournament(
         owner=user.profile,
         type_id=2 if private else 1,
     )
+
+    TournamentNotification.objects.create(tournament=tournament)
+
     participants = clear_participants(participants)
     if tournament_type == 1:
         group_brackets = []

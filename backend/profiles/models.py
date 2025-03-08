@@ -36,7 +36,7 @@ class Profile(models.Model):
 
 
 class PushToken(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, related_name="push_tokens", on_delete=models.CASCADE)
     token = models.CharField(max_length=255, unique=True)
 
 

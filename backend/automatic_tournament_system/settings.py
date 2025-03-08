@@ -24,6 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = f"{os.environ.get('DJANGO_SECRET_KEY')}"
 
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_TIMEZONE = "Europe/Moscow"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -149,7 +152,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Moscow"
+# TIME_ZONE = "UTC"
 
 USE_I18N = True
 

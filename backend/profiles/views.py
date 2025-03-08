@@ -18,7 +18,6 @@ from profiles.services import (
     create_subscription,
     create_user,
     delete_subscription,
-    send_push_notification,
 )
 from tournaments.models import Tournament
 
@@ -195,7 +194,6 @@ class CreateSubscriptionAPIView(APIView):
         if not input_serializer.is_valid():
             return Response(status=status.HTTP_400_BAD_REQUEST)
         create_subscription(input_serializer.validated_data, request.user)
-        send_push_notification()
         return Response(status=status.HTTP_201_CREATED)
 
 

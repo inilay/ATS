@@ -1,18 +1,8 @@
-import json
-import os
-
-import firebase_admin
 from django.shortcuts import get_object_or_404
-from dotenv import load_dotenv
-from firebase_admin import credentials, messaging
 from rest_framework.exceptions import ValidationError as RestValidationError
 
 from profiles.models import CustomUser, PushToken
 from tournaments.models import Tournament
-
-load_dotenv()
-
-CREDENTIALS = os.getenv("CREDENTIALS")
 
 
 def create_subscription(validated_data: dict, user: CustomUser) -> None:
@@ -48,16 +38,3 @@ def create_user(validated_data: dict):
     # send_email_for_verify(user)
 
     return user
-
-
-cred = credentials.Certificate(json.loads(CREDENTIALS))
-firebase_admin.initialize_app(cred)
-
-
-def send_push_notification():
-    message = messaging.Message(
-        notification=messaging.Notification(title="IceCup#1", body="IceCup#1 tournament has started!"),
-        token="eNALodY3FtcwPelPfGcEag:APA91bFh5xDEn03b9M0buZY8Jus2mAiwdWJtrkJBCW_--e1oe9ACQvmI-Xg93NlWexfW64wrJqQNumS61ZR-4FF6W0W0LXyyaE3g5Go-86XN-MICzDKi4kI",
-    )
-    result = messaging.send(message)
-    print("result", result)
