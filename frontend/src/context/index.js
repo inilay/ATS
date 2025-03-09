@@ -2,12 +2,12 @@ import { createContext, useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { API_SERVER } from "../Variables";
 export const AuthContext = createContext(null);
 
 export const ThemeContext = createContext(null);
 
-const baseURL = "http://127.0.0.1:8000/api/v1";
+
 const api = axios;
 
 export const AuthProvider = ({ children }) => {
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
 
     const loginUser = async (email, password) => {
-        const response = await fetch(`${baseURL}/token/`, {
+        const response = await fetch(`${API_SERVER}/token/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
         console.log("body", body);
 
         const response = await axios
-            .post(`${baseURL}/register/`, body, {
+            .post(`${API_SERVER}/register/`, body, {
                 validateStatus: function (status) {
                     return status == 201;
                 },

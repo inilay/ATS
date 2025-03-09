@@ -19,7 +19,8 @@ const useAxios = () => {
         const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 1;
 
         if (!isExpired) return req;
-
+        console.log("authTokens.refresh", authTokens.refresh);
+        
         const response = await axios.post(`${API_SERVER}/token/refresh/`, {
             refresh: authTokens.refresh,
         });

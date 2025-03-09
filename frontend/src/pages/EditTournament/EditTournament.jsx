@@ -58,21 +58,12 @@ const EditTournament = () => {
     };
 
     const onSubmitHandler = () => {
-        const response = api
-            .patch(
-                `/edit_tournament/${params.link}/`,
-                { ...responseBody, poster: inputFile },
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                },
-            )
-            .then(function (response) {
-                if (response.status == 200) {
-                    navigate(`/tournament/${response.data.link}`);
-                }
-            });
+        let data = { ...responseBody, poster: inputFile }
+        const response = tournamentApi.updateTournament(api, data, params.link).then(function (response) {
+            if (response.status == 200) {
+                navigate(`/tournament/${response.data.link}`);
+            }
+        });
     };
 
     const {

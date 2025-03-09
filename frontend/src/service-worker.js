@@ -68,14 +68,3 @@ self.addEventListener("message", (event) => {
         self.skipWaiting();
     }
 });
-
-// Any other custom service worker logic can go here.
-self.addEventListener('push', event => {
-    const options = {
-        body: event.data.text(),
-        icon: '../public/logo192.png', // Replace with your icon path
-    };
-    event.waitUntil(
-        self.registration.showNotification('Tournaments', options)
-    );
-});

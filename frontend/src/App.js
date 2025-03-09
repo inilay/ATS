@@ -10,10 +10,9 @@ import { onMessageListener } from "./firebase";
 
 function App() {
     onMessageListener().then((payload) => {
-        console.log('recive notification');
         var options = {
             body: payload.notification.body,
-            icon: '/logo512.png'
+            icon: '/logo192.png'
           };
         new Notification(payload.notification.title, options);
     })

@@ -28,6 +28,23 @@ const tournamentApi = {
         return response;
     },
 
+    deleteTournament: async (api, slug) => {
+        const response = await api.delete(`${API_SERVER}/delete_tournament/${slug}/`)
+        return response;
+    },
+
+    updateTournament: async (api, responseBody, slug) => {
+        const response = await api.patch(`${API_SERVER}/edit_tournament/${slug}/`,
+            responseBody,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            },
+        )
+        return response;
+    },
+
     createModerator: async (api, data) => api.post(`${API_SERVER}/create_moderator/`, data),
     deleteModerator: async (api, data) => api.delete(`${API_SERVER}/delete_moderator/`, data),
 };
