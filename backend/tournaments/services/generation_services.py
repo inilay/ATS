@@ -1,10 +1,14 @@
 import math
 import uuid
+from functools import partial
 
+from django.db import transaction
+from django.utils import timezone
 from django.utils.text import slugify
 from rest_framework.exceptions import ValidationError as RestValidationError
 
 from profiles.models import CustomUser
+from tournaments.services.auxiliary_services import create_tournament_notification
 from tournaments.services.de_services import create_de_bracket
 from tournaments.services.rr_services import create_rr_bracket
 from tournaments.services.se_services import create_se_bracket
@@ -18,7 +22,6 @@ from ..models import (
     SEBracketSettings,
     SWBracketSettings,
     Tournament,
-    TournamentNotification,
 )
 from ..utils import clear_participants
 
@@ -113,8 +116,6 @@ def create_tournament(
         type_id=2 if private else 1,
     )
 
-    TournamentNotification.objects.create(tournament=tournament)
-
     participants = clear_participants(participants)
     if tournament_type == 1:
         group_brackets = []
@@ -181,5 +182,10 @@ def create_tournament(
             number_of_rounds,
         )
 
-    print("end m")
+    now = timezone.now()
+    minimum_start_time = now + timezone.timedelta(hours=24)
+
+    if start_time < minimum_start_time and start_time > now:
+        transaction.on_commit(partial(create_tournament_notification, tournament=tournament, start_time=start_time))
+
     return

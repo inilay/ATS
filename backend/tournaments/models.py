@@ -65,7 +65,7 @@ class Tournament(models.Model):
 
 
 class TournamentNotification(models.Model):
-    tournament = models.OneToOneField("Tournament", on_delete=models.CASCADE)
+    tournament = models.OneToOneField("Tournament", related_name="notification", on_delete=models.CASCADE)
     task_id = models.CharField(max_length=255)
     in_queue = models.BooleanField(default=False)
 
