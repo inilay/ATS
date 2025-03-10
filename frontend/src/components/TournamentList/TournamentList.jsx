@@ -1,6 +1,7 @@
 import React from "react";
 import DefaultTournamentIcon from "../../assets/svg/DefaultTournamentIcon";
 import classes from "./TournamentList.module.css";
+import { Link } from "react-router-dom";
 
 const TournamentList = ({ tournaments }) => {
     if (!tournaments?.length) {
@@ -11,7 +12,7 @@ const TournamentList = ({ tournaments }) => {
         <div className="row">
             {tournaments?.map((post) => (
                 <div className="col-lg-3 col-md-6 mt-4" key={post.link}>
-                    <a href={`/tournament/${post.link}`}>
+                    <Link to={`/tournament/${post.link}`}>
                         <div className="card tournament_card">
                             {post.poster == null ? (
                                 <div className={`${classes.poster}`}>
@@ -25,7 +26,7 @@ const TournamentList = ({ tournaments }) => {
                                 <p className="card-text">Game: {post.game}</p>
                             </div>
                         </div>
-                    </a>
+                    </Link>
                 </div>
             ))}
         </div>
