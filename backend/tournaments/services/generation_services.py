@@ -31,6 +31,7 @@ def create_bracket(
     tournament: Tournament,
     participant_in_match: int,
     participants: list,
+    shuffle: bool,
     advances_to_next: int = 2,
     points_loss: int = 0,
     points_draw: int = 0,
@@ -45,7 +46,7 @@ def create_bracket(
     )
 
     if anonymous:
-        participants = clear_participants(participants)
+        participants = clear_participants(participants, shuffle)
         unique_id = uuid.uuid4()
         AnonymousBracket.objects.create(bracket=bracket, link=unique_id)
 
@@ -95,6 +96,7 @@ def create_tournament(
     advance_from_group: int,
     group_type: int,
     private: bool,
+    shuffle: bool,
 ) -> Tournament:
     if private:
         unique_id = uuid.uuid4()
@@ -116,16 +118,14 @@ def create_tournament(
         type_id=2 if private else 1,
     )
 
-    participants = clear_participants(participants)
+    participants = clear_participants(participants, shuffle)
+
     if tournament_type == 1:
         group_brackets = []
         start = 0
         end = participant_in_group
 
         number_of_group = math.ceil(len(participants) / participant_in_group)
-
-        print("number_of_group", number_of_group)
-
         final_bracket = create_bracket(
             bracket_type,
             tournament,
@@ -137,15 +137,12 @@ def create_tournament(
             points_victory,
             number_of_rounds,
         )
-        print("created final")
-
         missing_participants = participant_in_group * number_of_group - len(participants)
 
         for _ in range(missing_participants):
             participants.append("---")
 
-        for i in range(number_of_group):
-            print("group brackets", i)
+        for _ in range(number_of_group):
             bracket = create_bracket(
                 group_type,
                 tournament,
@@ -160,7 +157,6 @@ def create_tournament(
             group_brackets.append(bracket)
             start += participant_in_group
             end += participant_in_group
-        print("created group")
 
         group_settings = GroupBracketSettings.objects.create(
             final_bracket=final_bracket,
