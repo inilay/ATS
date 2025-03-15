@@ -14,6 +14,7 @@ import axios from "axios";
 const CreateBracket = () => {
     const navigate = useNavigate();
     const api = axios;
+    const [shuffleParticipants, setShuffleParticipants] = useState(false);
     const [participants, setParticipants] = useState("");
     const [responseBody, setResponseBody] = useState({
         bracket_type: 1,
@@ -85,8 +86,7 @@ const CreateBracket = () => {
 
     const onSubmitHandler = () => {
         console.log("send");
-        let data = { ...responseBody, participants: participants };
-
+        let data = { ...responseBody, participants: participants, shuffle: shuffleParticipants };
         const response = bracketApi.createBracket(api, data).then(function (response) {
             if (response.status == 201) {
                 navigate(`/bracket/${response.data.link}`);
@@ -276,6 +276,28 @@ const CreateBracket = () => {
                                         participantsHandler(e);
                                     }}
                                 ></MyFormGroupInput>
+                                <div className="mb-3">
+                                    <Form.Check
+                                        inline
+                                        label="Save participants order"
+                                        type="radio"
+                                        value="0"
+                                        checked={shuffleParticipants === false}
+                                        onChange={() => {
+                                            setShuffleParticipants(false);
+                                        }}
+                                    ></Form.Check>
+                                    <Form.Check
+                                        inline
+                                        label="Shuffle after creation"
+                                        type="radio"
+                                        value="1"
+                                        checked={shuffleParticipants === true}
+                                        onChange={() => {
+                                            setShuffleParticipants(true);
+                                        }}
+                                    ></Form.Check>
+                                </div>
                             </Card.Body>
                         </MyCard>
                     </div>

@@ -15,9 +15,11 @@ import tournamentApi from "../../services/api/tournamentApi.js";
 
 const CreateTournament = () => {
     const api = useAxios();
+    const navigate = useNavigate()
     const [inputFile, setInputFile] = useState(null);
     const [tournamentType, setTournamentType] = useState("0");
     const [privateTournament, setPrivateTournamnet] = useState(false);
+    const [shuffleParticipants, setShuffleParticipants] = useState(false);
     const [error, setError] = useState("");
 
     const [participants, setParticipants] = useState("");
@@ -117,8 +119,7 @@ const CreateTournament = () => {
     const onSubmitHandler = () => {
         setError("");
         setResponseBody({ ...responseBody, poster: inputFile });
-        console.log({ ...responseBody, poster: inputFile });
-        let data = { ...responseBody, poster: inputFile, participants: participants, private: privateTournament };
+        let data = { ...responseBody, poster: inputFile, shuffle: shuffleParticipants, participants: participants, private: privateTournament };
         const response = tournamentApi
             .createTournament(api, data)
             .then(function (response) {
@@ -127,7 +128,12 @@ const CreateTournament = () => {
                 }
             })
             .catch((error) => {
-                setError(error?.response?.data?.detail?.error);
+                if (error?.response?.data?.detail?.error) {
+                    setError(error?.response?.data?.detail?.error);
+                }
+                else {
+                    setError("Something went wrong, try refreshing the page.");
+                }
             });
     };
 
@@ -389,6 +395,28 @@ const CreateTournament = () => {
                                         participantsHandler(e);
                                     }}
                                 ></MyFormGroupInput>
+                                <div className="mb-3">
+                                    <Form.Check
+                                        inline
+                                        label="Save participants order"
+                                        type="radio"
+                                        value="0"
+                                        checked={shuffleParticipants === false}
+                                        onChange={() => {
+                                            setShuffleParticipants(false);
+                                        }}
+                                    ></Form.Check>
+                                    <Form.Check
+                                        inline
+                                        label="Shuffle after creation"
+                                        type="radio"
+                                        value="1"
+                                        checked={shuffleParticipants === true}
+                                        onChange={() => {
+                                            setShuffleParticipants(true);
+                                        }}
+                                    ></Form.Check>
+                                </div>
                             </Card.Body>
                         </MyCard>
                         {error != "" && <div className={`${classes.error_container}`}>{`⚠ ${error}`}</div>}

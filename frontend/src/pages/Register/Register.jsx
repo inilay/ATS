@@ -29,8 +29,12 @@ const Register = () => {
                 setModalShow(true);
             })
             .catch((error) => {
-                console.log("cath", error);
-                setError(error?.response?.data?.detail?.error);
+                if (error?.response?.data?.detail?.error) {
+                    setError(error?.response?.data?.detail?.error);
+                }
+                else {
+                    setError("Something went wrong, try refreshing the page.");
+                }
             });
     };
 
