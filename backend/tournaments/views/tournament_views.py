@@ -122,7 +122,6 @@ class TournamentUpdateApiView(APIView):
 
     @transaction.atomic
     def patch(self, request, link):
-        print("patch call")
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
