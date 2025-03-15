@@ -74,7 +74,7 @@
 }
 
 .inner_navbar_max {
-    @media (max-width: 991px) {
+    @media (max-width: 992px) {
         display: none;
     }
 }
