@@ -9,7 +9,7 @@ import MyButton from "../../components/UI/MyButton/MyButton";
 import MyCard from "../../components/UI/MyCard/MyCard";
 import classes from "./FeedBack.module.css";
 import auxiliaryApi from "../../services/api/auxiliaryApi";
-import axios from "axios";
+import useAxios from "../../API/useAxios";
 
 const FeedBack = () => {
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ const FeedBack = () => {
         points_victory: "1",
         secod_final: false,
     });
-    const api = axios();
+    const api = useAxios();
 
     const inputChangeHandler = (inputValue) => {
         const { name, value } = inputValue;
@@ -32,13 +32,6 @@ const FeedBack = () => {
 
     const inputSelectChangeHandler = (event) => {
         const { name, value } = event.target;
-        setResponseBody({ ...responseBody, [name]: value });
-    };
-
-    const inputCheckBoxChangeHandler = (e) => {
-        const { target } = e;
-        const value = target.type === "checkbox" ? target.checked : target.value;
-        const { name } = target;
         setResponseBody({ ...responseBody, [name]: value });
     };
 
