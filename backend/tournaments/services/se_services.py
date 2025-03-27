@@ -98,7 +98,7 @@ def create_se_bracket(bracket: Bracket, participants: list, settings: SEBracketS
             unsaved_matches.append(match)
             # Для первого
             if r == number_of_rounds - 1:
-                for p in range(p_in_m):
+                for p in range(p_in_m):  # O(p_in_m)
                     print("m*p_in_m+p", m * p_in_m + p)
                     matches_info.append(
                         MatchParticipantInfo(
