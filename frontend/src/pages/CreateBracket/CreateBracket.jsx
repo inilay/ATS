@@ -48,8 +48,9 @@ const CreateBracket = () => {
         const lines = text.split("\n");
         const nonEmptyLines = lines.filter((line) => line.trim() !== "");
         const count = nonEmptyLines.length;
-
-        let maxNumber = (responseBody?.bracket_type == 3 ? 20 : 256) || 256;
+        
+        
+        let maxNumber = (responseBody?.bracket_type == 3 ? 20 : responseBody?.bracket_type == 4 ? 64 : 256) || 256;
         let minNumber = responseBody?.participant_in_match * 2 || 2;
 
         if (count < minNumber) {
@@ -59,11 +60,23 @@ const CreateBracket = () => {
         }
     };
 
+    const countNumberOfRounds = () => {
+        let maxNumber = 12
+        let minNumber = 1
+
+        if (responseBody?.number_of_rounds < minNumber) {
+            return `⚠ Minimum number of participants ${minNumber}.`;
+        } else if (responseBody?.number_of_rounds > maxNumber) {
+            return `⚠ Maximum number of rounds ${maxNumber}.`;
+        }
+    }
+
     const inputChangeHandler = (inputValue) => {
         const { name, value } = inputValue;
         setResponseBody({ ...responseBody, [name]: value });
         setValue(name, value);
     };
+
 
     const inputSelectChangeHandler = (event) => {
         const { name, value } = event.target;
@@ -202,10 +215,17 @@ const CreateBracket = () => {
                                                             </div>
                                                             <div className="col">
                                                                 <MyFormGroupInput
-                                                                    label="Number of rounds, blank will be calculated automatically"
+                                                                    label="Number of rounds"
                                                                     name="number_of_rounds"
                                                                     defaultValue={null}
                                                                     errors={errors}
+                                                                    validationSchema={{
+                                                                        validate: {
+                                                                            checkAvailability: () => {
+                                                                                return countNumberOfRounds();
+                                                                            },
+                                                                        },
+                                                                    }}
                                                                     register={register}
                                                                     onChange={inputChangeHandler}
                                                                 ></MyFormGroupInput>

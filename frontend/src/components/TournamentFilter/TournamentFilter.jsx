@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import MyDataList from "../UI/MyDataList/MyDataList";
 import MyButton from "../UI/MyButton/MyButton";
 import classes from "./TournamentFilter.module.css";
 import auxiliaryApi from "../../services/api/auxiliaryApi";
 import axios from "axios";
+import { useSearchParams } from 'react-router-dom';
 
 const TournamentFilter = ({ filter, setFilter }) => {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [gamesFilter, setGamesFilter] = useState([]);
     const [openFilter, setOpenFilter] = useState(false);
     const [temporaryFilter, setTemporaryFilter] = useState("");
@@ -15,6 +15,14 @@ const TournamentFilter = ({ filter, setFilter }) => {
 
     useEffect(() => {
         console.log("useEffect");
+
+        let param_game = searchParams.get("game")
+        let param_title = searchParams.get("title")
+
+        param_game = param_game !== null ? param_game : ""
+        param_title = param_title !== null ? param_title : ""
+
+        setFilter({ game: param_game, title: param_title });
 
         const response = auxiliaryApi.getAllGames(api).then((response) => {
             setGamesFilter(response.data);

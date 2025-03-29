@@ -109,6 +109,17 @@ const CreateTournament = () => {
         }
     };
 
+    const countNumberOfRounds = () => {
+        let maxNumber = 12
+        let minNumber = 1
+
+        if (responseBody?.number_of_rounds < minNumber) {
+            return `⚠ Minimum number of participants ${minNumber}.`;
+        } else if (responseBody?.number_of_rounds > maxNumber) {
+            return `⚠ Maximum number of rounds ${maxNumber}.`;
+        }
+    }
+
     const {
         register,
         handleSubmit,
@@ -319,14 +330,21 @@ const CreateTournament = () => {
                                                                     </Form.Select>
                                                                 </div>
                                                                 <div className="col">
-                                                                    <MyFormGroupInput
-                                                                        label="Number of rounds, blank will be calculated automatically"
-                                                                        name="number_of_rounds"
-                                                                        defaultValue={null}
-                                                                        errors={errors}
-                                                                        register={register}
-                                                                        onChange={inputChangeHandler}
-                                                                    ></MyFormGroupInput>
+                                                                <MyFormGroupInput
+                                                                    label="Number of rounds"
+                                                                    name="number_of_rounds"
+                                                                    defaultValue={null}
+                                                                    errors={errors}
+                                                                    validationSchema={{
+                                                                        validate: {
+                                                                            checkAvailability: () => {
+                                                                                return countNumberOfRounds();
+                                                                            },
+                                                                        },
+                                                                    }}
+                                                                    register={register}
+                                                                    onChange={inputChangeHandler}
+                                                                ></MyFormGroupInput>
                                                                 </div>
                                                             </div>
                                                         )}
