@@ -3,7 +3,11 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
 from .forms import UserRegisterForm
-from .models import CustomUser, Profile
+from .models import CustomUser, Profile, Report
+
+
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ["id", "type", "profile_id"]
 
 
 class ProfileAdmin(admin.StackedInline):
@@ -50,3 +54,5 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
+
+admin.site.register(Report, ReportAdmin)

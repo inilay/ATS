@@ -18,6 +18,7 @@ from profiles.services import (
     create_subscription,
     create_user,
     delete_subscription,
+    save_report,
 )
 from tournaments.models import Tournament
 
@@ -173,6 +174,7 @@ class ReportAPIView(APIView):
 
     @transaction.atomic
     def post(self, request):
+        save_report()
         return Response(status=status.HTTP_201_CREATED)
 
 

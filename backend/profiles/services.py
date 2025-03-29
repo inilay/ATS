@@ -38,3 +38,7 @@ def create_user(validated_data: dict):
     # send_email_for_verify(user)
 
     return user
+
+
+def save_report():
+    pass
