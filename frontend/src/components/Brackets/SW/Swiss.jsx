@@ -17,6 +17,7 @@ const Swiss = ({ bracket, bracketId }) => {
     const { user } = useContext(AuthContext);
     const tournament = useSelector((state) => state.tournament);
     const anonymous = useSelector((state) => state.bracket.anonymous);
+    const pointsFor = useSelector((state) => state.bracket.points_for);
 
     const openInfoModal = (match) => {
         setMatchCardModalShow(true);
@@ -57,7 +58,7 @@ const Swiss = ({ bracket, bracketId }) => {
                     win: win_cnt,
                     loose: loose_cnt,
                     draw: draw ? 1 : 0,
-                    scores: 0 * win_cnt + 0 * loose_cnt + 0 * draw ? 1 : 0,
+                    scores: pointsFor?.points_per_victory * win_cnt + pointsFor?.points_per_loss * loose_cnt + pointsFor?.points_per_draw * draw ? 1 : 0,
                 });
             });
         });
@@ -72,7 +73,6 @@ const Swiss = ({ bracket, bracketId }) => {
                 ) {
                     draw = true;
                 }
-                console.log("heeree");
 
                 match.info.map((i) => {
                     let win_cnt = 0;
@@ -90,7 +90,7 @@ const Swiss = ({ bracket, bracketId }) => {
                         row.win += win_cnt;
                         row.loose += loose_cnt;
                         row.draw += draw ? 1 : 0;
-                        row.scores += 0 * win_cnt + 0 * loose_cnt + 0 * draw ? 1 : 0;
+                        row.scores += pointsFor?.points_per_victory * win_cnt + pointsFor?.points_per_loss * loose_cnt + pointsFor?.points_per_draw * draw ? 1 : 0;
                         console.log(i.participant);
                     }
                 });

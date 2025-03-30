@@ -18,6 +18,7 @@ const RoundRobin = ({ bracket, bracketId }) => {
     const { user } = useContext(AuthContext);
     const tournament = useSelector((state) => state.tournament);
     const anonymous = useSelector((state) => state.bracket.anonymous);
+    const pointsFor = useSelector((state) => state.bracket.points_for);
 
     const openInfoModal = (match) => {
         setMatchCardModalShow(true);
@@ -32,7 +33,6 @@ const RoundRobin = ({ bracket, bracketId }) => {
 
     const createTable = (bracket) => {
         let table = [];
-        console.log("bracket", bracket);
         bracket[0]?.matches.map((match) => {
             let draw = false;
             let max_score = Math.max(...match.info.map((participant) => participant.participant_score));
@@ -59,7 +59,7 @@ const RoundRobin = ({ bracket, bracketId }) => {
                     win: win_cnt,
                     loose: loose_cnt,
                     draw: draw ? 1 : 0,
-                    scores: 0,
+                    scores: pointsFor?.points_per_victory * win_cnt + pointsFor?.points_per_loss * loose_cnt + pointsFor?.points_per_draw * draw ? 1 : 0,
                 });
             });
         });
@@ -74,7 +74,6 @@ const RoundRobin = ({ bracket, bracketId }) => {
                 ) {
                     draw = true;
                 }
-                console.log("heeree");
 
                 match.info.map((i) => {
                     let win_cnt = 0;
@@ -93,7 +92,7 @@ const RoundRobin = ({ bracket, bracketId }) => {
                         row.win += win_cnt;
                         row.loose += loose_cnt;
                         row.draw += draw ? 1 : 0;
-                        row.scores += 0 * win_cnt + 0 * loose_cnt + 0 * draw ? 1 : 0;
+                        row.scores += pointsFor?.points_per_victory * win_cnt + pointsFor?.points_per_loss * loose_cnt + pointsFor?.points_per_draw * draw ? 1 : 0;
                         console.log(i.participant);
                     }
                 });

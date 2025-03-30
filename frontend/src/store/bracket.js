@@ -7,6 +7,7 @@ const bracketSlice = createSlice({
         anonymous: false,
         currentMatch: null,
         currentBracketId: null,
+        points_for: {points_per_loss: 0, points_per_draw: 0, points_per_victory: 1}
     },
     reducers: {
         setBracket(state, action) {
@@ -43,6 +44,7 @@ const bracketSlice = createSlice({
             state.currentBracketId = null;
             state.currentMatch = null;
             state.anonymous = false;
+            state.points_for = {points_per_loss: 0, points_per_draw: 0, points_per_victory: 1}
         },
     },
 });
