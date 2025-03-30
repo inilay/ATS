@@ -36,5 +36,4 @@ def tournaments_list(*, filters=None) -> QuerySet[Tournament]:
 
 def game_list(*, filters=None) -> list:
     game_list = Tournament.objects.distinct().values_list("game", flat=True)
-    print(game_list)
     return game_list
