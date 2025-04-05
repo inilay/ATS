@@ -33,6 +33,7 @@ const ThemeSwitcher = ({ additionalCl, ...props }) => {
 
     return (
         <button
+            aria-label="Theme switch"
             onClick={(e) => switchTheme(e)}
             className={`${classes.btn_circle} ${additionalCl} ${"btn"} ${"shadow-none"}`}
             {...props}

@@ -13,7 +13,7 @@ const MyNavbar = () => {
     return (
         <Navbar className={`${classes.my_navbar} mb-3`} abg="dark" expand="lg">
             <Container fluid>
-                <Navbar.Brand as={Link} to="/">
+                <Navbar.Brand aria-label="Home" as={Link} to="/">
                     <HomeIcon />
                 </Navbar.Brand>
                 <ThemeSwitcher additionalCl={`${classes.theme_swither_min}`} />
