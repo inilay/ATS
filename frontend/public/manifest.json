@@ -1,10 +1,10 @@
 {
-  "short_name": "T",
-  "name": "Tournaments",
+  "short_name": "ATS",
+  "name": "Automatic Tournament System",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "64x64",
       "type": "image/x-icon"
     },
     {
@@ -21,5 +21,51 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "lang": "en",
+  "categories": [
+    "sports",
+    "games"
+  ],
+  "screenshots" : [
+    {
+      "src": "main.png",
+      "sizes": "640x360",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "properties.png",
+      "sizes": "640x360",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "bracket.png",
+      "sizes": "640x360",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "main.png",
+      "sizes": "640x360",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "properties.png",
+      "sizes": "640x360",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "bracket.png",
+      "sizes": "640x360",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "description": "Tournament bracket generator and management PWA for esports/sports organizers. Features real-time updates, automated scheduling, player statistics, and offline functionality for venue use without stable internet."
+
 }
+
