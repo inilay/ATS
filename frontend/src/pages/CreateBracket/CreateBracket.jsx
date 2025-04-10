@@ -151,8 +151,8 @@ const CreateBracket = () => {
                                         >
                                             {/* SE and DE bracket */}
                                             {responseBody.bracket_type == 1 || responseBody.bracket_type == 2 ? (
-                                                <div className="row">
-                                                    <div className="col">
+                                                <div className={`${classes.additional_settings_wrapper} gx-5`}>
+                                                    <div className={classes.se_additional_settings}>
                                                         <Form.Label className={`${classes.myFormLabel}`}>
                                                             Participant in match
                                                         </Form.Label>
@@ -171,7 +171,7 @@ const CreateBracket = () => {
                                                                 ))}
                                                         </Form.Select>
                                                     </div>
-                                                    <div className="col">
+                                                    <div className={classes.se_additional_settings}>
                                                         {responseBody.bracket_type == 1 && (
                                                             <Fragment>
                                                                 <Form.Label className={`${classes.myFormLabel}`}>
@@ -198,8 +198,8 @@ const CreateBracket = () => {
                                                 <Fragment>
                                                     {/* Only for SW */}
                                                     {responseBody.bracket_type == 4 && (
-                                                        <div className="row">
-                                                            <div className="col">
+                                                        <div className={classes.additional_settings_wrapper}>
+                                                            <div className={classes.se_additional_settings}>
                                                                 <Form.Label className={`${classes.myFormLabel}`}>
                                                                     Participant in match
                                                                 </Form.Label>
@@ -213,7 +213,7 @@ const CreateBracket = () => {
                                                                     ))}
                                                                 </Form.Select>
                                                             </div>
-                                                            <div className="col">
+                                                            <div className={classes.se_additional_settings}>
                                                                 <MyFormGroupInput
                                                                     label="Number of rounds"
                                                                     name="number_of_rounds"

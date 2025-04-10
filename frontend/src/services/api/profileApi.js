@@ -23,7 +23,7 @@ const profileApi = {
     },
 
     updateProfiIcon: async (api, slug, data) => {
-        const response = api.patch(`/img_change/${slug}/`, data, {
+        const response = api.patch(`${API_SERVER}/img_change/${slug}/`, data, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
