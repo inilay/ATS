@@ -29,40 +29,46 @@
   ],
   "screenshots" : [
     {
-      "src": "main.png",
-      "sizes": "640x360",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
       "src": "properties.png",
       "sizes": "640x360",
       "type": "image/png",
-      "form_factor": "wide"
+      "form_factor": "wide",
+      "label": "Properties"
     },
     {
-      "src": "bracket.png",
+      "src": "profile.png",
       "sizes": "640x360",
       "type": "image/png",
-      "form_factor": "wide"
+      "form_factor": "wide",
+      "label": "Profile"
     },
     {
-      "src": "main.png",
+      "src": "tournament.png",
       "sizes": "640x360",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "wide",
+      "label": "Tournament"
     },
     {
-      "src": "properties.png",
-      "sizes": "640x360",
+      "src": "m_main.png",
+      "sizes": "428x775",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "Mobile Main"
     },
     {
-      "src": "bracket.png",
-      "sizes": "640x360",
+      "src": "m_tournament.png",
+      "sizes": "428x775",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "Mobile Tournament"
+    },
+    {
+      "src": "m_profile.png",
+      "sizes": "428x775",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile Profile"
     }
   ],
   "description": "Tournament bracket generator and management PWA for esports/sports organizers. Features real-time updates, automated scheduling, player statistics, and offline functionality for venue use without stable internet."
