@@ -13,7 +13,7 @@ services:
   backend:  
     build: ./backend
     ports:
-      - 49088:49088
+      - 8000:8000
     env_file:
       - .env
     volumes:
@@ -32,6 +32,21 @@ services:
     depends_on:
       backend:
         condition: service_started
+  
+  redis:
+    restart: unless-stopped
+    image: redis:7.0.5-alpine 
+    expose:
+        - 6379
+
+  # celery:
+  #   restart: unless-stopped
+  #   build:
+  #     ./celery
+  #   depends_on:
+  #       - redis
+  #       - backend
+
 
 volumes:
     ps_volume:
