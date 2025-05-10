@@ -3,11 +3,11 @@ System for creating and maintaining tournaments.
 
 ## System description
 ### Main features:
- - Support one-stage and two-stage tournaments
+ - Support one-stage tournaments
+ - Support matches with 2-6 participants
  - Support four types of bracket
- - Support auto time managment 
  - Grid auto-fill 
- - Ability to download the grid in jpg, sng, png formats
+ - Push notifications
  - User's personal account
  - Dark and light theme
  

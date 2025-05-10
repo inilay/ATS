@@ -42,7 +42,8 @@ services:
   # celery:
   #   restart: unless-stopped
   #   build:
-  #     ./celery
+  #     context: .
+  #     dockerfile: ./celery/Dockerfile
   #   depends_on:
   #       - redis
   #       - backend

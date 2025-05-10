@@ -5,13 +5,13 @@ ENV PYTHONNUNBUFFERED 1
 
 WORKDIR /backend
 
-COPY ./requirements.txt /backend/requirements.txt
+COPY ./celery/requirements.txt /backend/requirements.txt
 
 RUN  python -m pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-COPY . /backend/
+COPY ./backend /backend/
 
-COPY ./entrypoint.sh /entrypoint.sh
+COPY ./celery/entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
 
