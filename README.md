@@ -30,9 +30,9 @@ Round robin:
 
 
 ## Stack:
-- Backend: Django + DRF + Gunicorn
+- Backend: Django + Celery + DRF + Gunicorn
 - Frontend: React + Bootstrap 
-- Database: PostgreSQL
+- Database: PostgreSQL, Redis
 - Web-server: Nginx
 
 ## Deploy
